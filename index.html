@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>أتوبيس كومبليت — المطور</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Lalezar&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#141a2b;--panel:#1f2740;--line:#38426a;--ink:#f4f6ff;--mute:#9aa4cc;--bus:#ffc933;--busink:#241c00;--bad:#ff6b6b;--good:#4fd89a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Cairo,system-ui,sans-serif;line-height:1.6}
+main{max-width:640px;margin:0 auto;padding:16px 14px 60px}
+h1,h2,h3{font-family:Lalezar,Cairo,sans-serif;font-weight:400;margin:0}
+h1{font-size:2.4rem;color:var(--bus);text-align:center;line-height:1.2}
+.sub{text-align:center;color:var(--mute);margin:4px 0 20px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+input{width:100%;font:inherit;font-size:1.1rem;padding:11px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+input:focus-visible,button:focus-visible{outline:3px solid var(--bus);outline-offset:2px}
+input:disabled{opacity:.6}
+button{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:10px;padding:11px 16px;background:var(--bus);color:var(--busink)}
+button.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+button.on{background:var(--bad);color:#2b0000}
+button.big{width:100%;font-family:Lalezar,Cairo;font-size:1.6rem;padding:14px;margin-top:12px}
+.err{color:var(--bad);min-height:1.5em;margin-top:8px}
+.letter{font-family:Lalezar;font-size:5rem;line-height:1;color:var(--busink);background:var(--bus);border-radius:18px;width:110px;height:110px;display:grid;place-items:center;margin:8px auto}
+label{display:block;font-weight:700;margin:12px 0 4px}
+#ban{text-align:center;font-weight:900;font-size:1.2rem;min-height:2em;color:var(--bus)}
+.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .n{font-weight:700;min-width:5.5em}
+.row .a{flex:1;word-break:break-word}
+.row .a.bad{color:var(--mute);text-decoration:line-through}
+.row .a.none{color:var(--mute)}
+.pts{font-weight:900;color:var(--good)}
+.pts.z{color:var(--mute)}
+.lb{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line)}
+.lb:first-of-type{border-top:0}
+.small{font-size:.9rem;color:var(--mute)}
+.dis{padding:6px 10px;font-size:.9rem}
+@media (prefers-reduced-motion:no-preference){.letter{animation:pop .4s ease-out}@keyframes pop{from{transform:scale(.5) rotate(-12deg)}}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getDatabase,ref,onValue,set,update,get,onDisconnect,runTransaction,increment} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+/* ===== حط بيانات Firebase بتاعتك هنا ===== */
+const firebaseConfig = {
+  apiKey: "AIzaSyDr46xwrJawOfcWXDSpfzNq17OHL8KMpkg",
+  authDomain: "game-c9a2c.firebaseapp.com",
+  databaseURL: "https://game-c9a2c-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "game-c9a2c",
+  storageBucket: "game-c9a2c.firebasestorage.app",
+  messagingSenderId: "151299306315",
+  appId: "1:151299306315:web:0ba9ea6b2fc566a8deaece"
+};
+/* ========================================= */
+
+const CATS=["حاجة بتتاكل","فيلم عربي","حاجة في المطبخ","ماركة عربيات","حاجة بتخوف","اسم ممثل","حاجة في الشنطة","حاجة بتتلبس","مسلسل مصري","حيوان","دولة","حاجة بتتشرب","مكان في القاهرة","حاجة بتتسرق","أكلة شعبية","حاجة بتتكسر","اسم بنت","اسم ولد","جماد","نبات","حاجة في المدرسة","مهنة","حاجة في الحمام","حاجة بتعملها وانت زهقان","حاجة ريحتها وحشة","حاجة بتتباع في السوبرماركت","مطرب أو مطربة","لاعب كورة","حاجة بتتشحن","حاجة بتقولها لما تتخض","شيء بيرن","تطبيق على الموبايل","حاجة في الشارع","حاجة بتتلحس","حاجة بتتعلق","عذر للتأخير","حاجة بتتاكل في الفرح","حاجة مش لازم تقولها للمدير","حاجة في العربية","اسم قطة أو كلب","شيء بيسخن","حاجة بتتحط في السندوتش","كلمة بتتقال في الخناقة","حاجة بتتلف","حاجة بتتنط","مكان مش عايز تروحه","حاجة غالية","حاجة بتتفرد","ماركة موبايل","حاجة بتتغسل","لعبة أطفال","حاجة بتتحرق","حاجة جوه التلاجة","نوع مكرونة أو أرز","شخصية كرتون","حاجة بتلمع","حاجة بتتقفل","صوت حيوان أو حاجة بتصوت","حاجة بتتحلف بيها"];
+const LETTERS=[..."ابتجحخدرسشصطعفقكلمنهوي"];
+
+const $=s=>document.querySelector(s), app=$('#app');
+const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ROOM=(new URLSearchParams(location.search).get('room')||'main').replace(/[.#$\[\]\/]/g,'').slice(0,30)||'main';
+const db=getDatabase(initializeApp(firebaseConfig));
+const base=`rooms/${ROOM}`, gameRef=ref(db,base+'/game');
+const pid=sessionStorage.pid||(sessionStorage.pid='p'+Math.random().toString(36).slice(2,9));
+const S={me:null,players:{},game:null,r:{},offset:0,round:0,view:'',unsub:null,sent:0,mv:'',mine:['','','','',''],score:0,jit:Math.random()*1000};
+const now=()=>Date.now()+S.offset;
+const norm=s=>(s||'').trim().replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/\s+/g,' ');
+const key=s=>norm(s).replace(/^ال(?=.)/,'');
+
+onValue(ref(db,'.info/serverTimeOffset'),s=>S.offset=s.val()||0);
+onValue(ref(db,'.info/connected'),s=>{if(s.val()&&S.me)register(S.me)});
+onValue(ref(db,base+'/players'),s=>{S.players=s.val()||{};if(S.players[pid])S.score=S.players[pid].score||0;render()});
+onValue(gameRef,s=>{
+  S.game=s.val();const r=S.game?.round||0;
+  if(r!==S.round){S.round=r;S.unsub&&S.unsub();S.r={};
+    S.unsub=r?onValue(ref(db,`${base}/r/${r}`),x=>{S.r=x.val()||{};render()}):null}
+  render();
+});
+
+function register(name){
+  const pr=ref(db,`${base}/players/${pid}`);
+  set(pr,{name,score:S.score});onDisconnect(pr).remove();
+}
+async function join(name){
+  name=name.trim().slice(0,16);
+  if(!name)return err('اكتب اسمك الأول');
+  const ps=(await get(ref(db,base+'/players'))).val()||{};
+  if(Object.entries(ps).some(([id,p])=>id!==pid&&p.name.toLowerCase()===name.toLowerCase()))return err('الاسم ده واخده حد، اختار اسم تاني');
+  S.score=ps[pid]?.score||0;S.me=name;localStorage.name=name;register(name);render();
+}
+const err=m=>{const e=$('#err');if(e)e.textContent=m};
+
+/* ===== منطق اللعبة ===== */
+function startRound(){
+  runTransaction(gameRef,g=>{
+    if(g&&['play','countdown','vote','tally'].includes(g.phase))return;
+    const cats=[...CATS].sort(()=>Math.random()-.5).slice(0,5);
+    return {phase:'play',round:(g?.round||0)+1,letter:LETTERS[Math.floor(Math.random()*LETTERS.length)],cats};
+  });
+}
+function pushAns(){
+  const g=S.game;if(!g||!S.me)return;
+  set(ref(db,`${base}/r/${g.round}/answers/${pid}`),{n:S.me,a:S.mine});
+}
+function done(){
+  pushAns();
+  runTransaction(gameRef,g=>g&&g.phase==='play'?{...g,phase:'countdown',endAt:now()+5000,by:S.me}:undefined);
+}
+function toVote(){
+  runTransaction(gameRef,g=>g&&g.phase==='countdown'?{...g,phase:'vote',endAt:now()+45000}:undefined);
+}
+function calc(R,letter){
+  const A=R.answers||{},V=R.votes||{},ids=Object.keys(A),L=key(letter),out={};
+  ids.forEach(id=>out[id]={n:A[id].n,t:0,c:[0,0,0,0,0],x:[0,0,0,0,0]});
+  for(let i=0;i<5;i++){
+    const ok={},cnt={};
+    ids.forEach(id=>{
+      const w=key(A[id].a?.[i]);
+      const dis=ids.filter(v=>v!==id&&V[v]?.[`${id}_${i}`]).length;
+      if(!w)out[id].x[i]=1;
+      else if(w[0]!==L)out[id].x[i]=2;
+      else if(dis>(ids.length-1)/2)out[id].x[i]=3;
+      else{ok[id]=w;cnt[w]=(cnt[w]||0)+1}
+    });
+    Object.entries(ok).forEach(([id,w])=>{const p=cnt[w]===1?10:5;out[id].c[i]=p;out[id].t+=p});
+  }
+  return out;
+}
+async function tally(round){
+  const tx=await runTransaction(gameRef,g=>g&&g.phase==='vote'&&g.round===round?{...g,phase:'tally'}:undefined);
+  if(!tx.committed)return;
+  const [a,pl]=await Promise.all([get(ref(db,`${base}/r/${round}`)),get(ref(db,base+'/players'))]);
+  const P=pl.val()||{},scores=calc(a.val()||{},tx.snapshot.val().letter),up={};
+  Object.entries(scores).forEach(([id,s])=>{if(P[id])up[`players/${id}/score`]=increment(s.t)});
+  up['game/last']={round,scores};up['game/phase']='results';
+  update(ref(db,base),up);
+}
+function vote(k){
+  const g=S.game;if(!g||g.phase!=='vote')return;
+  const r=ref(db,`${base}/r/${g.round}/votes/${pid}/${k}`);
+  set(r,S.r.votes?.[pid]?.[k]?null:true);
+}
+function ready(){const g=S.game;if(g)set(ref(db,`${base}/r/${g.round}/ready/${pid}`),true)}
+
+/* ===== الشاشات ===== */
+const lb=()=>Object.values(S.players).sort((a,b)=>(b.score||0)-(a.score||0))
+  .map(p=>`<div class="lb"><span>${esc(p.name)}</span><b>${p.score||0}</b></div>`).join('')||'<p class="small">لسه مفيش لاعبين</p>';
+
+function render(){
+  const g=S.game||{},ph=g.phase||'lobby';
+  const k=!S.me?'login':ph==='play'||ph==='countdown'?'play'+g.round:ph==='vote'||ph==='tally'?'vote'+g.round:ph==='results'?'res'+g.round:'lobby';
+  if(k===S.view&&(k==='login'||k.startsWith('play'))){tick();return}
+  if(k.startsWith('play')){S.mine=['','','','',''];}
+  S.view=k;
+  app.innerHTML=`<h1>🚌 أتوبيس كومبليت</h1><p class="sub">النسخة المطورة — تصنيفات عشوائية كل جولة</p>`+
+    (k==='login'?loginV():k==='lobby'?lobbyV():k.startsWith('play')?playV(g):k.startsWith('vote')?voteV(g):resV(g));
+  if(k==='login'){const i=$('#nm');i.value=localStorage.name||'';i.focus()}
+  tick();
+}
+const loginV=()=>`<div class="panel"><label for="nm">اختار اسمك عشان تدخل</label><input id="nm" maxlength="16" autocomplete="off"><div class="err" id="err"></div><button class="big" data-act="join">ادخل اللعبة</button></div>`;
+const lobbyV=()=>`<div class="panel"><h3>اللاعبين (${Object.keys(S.players).length})</h3>${lb()}</div>
+  <p class="small" style="text-align:center">ابعت لينك الصفحة لصحابك، وأي حد يقدر يبدأ الجولة.</p>
+  <button class="big" data-act="start">ابدأ جولة</button>`;
+function playV(g){
+  return `<div class="letter">${esc(g.letter)}</div><div id="ban"></div>`+
+  g.cats.map((c,i)=>`<label for="a${i}">${esc(c)}</label><input class="ans" id="a${i}" data-i="${i}" autocomplete="off">`).join('')+
+  `<button class="big" data-act="done">أتوبيس كومبليت!</button>`;
+}
+function voteV(g){
+  const A=S.r.answers||{},V=S.r.votes||{},ids=Object.keys(A),L=key(g.letter),rd=S.r.ready||{};
+  const cards=g.cats.map((c,i)=>`<section class="panel"><h3>${esc(c)}</h3>`+ids.map(id=>{
+    const w=A[id].a?.[i]||'',kk=key(w),bad=kk&&kk[0]!==L,vk=`${id}_${i}`;
+    const dis=ids.filter(v=>v!==id&&V[v]?.[vk]).length,mine=V[pid]?.[vk];
+    return `<div class="row"><span class="n">${esc(A[id].n)}</span><span class="a ${!kk?'none':bad?'bad':''}">${kk?esc(w):'—'}${bad?' (مش بالحرف)':''}</span>`+
+      (dis?`<span class="small">${dis}👎</span>`:'')+
+      (id!==pid&&kk?`<button class="dis ${mine?'on':'ghost'}" data-act="vote" data-k="${vk}">${mine?'شلت الاعتراض':'غلط / غريبة'}</button>`:'')+`</div>`;
+  }).join('')+`</section>`).join('');
+  const rc=Object.keys(S.players).filter(p=>rd[p]).length;
+  return `<div id="ban"></div><p class="small" style="text-align:center">اضغط على الإجابة الغلط أو الغريبة. لو أغلبية اللاعبين اعترضوا عليها بتتحسب صفر.</p>${cards}
+    <button class="big" data-act="ready" ${rd[pid]?'disabled':''}>${rd[pid]?'مستنيين الباقي':'خلصت تصويت'} (${rc}/${Object.keys(S.players).length})</button>`;
+}
+function resV(g){
+  const sc=g.last?.scores||{},A=S.r.answers||{};
+  const why=['','فاضية','مش بالحرف','الكل اعترض'];
+  const cards=Object.entries(sc).sort((a,b)=>b[1].t-a[1].t).map(([id,s])=>
+    `<section class="panel"><div class="lb"><h3>${esc(s.n)}</h3><span class="pts">+${s.t}</span></div>`+
+    g.cats.map((c,i)=>`<div class="row"><span class="n small">${esc(c)}</span><span class="a">${esc(A[id]?.a?.[i]||'—')}</span>`+
+      (s.c[i]?`<span class="pts">+${s.c[i]}</span>`:`<span class="pts z">${why[s.x[i]]||'0'}</span>`)+`</div>`).join('')+`</section>`).join('');
+  return `<div class="letter">${esc(g.letter)}</div>${cards}<div class="panel"><h3>الترتيب</h3>${lb()}</div><button class="big" data-act="start">جولة جديدة</button>`;
+}
+
+/* ===== تايمر ===== */
+function tick(){
+  const g=S.game;if(!g||!S.me)return;
+  const ban=$('#ban');
+  if(g.phase==='countdown'){
+    const rem=g.endAt-now();
+    if(ban)ban.textContent=rem>0?`${g.by} داس أتوبيس كومبليت! اكتب بسرعة: ${Math.ceil(rem/1000)}`:'الوقت خلص';
+    if(rem<=0){
+      document.querySelectorAll('.ans').forEach(i=>i.disabled=true);
+      if(S.sent!==g.round){S.sent=g.round;pushAns()}
+      if(rem<-1500-S.jit&&S.mv!=='c'+g.round){S.mv='c'+g.round;toVote()}
+    }
+  }else if(g.phase==='play'&&ban){
+    ban.textContent='اكتب إجابات تبدأ بالحرف ده، وأول واحد يخلص يدوس الزرار';
+  }else if(g.phase==='vote'){
+    const rem=g.endAt-now(),rd=S.r.ready||{},ids=Object.keys(S.players);
+    if(ban)ban.textContent=`وقت التصويت: ${Math.max(0,Math.ceil(rem/1000))}`;
+    if((rem<=0||(ids.length&&ids.every(p=>rd[p])))&&S.mv!=='v'+g.round){S.mv='v'+g.round;tally(g.round)}
+  }
+}
+setInterval(tick,250);
+
+/* ===== أحداث ===== */
+let t;
+app.addEventListener('input',e=>{
+  if(!e.target.classList.contains('ans'))return;
+  S.mine[+e.target.dataset.i]=e.target.value;
+  clearTimeout(t);t=setTimeout(pushAns,300);
+});
+app.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='nm')join(e.target.value)});
+app.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act;
+  if(a==='join')join($('#nm').value);
+  else if(a==='start')startRound();
+  else if(a==='done')done();
+  else if(a==='vote')vote(b.dataset.k);
+  else if(a==='ready')ready();
+});
+render();
+</script>
+</body>
+</html>
