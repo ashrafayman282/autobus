@@ -84,7 +84,7 @@ const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';clea
 
 const db=getDatabase(initializeApp(firebaseConfig));
 const pid=sessionStorage.pid||(sessionStorage.pid='p'+Math.random().toString(36).slice(2,9));
-const S={me:localStorage.name||null,rid:null,meta:null,players:{},game:null,used:[],hist:{},r:{},idx:{},cnt:{},offset:0,round:0,view:'',unsub:{},sent:0,mv:'',mine:['','','','',''],score:0,jit:Math.random()*1000,gone:0,ask:null,creating:false,form:{priv:false,timed:false}};
+const S={pl:{},ld:0,em:{},me:localStorage.name||null,rid:null,meta:null,players:{},game:null,used:[],hist:{},r:{},idx:{},cnt:{},offset:0,round:0,view:'',unsub:{},sent:0,mv:'',mine:['','','','',''],score:0,jit:Math.random()*1000,gone:0,ask:null,creating:false,form:{priv:false,timed:false}};
 const base=()=>`rooms/${S.rid}`;
 const now=()=>Date.now()+S.offset;
 const isAdmin=()=>S.meta?.adminId===pid;
@@ -93,17 +93,14 @@ const unsubAll=p=>Object.keys(S.unsub).filter(k=>k.startsWith(p)).forEach(k=>{S.
 
 onValue(ref(db,'.info/serverTimeOffset'),s=>S.offset=s.val()||0);
 onValue(ref(db,'.info/connected'),s=>{if(s.val()&&S.me&&S.rid)register()});
-sub('idx','idx',v=>{S.idx=v||{};watch();render()});
-
-function watch(){
-  if(S.rid)return;
+sub('idx','idx',v=>{S.idx=v||{};S.ld|=1;render()});
+sub('pl','pl',v=>{S.pl=v||{};S.ld|=2;render()});
+function sweep(){
+  if(S.ld!==3||S.rid)return;
   Object.keys(S.idx).forEach(rid=>{
-    if(S.unsub['c:'+rid])return;
-    sub('c:'+rid,`rooms/${rid}/players`,v=>{
-      S.cnt[rid]=v?Object.keys(v).length:0;
-      if(S.cnt[rid]===0&&S.idx[rid]&&Date.now()-S.idx[rid].t>300000){set(ref(db,'rooms/'+rid),null);set(ref(db,'idx/'+rid),null)}
-      if(!S.rid)render();
-    });
+    if(Object.keys(S.pl[rid]||{}).length){delete S.em[rid];return}
+    S.em[rid]=S.em[rid]||Date.now();
+    if(Date.now()-S.em[rid]>120000){delete S.em[rid];set(ref(db,'rooms/'+rid),null);set(ref(db,'idx/'+rid),null)}
   });
 }
 
@@ -112,21 +109,36 @@ function login(name){
   name=name.trim().slice(0,16);
   if(!name)return toast('اكتب اسمك الأول');
   S.me=name;localStorage.name=name;S.view='';render();
-  if(sessionStorage.rid)enter(sessionStorage.rid);
+  if(sessionStorage.rid)enter(sessionStorage.rid);else if(S.target)joinRoom(S.target);
 }
 async function joinRoom(rid,pw){
   const [m,p]=await Promise.all([get(ref(db,`rooms/${rid}/meta`)),get(ref(db,`rooms/${rid}/players`))]);
   const meta=m.val(),ps=p.val()||{};
-  if(!meta)return toast('الغرفة مش موجودة');
-  if(meta.ph&&meta.adminId!==pid&&await hash(pw||'',rid)!==meta.ph)return toast('الباسورد غلط');
+  if(!meta){S.pending=null;render();return toast('الغرفة مش موجودة')}
+  const need=meta.ph&&meta.adminId!==pid;
+  if(need&&pw===undefined){S.pending={rid,name:meta.name};return render()}
+  if(need&&await hash(pw,rid)!==meta.ph)return toast('الباسورد غلط');
   if(Object.entries(ps).some(([id,x])=>id!==pid&&x.name.toLowerCase()===S.me.toLowerCase()))return toast('في لاعب بنفس اسمك في الغرفة دي، غيّر اسمك');
-  S.ask=null;enter(rid);
+  S.pending=null;enter(rid);
+}
+async function quickJoin(){
+  const idx=(await get(ref(db,'idx'))).val()||{},c=[];
+  await Promise.all(Object.entries(idx).filter(([,r])=>!r.priv).map(async([rid,r])=>{
+    const [p,ph]=await Promise.all([get(ref(db,`rooms/${rid}/players`)),get(ref(db,`rooms/${rid}/game/phase`))]);
+    const ps=p.val()||{};
+    if(!Object.keys(ps).length)return;
+    if(Object.values(ps).some(x=>x.name.toLowerCase()===S.me.toLowerCase()))return;
+    c.push({rid,lobby:!ph.val()||['lobby','final'].includes(ph.val())});
+  }));
+  const l=c.filter(x=>x.lobby),pool=l.length?l:c;
+  if(!pool.length)return toast('مفيش غرف عامة شغالة دلوقتي، اعمل غرفة جديدة');
+  joinRoom(pool[rnd(pool.length)].rid,'');
 }
 async function enter(rid){
   const m=(await get(ref(db,`rooms/${rid}/meta`))).val();
   if(!m){sessionStorage.removeItem('rid');return render()}
   unsubAll('c:');
-  Object.assign(S,{rid,round:0,game:null,meta:m,players:{},used:[],hist:{},r:{},gone:0,view:'',score:+sessionStorage['s_'+rid]||0});
+  Object.assign(S,{ask:null,rid,round:0,game:null,meta:m,players:{},used:[],hist:{},r:{},gone:0,view:'',score:+sessionStorage['s_'+rid]||0});
   sessionStorage.rid=rid;
   sub('x:m',base()+'/meta',v=>{if(!v){leave(true);toast('الغرفة اتقفلت')}else{S.meta=v;render()}});
   sub('x:p',base()+'/players',v=>{S.players=v||{};if(S.players[pid]){S.score=S.players[pid].score||0;sessionStorage['s_'+rid]=S.score}render()});
@@ -141,13 +153,15 @@ async function enter(rid){
 }
 function register(){
   const pr=ref(db,`${base()}/players/${pid}`);
+  const pp=ref(db,`pl/${S.rid}/${pid}`);
   set(pr,{name:S.me,score:S.score,t:Date.now()});onDisconnect(pr).remove();
+  set(pp,S.me);onDisconnect(pp).remove();
 }
 function leave(silent){
-  if(S.rid){const pr=ref(db,`${base()}/players/${pid}`);onDisconnect(pr).cancel();if(!silent)set(pr,null)}
+  if(S.rid){const pr=ref(db,`${base()}/players/${pid}`),pp=ref(db,`pl/${S.rid}/${pid}`);onDisconnect(pr).cancel();onDisconnect(pp).cancel();if(!silent){set(pr,null);set(pp,null)}}
   unsubAll('x:');sessionStorage.removeItem('rid');
   Object.assign(S,{rid:null,meta:null,game:null,players:{},r:{},view:''});
-  watch();render();
+  render();
 }
 async function mk(){
   const name=$('#rn').value.trim().slice(0,24),pw=$('#rp').value,f=S.form;
@@ -159,7 +173,7 @@ async function mk(){
   const limit=f.timed?Math.round(Math.max(.5,+$('#tm').value||2)*60):0;
   const rid='r'+Math.random().toString(36).slice(2,8);
   await set(ref(db,`rooms/${rid}/meta`),{name,adminId:pid,adminName:S.me,ph:f.priv?await hash(pw,rid):'',rounds,limit,cats});
-  await set(ref(db,'idx/'+rid),{name,priv:f.priv,admin:S.me,t:Date.now()});
+  await set(ref(db,'idx/'+rid),{name,priv:f.priv,admin:S.me,t:Date.now(),st:'wait'});
   S.creating=false;enter(rid);
 }
 
@@ -173,6 +187,7 @@ function startRound(){
   const up={game:{phase:'play',round:r,letter,cats:shuf(S.meta.cats).slice(0,5),endAt:S.meta.limit?now()+S.meta.limit*1000:0},used:[...used,letter]};
   if(r===1){up.r=null;up.hist=null;Object.keys(S.players).forEach(id=>up['players/'+id+'/score']=0)}
   update(ref(db,base()),up);
+  set(ref(db,`idx/${S.rid}/st`),'play');
 }
 function pushAns(){
   const g=S.game;if(!g||!S.me||!S.rid)return;
@@ -228,13 +243,13 @@ function flag(k){
 /* ===== الشاشات ===== */
 const lb=()=>Object.entries(S.players).sort((a,b)=>(b[1].score||0)-(a[1].score||0)).map(([id,p],i)=>
   `<div class="lb"><span><i class="rk">${i+1}</i>${esc(p.name)}${id===S.meta?.adminId?' 👑':''}</span><b>${p.score||0}</b></div>`).join('');
-const brand=()=>`<h1>🚌 أتوبيس كومبليت</h1><p class="sub">النسخة المطورة — تصنيفات وحروف عشوائية</p>`;
+const brand=()=>`<h1>🚌 أتوبيس كومبليت</h1><p class="sub">النسخة المطورة • v3</p>`;
 const hdr=()=>`<header class="top"><div><b>${esc(S.meta.name)}</b> <span class="small">الأدمن: ${esc(S.meta.adminName)}</span></div><button class="ghost sm" data-act="leave">خروج</button></header>`;
 
 function render(){
   let k;
   if(!S.me)k='login';
-  else if(!S.rid)k=S.creating?'create':'home';
+  else if(!S.rid)k=S.creating?'create':S.pending?'join':'home';
   else{
     const g=S.game||{},ph=g.phase||'lobby';
     k=ph==='play'||ph==='countdown'?'play'+g.round:ph==='review'||ph==='tally'?'review'+g.round:ph==='results'?'res'+g.round:ph==='final'?'final':'lobby';
@@ -244,20 +259,22 @@ function render(){
   if(k.startsWith('play'))S.mine=['','','','',''];
   S.view=k;
   const g=S.game||{};
-  app.innerHTML=k==='login'?loginV():k==='home'?homeV():k==='create'?createV():hdr()+(k==='lobby'?lobbyV():k.startsWith('play')?playV(g):k.startsWith('review')?reviewV(g):k.startsWith('res')?resV(g):finalV());
+  app.innerHTML=k==='login'?loginV():k==='home'?homeV():k==='create'?createV():k==='join'?joinV():hdr()+(k==='lobby'?lobbyV():k.startsWith('play')?playV(g):k.startsWith('review')?reviewV(g):k.startsWith('res')?resV(g):finalV());
   if(k==='login'){const i=$('#nm');i.value=S.me||localStorage.name||'';i.focus()}
+  if(k==='join')$('#pw').focus();
   tick();
 }
 const loginV=()=>`${brand()}<div class="card"><label for="nm">اختار اسمك عشان تدخل</label><input id="nm" maxlength="16" autocomplete="off"><button class="big" data-act="login">ادخل</button></div>`;
 function homeV(){
-  const rooms=Object.entries(S.idx).filter(([id])=>S.cnt[id]!==0).sort((a,b)=>b[1].t-a[1].t);
-  return `${brand()}<div class="rm"><h2>الغرف المتاحة</h2><span class="small">أهلا ${esc(S.me)}</span></div>`+
-    (rooms.length?rooms.map(([id,r])=>`<div class="card"><div class="rm"><div><h3>${esc(r.name)}</h3><span class="small">الأدمن: ${esc(r.admin)} • ${S.cnt[id]??'…'} لاعب</span> <span class="tag">${r.priv?'🔒 بباسورد':'عامة'}</span></div>`+
+  const rooms=Object.entries(S.idx).map(([id,r])=>[id,r,Object.keys(S.pl[id]||{}).length]).filter(x=>x[2]>0).sort((a,b)=>b[2]-a[2]||b[1].t-a[1].t);
+  return `${brand()}<div class="rm"><h2>الغرف</h2><span class="small">أهلا ${esc(S.me)}</span></div>`+
+    (rooms.length?rooms.map(([id,r,n])=>`<div class="card"><div class="rm"><div><h3>${esc(r.name)}</h3><span class="small">الأدمن: ${esc(r.admin)}</span> <span class="tag">${r.priv?'🔒 بباسورد':'عامة'}</span> <span class="tag">${r.st==='play'?'اللعب شغال':'في الانتظار'}</span><div class="pts">${n} متواجد دلوقتي</div></div>`+
       (r.priv&&S.ask!==id?`<button data-act="ask" data-r="${id}">دخول</button>`:r.priv?'':`<button data-act="enter" data-r="${id}">دخول</button>`)+`</div>`+
-      (r.priv&&S.ask===id?`<div class="rm" style="margin-top:10px"><input id="pw" type="password" placeholder="الباسورد" autocomplete="off"><button data-act="enter" data-r="${id}">ادخل</button></div>`:'')+`</div>`).join('')
-    :`<div class="card small">مفيش غرف دلوقتي. اعمل غرفة جديدة وابعت لصحابك يدخلوا.</div>`)+
-    `<button class="big" data-act="newroom">إنشاء غرفة جديدة</button>`;
+      (r.priv&&S.ask===id?`<div class="rm" style="margin-top:10px"><input id="pw" type="password" placeholder="اكتب الباسورد" autocomplete="off"><button data-act="enter" data-r="${id}">ادخل</button></div>`:'')+`</div>`).join('')
+    :`<div class="card small">مفيش غرف دلوقتي. اعمل غرفة جديدة.</div>`)+
+    `<button class="big" data-act="quick">دخول سريع (غرفة عامة عشوائية)</button><button class="big ghost" data-act="newroom">إنشاء غرفة</button>`;
 }
+const joinV=()=>`${brand()}<div class="card"><h3>${esc(S.pending.name)}</h3><label for="pw">الغرفة دي بباسورد</label><input id="pw" type="password" autocomplete="off"><button class="big" data-act="enter">ادخل</button><button class="big ghost" data-act="cancel">رجوع</button></div>`;
 function createV(){
   S.form={priv:false,timed:false};
   return `<header class="top"><b>غرفة جديدة</b><button class="ghost sm" data-act="cancel">رجوع</button></header>
@@ -271,9 +288,9 @@ function createV(){
   <div class="chips">${CATS.map((c,i)=>`<button class="chip on" data-act="cat" data-i="${i}">${esc(c)}</button>`).join('')}</div>
   <button class="big" data-act="mk">إنشاء الغرفة</button>`;
 }
-const lobbyV=()=>`<div class="card"><h3>اللاعبين (${Object.keys(S.players).length})</h3>${lb()}</div>
+const lobbyV=()=>`<h2>غرفة الانتظار</h2><div class="card"><h3>اللاعبين (${Object.keys(S.players).length})</h3>${lb()}</div>
   <div class="card small">${S.meta.rounds} جولات • ${S.meta.limit?'وقت الجولة '+S.meta.limit/60+' دقيقة':'بدون وقت'} • ${S.meta.cats.length} تصنيف • ${S.meta.ph?'🔒 بباسورد':'عامة'}</div>`+
-  (isAdmin()?`<button class="big" data-act="start">ابدأ اللعبة</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يبدأ اللعبة...</p>`);
+  `<button class="big ghost" data-act="copy">انسخ لينك الغرفة</button>`+(isAdmin()?`<button class="big" data-act="start">ابدأ اللعبة</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يبدأ اللعبة...</p>`);
 const playV=g=>`<p class="small" style="text-align:center">جولة ${g.round} من ${S.meta.rounds}</p><div class="letter">${esc(g.letter)}</div><div id="ban"></div>`+
   g.cats.map((c,i)=>`<label for="a${i}">${esc(c)}</label><input class="ans" id="a${i}" data-i="${i}" autocomplete="off">`).join('')+
   `<button class="big" data-act="done">أتوبيس كومبليت!</button>`;
@@ -311,6 +328,7 @@ function finalV(){
 
 /* ===== تايمر ===== */
 function tick(){
+  sweep();
   if(!S.rid||!S.meta)return;
   const g=S.game,ban=$('#ban');
   // لو الأدمن اختفى، أقدم لاعب بيستلم
@@ -359,7 +377,7 @@ app.addEventListener('change',e=>{
 app.addEventListener('keydown',e=>{
   if(e.key!=='Enter')return;
   if(e.target.id==='nm')login(e.target.value);
-  if(e.target.id==='pw')joinRoom(S.ask,e.target.value);
+  if(e.target.id==='pw'){const r=S.pending?.rid||S.ask;if(r)joinRoom(r,e.target.value)}
 });
 const seg=(b,on)=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b))};
 const setAll=v=>{document.querySelectorAll('.chip[data-i]').forEach(c=>c.classList.toggle('on',v));$('#cc').textContent=v?CATS.length:0};
@@ -367,10 +385,12 @@ app.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
   const a=b.dataset.act,k=b.dataset.k;
   if(a==='login')login($('#nm').value);
+  else if(a==='quick')quickJoin();
   else if(a==='ask'){S.ask=b.dataset.r;render()}
-  else if(a==='enter')joinRoom(b.dataset.r,$('#pw')?.value);
+  else if(a==='copy')navigator.clipboard.writeText(location.origin+location.pathname+'?r='+S.rid).then(()=>toast('اتنسخ لينك الغرفة'));
+  else if(a==='enter')joinRoom(b.dataset.r||S.pending.rid,$('#pw')?.value);
   else if(a==='newroom'){S.creating=true;render()}
-  else if(a==='cancel'){S.creating=false;render()}
+  else if(a==='cancel'){S.creating=false;S.pending=null;render()}
   else if(a==='vis'){S.form.priv=b.dataset.v==='1';seg(b);$('#pwbox').hidden=!S.form.priv}
   else if(a==='tl'){S.form.timed=b.dataset.v==='1';seg(b);$('#tmbox').hidden=!S.form.timed}
   else if(a==='cat'){b.classList.toggle('on');$('#cc').textContent=document.querySelectorAll('.chip.on[data-i]').length}
@@ -383,12 +403,13 @@ app.addEventListener('click',e=>{
   else if(a==='ov'){const [id,i]=k.split('_'),acc=calc(S.r,S.game.letter)[id].c[i]>0;setOv(k,()=>({a:acc?'no':'ok'}))}
   else if(a==='rs')setOv(k,()=>null);
   else if(a==='approve')approve();
-  else if(a==='fin')update(ref(db,base()+'/game'),{phase:'final'});
-  else if(a==='again')update(ref(db,base()),{game:{phase:'lobby'},used:null,hist:null,r:null});
+  else if(a==='fin'){update(ref(db,base()+'/game'),{phase:'final'});set(ref(db,`idx/${S.rid}/st`),'wait')}
+  else if(a==='again'){update(ref(db,base()),{game:{phase:'lobby'},used:null,hist:null,r:null});set(ref(db,`idx/${S.rid}/st`),'wait')}
   else if(a==='leave')leave();
 });
+S.target=new URLSearchParams(location.search).get('r');
 render();
-if(S.me&&sessionStorage.rid)enter(sessionStorage.rid);
+if(S.me&&sessionStorage.rid)enter(sessionStorage.rid);else if(S.me&&S.target)joinRoom(S.target);
 </script>
 </body>
 </html>
