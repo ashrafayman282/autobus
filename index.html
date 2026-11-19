@@ -7,47 +7,59 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Lalezar&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#141a2b;--panel:#1f2740;--line:#38426a;--ink:#f4f6ff;--mute:#9aa4cc;--bus:#ffc933;--busink:#241c00;--bad:#ff6b6b;--good:#4fd89a}
+:root{--bg:#10162a;--panel:#1a2240;--panel2:#222c52;--line:#334072;--ink:#f4f6ff;--mute:#98a3cf;--bus:#ffc933;--busink:#241c00;--bad:#ff6b6b;--good:#4fd89a}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Cairo,system-ui,sans-serif;line-height:1.6}
-main{max-width:640px;margin:0 auto;padding:16px 14px 60px}
+main{max-width:720px;margin:0 auto;padding:0 14px 70px}
 h1,h2,h3{font-family:Lalezar,Cairo,sans-serif;font-weight:400;margin:0}
-h1{font-size:2.4rem;color:var(--bus);text-align:center;line-height:1.2}
-.sub{text-align:center;color:var(--mute);margin:4px 0 20px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
-input{width:100%;font:inherit;font-size:1.1rem;padding:11px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+h1{font-size:2.5rem;color:var(--bus);text-align:center;line-height:1.2;padding-top:18px}
+h2{font-size:1.6rem;margin:18px 0 6px}
+h3{font-size:1.2rem}
+.sub{text-align:center;color:var(--mute);margin:2px 0 18px}
+.top{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0;margin-bottom:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+input,select{font:inherit;font-size:1.05rem;padding:10px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
 input:focus-visible,button:focus-visible{outline:3px solid var(--bus);outline-offset:2px}
 input:disabled{opacity:.6}
-button{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:10px;padding:11px 16px;background:var(--bus);color:var(--busink)}
+button{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:10px;padding:10px 16px;background:var(--bus);color:var(--busink)}
 button.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
 button.on{background:var(--bad);color:#2b0000}
-button.big{width:100%;font-family:Lalezar,Cairo;font-size:1.6rem;padding:14px;margin-top:12px}
-.err{color:var(--bad);min-height:1.5em;margin-top:8px}
+button.sm{padding:5px 10px;font-size:.9rem}
+button.big{width:100%;font-family:Lalezar,Cairo;font-size:1.5rem;padding:13px;margin-top:12px}
+button:disabled{opacity:.5;cursor:default}
+label{display:block;font-weight:700;margin:14px 0 5px}
+.seg{display:flex;gap:8px}.seg button{flex:1}
+.seg button:not(.sel){background:transparent;color:var(--ink);border:2px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{background:var(--panel2);color:var(--mute);border:2px solid var(--line);padding:6px 12px;font-weight:400}
+.chip.on{background:var(--bus);color:var(--busink);border-color:var(--bus);font-weight:700}
 .letter{font-family:Lalezar;font-size:5rem;line-height:1;color:var(--busink);background:var(--bus);border-radius:18px;width:110px;height:110px;display:grid;place-items:center;margin:8px auto}
-label{display:block;font-weight:700;margin:12px 0 4px}
-#ban{text-align:center;font-weight:900;font-size:1.2rem;min-height:2em;color:var(--bus)}
-.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+#ban{text-align:center;font-weight:900;font-size:1.25rem;min-height:2em;color:var(--bus)}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
 .row:first-of-type{border-top:0}
 .row .n{font-weight:700;min-width:5.5em}
-.row .a{flex:1;word-break:break-word}
+.row .a{flex:1;word-break:break-word;min-width:6em}
 .row .a.bad{color:var(--mute);text-decoration:line-through}
-.row .a.none{color:var(--mute)}
-.pts{font-weight:900;color:var(--good)}
-.pts.z{color:var(--mute)}
-.lb{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line)}
+.pin{width:70px;padding:5px 8px;font-size:.95rem}
+.pts{font-weight:900;color:var(--good)}.pts.z{color:var(--mute);font-weight:400;font-size:.9rem}
+.lb{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
 .lb:first-of-type{border-top:0}
+.rk{display:inline-grid;place-items:center;width:1.7em;height:1.7em;border-radius:50%;background:var(--panel2);font-style:normal;font-size:.85rem;margin-inline-end:8px}
 .small{font-size:.9rem;color:var(--mute)}
-.dis{padding:6px 10px;font-size:.9rem}
+.rm{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tag{font-size:.8rem;border:1px solid var(--line);border-radius:20px;padding:1px 9px;color:var(--mute)}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%}td,th{padding:6px 10px;border-top:1px solid var(--line);text-align:center;white-space:nowrap}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bad);color:#2b0000;font-weight:700;padding:10px 18px;border-radius:10px;display:none;z-index:9}
 @media (prefers-reduced-motion:no-preference){.letter{animation:pop .4s ease-out}@keyframes pop{from{transform:scale(.5) rotate(-12deg)}}}
 </style>
 </head>
 <body>
 <main id="app"></main>
+<div id="toast" role="alert"></div>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getDatabase,ref,onValue,set,update,get,onDisconnect,runTransaction,increment} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-/* ===== حط بيانات Firebase بتاعتك هنا ===== */
 const firebaseConfig = {
   apiKey: "AIzaSyDr46xwrJawOfcWXDSpfzNq17OHL8KMpkg",
   authDomain: "game-c9a2c.firebaseapp.com",
@@ -57,163 +69,278 @@ const firebaseConfig = {
   messagingSenderId: "151299306315",
   appId: "1:151299306315:web:0ba9ea6b2fc566a8deaece"
 };
-/* ========================================= */
 
-const CATS=["حاجة بتتاكل","فيلم عربي","حاجة في المطبخ","ماركة عربيات","حاجة بتخوف","اسم ممثل","حاجة في الشنطة","حاجة بتتلبس","مسلسل مصري","حيوان","دولة","حاجة بتتشرب","مكان في القاهرة","حاجة بتتسرق","أكلة شعبية","حاجة بتتكسر","اسم بنت","اسم ولد","جماد","نبات","حاجة في المدرسة","مهنة","حاجة في الحمام","حاجة بتعملها وانت زهقان","حاجة ريحتها وحشة","حاجة بتتباع في السوبرماركت","مطرب أو مطربة","لاعب كورة","حاجة بتتشحن","حاجة بتقولها لما تتخض","شيء بيرن","تطبيق على الموبايل","حاجة في الشارع","حاجة بتتلحس","حاجة بتتعلق","عذر للتأخير","حاجة بتتاكل في الفرح","حاجة مش لازم تقولها للمدير","حاجة في العربية","اسم قطة أو كلب","شيء بيسخن","حاجة بتتحط في السندوتش","كلمة بتتقال في الخناقة","حاجة بتتلف","حاجة بتتنط","مكان مش عايز تروحه","حاجة غالية","حاجة بتتفرد","ماركة موبايل","حاجة بتتغسل","لعبة أطفال","حاجة بتتحرق","حاجة جوه التلاجة","نوع مكرونة أو أرز","شخصية كرتون","حاجة بتلمع","حاجة بتتقفل","صوت حيوان أو حاجة بتصوت","حاجة بتتحلف بيها"];
-const LETTERS=[..."ابتجحخدرسشصطعفقكلمنهوي"];
+const CATS=["حاجة بتتاكل","فيلم عربي","حاجة في المطبخ","ماركة عربيات","حاجة بتخوف","اسم ممثل","حاجة في الشنطة","حاجة بتتلبس","مسلسل مصري","حيوان","دولة","حاجة بتتشرب","مكان في القاهرة","حاجة بتتسرق","أكلة شعبية","حاجة بتتكسر","اسم بنت","اسم ولد","جماد","نبات","حاجة في المدرسة","مهنة","حاجة في الحمام","حاجة بتعملها وانت زهقان","حاجة ريحتها وحشة","حاجة بتتباع في السوبرماركت","مطرب أو مطربة","لاعب كورة","حاجة بتتشحن","حاجة بتقولها لما تتخض","تطبيق على الموبايل","حاجة في الشارع","حاجة بتتعلق","عذر للتأخير","حاجة بتتاكل في الفرح","حاجة مش لازم تقولها للمدير","حاجة في العربية","اسم قطة أو كلب","حاجة بتتحط في السندوتش","كلمة بتتقال في الخناقة","حاجة بتتلف","مكان مش عايز تروحه","حاجة غالية","ماركة موبايل","حاجة بتتغسل","لعبة أطفال","حاجة بتتحرق","حاجة جوه التلاجة","نوع مكرونة أو أرز","شخصية كرتون","حاجة بتلمع","حاجة بتتقفل","صوت حيوان أو حاجة بتصوت","حاجة بتتحلف بيها"];
+const LETTERS=[..."ابتجحخدرزسشصضطعغفقكلمنهوي"];
 
-const $=s=>document.querySelector(s), app=$('#app');
+const $=s=>document.querySelector(s),app=$('#app');
 const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const ROOM=(new URLSearchParams(location.search).get('room')||'main').replace(/[.#$\[\]\/]/g,'').slice(0,30)||'main';
-const db=getDatabase(initializeApp(firebaseConfig));
-const base=`rooms/${ROOM}`, gameRef=ref(db,base+'/game');
-const pid=sessionStorage.pid||(sessionStorage.pid='p'+Math.random().toString(36).slice(2,9));
-const S={me:null,players:{},game:null,r:{},offset:0,round:0,view:'',unsub:null,sent:0,mv:'',mine:['','','','',''],score:0,jit:Math.random()*1000};
-const now=()=>Date.now()+S.offset;
+const rnd=n=>crypto.getRandomValues(new Uint32Array(1))[0]%n;
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
 const norm=s=>(s||'').trim().replace(/[\u064B-\u0652\u0640]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/\s+/g,' ');
 const key=s=>norm(s).replace(/^ال(?=.)/,'');
+const hash=async(p,rid)=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(rid+':'+p)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',3000)};
+
+const db=getDatabase(initializeApp(firebaseConfig));
+const pid=sessionStorage.pid||(sessionStorage.pid='p'+Math.random().toString(36).slice(2,9));
+const S={me:localStorage.name||null,rid:null,meta:null,players:{},game:null,used:[],hist:{},r:{},idx:{},cnt:{},offset:0,round:0,view:'',unsub:{},sent:0,mv:'',mine:['','','','',''],score:0,jit:Math.random()*1000,gone:0,ask:null,creating:false,form:{priv:false,timed:false}};
+const base=()=>`rooms/${S.rid}`;
+const now=()=>Date.now()+S.offset;
+const isAdmin=()=>S.meta?.adminId===pid;
+const sub=(k,p,cb)=>{S.unsub[k]&&S.unsub[k]();S.unsub[k]=onValue(ref(db,p),cb)};
+const unsubAll=p=>Object.keys(S.unsub).filter(k=>k.startsWith(p)).forEach(k=>{S.unsub[k]();delete S.unsub[k]});
 
 onValue(ref(db,'.info/serverTimeOffset'),s=>S.offset=s.val()||0);
-onValue(ref(db,'.info/connected'),s=>{if(s.val()&&S.me)register(S.me)});
-onValue(ref(db,base+'/players'),s=>{S.players=s.val()||{};if(S.players[pid])S.score=S.players[pid].score||0;render()});
-onValue(gameRef,s=>{
-  S.game=s.val();const r=S.game?.round||0;
-  if(r!==S.round){S.round=r;S.unsub&&S.unsub();S.r={};
-    S.unsub=r?onValue(ref(db,`${base}/r/${r}`),x=>{S.r=x.val()||{};render()}):null}
-  render();
-});
+onValue(ref(db,'.info/connected'),s=>{if(s.val()&&S.me&&S.rid)register()});
+sub('idx','idx',v=>{S.idx=v||{};watch();render()});
 
-function register(name){
-  const pr=ref(db,`${base}/players/${pid}`);
-  set(pr,{name,score:S.score});onDisconnect(pr).remove();
+function watch(){
+  if(S.rid)return;
+  Object.keys(S.idx).forEach(rid=>{
+    if(S.unsub['c:'+rid])return;
+    sub('c:'+rid,`rooms/${rid}/players`,v=>{
+      S.cnt[rid]=v?Object.keys(v).length:0;
+      if(S.cnt[rid]===0&&S.idx[rid]&&Date.now()-S.idx[rid].t>300000){set(ref(db,'rooms/'+rid),null);set(ref(db,'idx/'+rid),null)}
+      if(!S.rid)render();
+    });
+  });
 }
-async function join(name){
+
+/* ===== الدخول والغرف ===== */
+function login(name){
   name=name.trim().slice(0,16);
-  if(!name)return err('اكتب اسمك الأول');
-  const ps=(await get(ref(db,base+'/players'))).val()||{};
-  if(Object.entries(ps).some(([id,p])=>id!==pid&&p.name.toLowerCase()===name.toLowerCase()))return err('الاسم ده واخده حد، اختار اسم تاني');
-  S.score=ps[pid]?.score||0;S.me=name;localStorage.name=name;register(name);render();
+  if(!name)return toast('اكتب اسمك الأول');
+  S.me=name;localStorage.name=name;S.view='';render();
+  if(sessionStorage.rid)enter(sessionStorage.rid);
 }
-const err=m=>{const e=$('#err');if(e)e.textContent=m};
+async function joinRoom(rid,pw){
+  const [m,p]=await Promise.all([get(ref(db,`rooms/${rid}/meta`)),get(ref(db,`rooms/${rid}/players`))]);
+  const meta=m.val(),ps=p.val()||{};
+  if(!meta)return toast('الغرفة مش موجودة');
+  if(meta.ph&&meta.adminId!==pid&&await hash(pw||'',rid)!==meta.ph)return toast('الباسورد غلط');
+  if(Object.entries(ps).some(([id,x])=>id!==pid&&x.name.toLowerCase()===S.me.toLowerCase()))return toast('في لاعب بنفس اسمك في الغرفة دي، غيّر اسمك');
+  S.ask=null;enter(rid);
+}
+async function enter(rid){
+  const m=(await get(ref(db,`rooms/${rid}/meta`))).val();
+  if(!m){sessionStorage.removeItem('rid');return render()}
+  unsubAll('c:');
+  Object.assign(S,{rid,round:0,game:null,meta:m,players:{},used:[],hist:{},r:{},gone:0,view:'',score:+sessionStorage['s_'+rid]||0});
+  sessionStorage.rid=rid;
+  sub('x:m',base()+'/meta',v=>{if(!v){leave(true);toast('الغرفة اتقفلت')}else{S.meta=v;render()}});
+  sub('x:p',base()+'/players',v=>{S.players=v||{};if(S.players[pid]){S.score=S.players[pid].score||0;sessionStorage['s_'+rid]=S.score}render()});
+  sub('x:u',base()+'/used',v=>S.used=v||[]);
+  sub('x:h',base()+'/hist',v=>{S.hist=v||{};render()});
+  sub('x:g',base()+'/game',v=>{
+    S.game=v;const r=v?.round||0;
+    if(r!==S.round){S.round=r;S.unsub['x:r']&&S.unsub['x:r']();S.r={};if(r)sub('x:r',`${base()}/r/${r}`,x=>{S.r=x.val()||{};render()})}
+    render();
+  });
+  register();render();
+}
+function register(){
+  const pr=ref(db,`${base()}/players/${pid}`);
+  set(pr,{name:S.me,score:S.score,t:Date.now()});onDisconnect(pr).remove();
+}
+function leave(silent){
+  if(S.rid){const pr=ref(db,`${base()}/players/${pid}`);onDisconnect(pr).cancel();if(!silent)set(pr,null)}
+  unsubAll('x:');sessionStorage.removeItem('rid');
+  Object.assign(S,{rid:null,meta:null,game:null,players:{},r:{},view:''});
+  watch();render();
+}
+async function mk(){
+  const name=$('#rn').value.trim().slice(0,24),pw=$('#rp').value,f=S.form;
+  if(!name)return toast('اكتب اسم الغرفة');
+  if(f.priv&&!pw)return toast('اكتب باسورد الغرفة');
+  const cats=[...document.querySelectorAll('.chip.on[data-i]')].map(c=>CATS[+c.dataset.i]);
+  if(cats.length<5)return toast('اختار 5 تصنيفات على الأقل');
+  const rounds=Math.min(20,Math.max(1,Math.round(+$('#rr').value||5)));
+  const limit=f.timed?Math.round(Math.max(.5,+$('#tm').value||2)*60):0;
+  const rid='r'+Math.random().toString(36).slice(2,8);
+  await set(ref(db,`rooms/${rid}/meta`),{name,adminId:pid,adminName:S.me,ph:f.priv?await hash(pw,rid):'',rounds,limit,cats});
+  await set(ref(db,'idx/'+rid),{name,priv:f.priv,admin:S.me,t:Date.now()});
+  S.creating=false;enter(rid);
+}
 
 /* ===== منطق اللعبة ===== */
 function startRound(){
-  runTransaction(gameRef,g=>{
-    if(g&&['play','countdown','vote','tally'].includes(g.phase))return;
-    const cats=[...CATS].sort(()=>Math.random()-.5).slice(0,5);
-    return {phase:'play',round:(g?.round||0)+1,letter:LETTERS[Math.floor(Math.random()*LETTERS.length)],cats};
-  });
+  if(!isAdmin())return;
+  const g=S.game||{},r=g.phase==='results'?g.round+1:1;
+  let used=r===1?[]:[...S.used],pool=LETTERS.filter(l=>!used.includes(l));
+  if(!pool.length){used=[];pool=[...LETTERS]}
+  const letter=pool[rnd(pool.length)];
+  const up={game:{phase:'play',round:r,letter,cats:shuf(S.meta.cats).slice(0,5),endAt:S.meta.limit?now()+S.meta.limit*1000:0},used:[...used,letter]};
+  if(r===1){up.r=null;up.hist=null;Object.keys(S.players).forEach(id=>up['players/'+id+'/score']=0)}
+  update(ref(db,base()),up);
 }
 function pushAns(){
-  const g=S.game;if(!g||!S.me)return;
-  set(ref(db,`${base}/r/${g.round}/answers/${pid}`),{n:S.me,a:S.mine});
+  const g=S.game;if(!g||!S.me||!S.rid)return;
+  set(ref(db,`${base()}/r/${g.round}/answers/${pid}`),{n:S.me,a:S.mine});
 }
 function done(){
   pushAns();
-  runTransaction(gameRef,g=>g&&g.phase==='play'?{...g,phase:'countdown',endAt:now()+5000,by:S.me}:undefined);
+  runTransaction(ref(db,base()+'/game'),g=>g&&g.phase==='play'?{...g,phase:'countdown',endAt:now()+5000,by:S.me}:undefined);
 }
-function toVote(){
-  runTransaction(gameRef,g=>g&&g.phase==='countdown'?{...g,phase:'vote',endAt:now()+45000}:undefined);
+function toReview(from){
+  runTransaction(ref(db,base()+'/game'),g=>g&&g.phase===from?{...g,phase:'review'}:undefined);
 }
 function calc(R,letter){
-  const A=R.answers||{},V=R.votes||{},ids=Object.keys(A),L=key(letter),out={};
-  ids.forEach(id=>out[id]={n:A[id].n,t:0,c:[0,0,0,0,0],x:[0,0,0,0,0]});
+  const A=R.answers||{},V=R.votes||{},O=R.ov||{},ids=Object.keys(A),L=key(letter),out={};
+  ids.forEach(id=>out[id]={n:A[id].n,t:0,c:[0,0,0,0,0],x:[0,0,0,0,0],f:[0,0,0,0,0]});
   for(let i=0;i<5;i++){
     const ok={},cnt={};
     ids.forEach(id=>{
-      const w=key(A[id].a?.[i]);
-      const dis=ids.filter(v=>v!==id&&V[v]?.[`${id}_${i}`]).length;
+      const w=key(A[id].a?.[i]),o=O[`${id}_${i}`]||{},dis=ids.filter(v=>v!==id&&V[v]?.[`${id}_${i}`]).length;
+      out[id].f[i]=dis;
       if(!w)out[id].x[i]=1;
-      else if(w[0]!==L)out[id].x[i]=2;
-      else if(dis>(ids.length-1)/2)out[id].x[i]=3;
+      else if(o.a==='no')out[id].x[i]=4;
+      else if(o.a!=='ok'&&w[0]!==L)out[id].x[i]=2;
+      else if(o.a!=='ok'&&dis>(ids.length-1)/2)out[id].x[i]=3;
       else{ok[id]=w;cnt[w]=(cnt[w]||0)+1}
     });
-    Object.entries(ok).forEach(([id,w])=>{const p=cnt[w]===1?10:5;out[id].c[i]=p;out[id].t+=p});
+    Object.entries(ok).forEach(([id,w])=>out[id].c[i]=cnt[w]===1?10:5);
+    ids.forEach(id=>{const o=O[`${id}_${i}`];if(o&&o.p!=null)out[id].c[i]=+o.p});
   }
+  ids.forEach(id=>out[id].t=out[id].c.reduce((a,b)=>a+b,0));
   return out;
 }
-async function tally(round){
-  const tx=await runTransaction(gameRef,g=>g&&g.phase==='vote'&&g.round===round?{...g,phase:'tally'}:undefined);
+async function approve(){
+  if(!isAdmin())return;
+  const round=S.game.round;
+  const tx=await runTransaction(ref(db,base()+'/game'),g=>g&&g.phase==='review'&&g.round===round?{...g,phase:'tally'}:undefined);
   if(!tx.committed)return;
-  const [a,pl]=await Promise.all([get(ref(db,`${base}/r/${round}`)),get(ref(db,base+'/players'))]);
+  const [a,pl]=await Promise.all([get(ref(db,`${base()}/r/${round}`)),get(ref(db,base()+'/players'))]);
   const P=pl.val()||{},scores=calc(a.val()||{},tx.snapshot.val().letter),up={};
-  Object.entries(scores).forEach(([id,s])=>{if(P[id])up[`players/${id}/score`]=increment(s.t)});
+  Object.entries(scores).forEach(([id,s])=>{if(P[id])up[`players/${id}/score`]=increment(s.t);up[`hist/${round}/${id}`]=s.t});
   up['game/last']={round,scores};up['game/phase']='results';
-  update(ref(db,base),up);
+  update(ref(db,base()),up);
 }
-function vote(k){
-  const g=S.game;if(!g||g.phase!=='vote')return;
-  const r=ref(db,`${base}/r/${g.round}/votes/${pid}/${k}`);
-  set(r,S.r.votes?.[pid]?.[k]?null:true);
+function setOv(k,fn){
+  const o=fn({...(S.r.ov?.[k]||{})});
+  set(ref(db,`${base()}/r/${S.game.round}/ov/${k}`),o&&Object.keys(o).length?o:null);
 }
-function ready(){const g=S.game;if(g)set(ref(db,`${base}/r/${g.round}/ready/${pid}`),true)}
+function flag(k){
+  if(S.game?.phase!=='review')return;
+  set(ref(db,`${base()}/r/${S.game.round}/votes/${pid}/${k}`),S.r.votes?.[pid]?.[k]?null:true);
+}
 
 /* ===== الشاشات ===== */
-const lb=()=>Object.values(S.players).sort((a,b)=>(b.score||0)-(a.score||0))
-  .map(p=>`<div class="lb"><span>${esc(p.name)}</span><b>${p.score||0}</b></div>`).join('')||'<p class="small">لسه مفيش لاعبين</p>';
+const lb=()=>Object.entries(S.players).sort((a,b)=>(b[1].score||0)-(a[1].score||0)).map(([id,p],i)=>
+  `<div class="lb"><span><i class="rk">${i+1}</i>${esc(p.name)}${id===S.meta?.adminId?' 👑':''}</span><b>${p.score||0}</b></div>`).join('');
+const brand=()=>`<h1>🚌 أتوبيس كومبليت</h1><p class="sub">النسخة المطورة — تصنيفات وحروف عشوائية</p>`;
+const hdr=()=>`<header class="top"><div><b>${esc(S.meta.name)}</b> <span class="small">الأدمن: ${esc(S.meta.adminName)}</span></div><button class="ghost sm" data-act="leave">خروج</button></header>`;
 
 function render(){
-  const g=S.game||{},ph=g.phase||'lobby';
-  const k=!S.me?'login':ph==='play'||ph==='countdown'?'play'+g.round:ph==='vote'||ph==='tally'?'vote'+g.round:ph==='results'?'res'+g.round:'lobby';
-  if(k===S.view&&(k==='login'||k.startsWith('play'))){tick();return}
-  if(k.startsWith('play')){S.mine=['','','','',''];}
+  let k;
+  if(!S.me)k='login';
+  else if(!S.rid)k=S.creating?'create':'home';
+  else{
+    const g=S.game||{},ph=g.phase||'lobby';
+    k=ph==='play'||ph==='countdown'?'play'+g.round:ph==='review'||ph==='tally'?'review'+g.round:ph==='results'?'res'+g.round:ph==='final'?'final':'lobby';
+  }
+  const typing=document.activeElement?.tagName==='INPUT'&&app.contains(document.activeElement);
+  if(k===S.view&&(k==='login'||k==='create'||k.startsWith('play')||typing)){tick();return}
+  if(k.startsWith('play'))S.mine=['','','','',''];
   S.view=k;
-  app.innerHTML=`<h1>🚌 أتوبيس كومبليت</h1><p class="sub">النسخة المطورة — تصنيفات عشوائية كل جولة</p>`+
-    (k==='login'?loginV():k==='lobby'?lobbyV():k.startsWith('play')?playV(g):k.startsWith('vote')?voteV(g):resV(g));
-  if(k==='login'){const i=$('#nm');i.value=localStorage.name||'';i.focus()}
+  const g=S.game||{};
+  app.innerHTML=k==='login'?loginV():k==='home'?homeV():k==='create'?createV():hdr()+(k==='lobby'?lobbyV():k.startsWith('play')?playV(g):k.startsWith('review')?reviewV(g):k.startsWith('res')?resV(g):finalV());
+  if(k==='login'){const i=$('#nm');i.value=S.me||localStorage.name||'';i.focus()}
   tick();
 }
-const loginV=()=>`<div class="panel"><label for="nm">اختار اسمك عشان تدخل</label><input id="nm" maxlength="16" autocomplete="off"><div class="err" id="err"></div><button class="big" data-act="join">ادخل اللعبة</button></div>`;
-const lobbyV=()=>`<div class="panel"><h3>اللاعبين (${Object.keys(S.players).length})</h3>${lb()}</div>
-  <p class="small" style="text-align:center">ابعت لينك الصفحة لصحابك، وأي حد يقدر يبدأ الجولة.</p>
-  <button class="big" data-act="start">ابدأ جولة</button>`;
-function playV(g){
-  return `<div class="letter">${esc(g.letter)}</div><div id="ban"></div>`+
+const loginV=()=>`${brand()}<div class="card"><label for="nm">اختار اسمك عشان تدخل</label><input id="nm" maxlength="16" autocomplete="off"><button class="big" data-act="login">ادخل</button></div>`;
+function homeV(){
+  const rooms=Object.entries(S.idx).filter(([id])=>S.cnt[id]!==0).sort((a,b)=>b[1].t-a[1].t);
+  return `${brand()}<div class="rm"><h2>الغرف المتاحة</h2><span class="small">أهلا ${esc(S.me)}</span></div>`+
+    (rooms.length?rooms.map(([id,r])=>`<div class="card"><div class="rm"><div><h3>${esc(r.name)}</h3><span class="small">الأدمن: ${esc(r.admin)} • ${S.cnt[id]??'…'} لاعب</span> <span class="tag">${r.priv?'🔒 بباسورد':'عامة'}</span></div>`+
+      (r.priv&&S.ask!==id?`<button data-act="ask" data-r="${id}">دخول</button>`:r.priv?'':`<button data-act="enter" data-r="${id}">دخول</button>`)+`</div>`+
+      (r.priv&&S.ask===id?`<div class="rm" style="margin-top:10px"><input id="pw" type="password" placeholder="الباسورد" autocomplete="off"><button data-act="enter" data-r="${id}">ادخل</button></div>`:'')+`</div>`).join('')
+    :`<div class="card small">مفيش غرف دلوقتي. اعمل غرفة جديدة وابعت لصحابك يدخلوا.</div>`)+
+    `<button class="big" data-act="newroom">إنشاء غرفة جديدة</button>`;
+}
+function createV(){
+  S.form={priv:false,timed:false};
+  return `<header class="top"><b>غرفة جديدة</b><button class="ghost sm" data-act="cancel">رجوع</button></header>
+  <label for="rn">اسم الغرفة</label><input id="rn" maxlength="24" autocomplete="off">
+  <label>نوع الغرفة</label><div class="seg"><button data-act="vis" data-v="0" class="sel">عامة (أي حد يدخل)</button><button data-act="vis" data-v="1">بباسورد</button></div>
+  <div id="pwbox" hidden><label for="rp">باسورد الغرفة</label><input id="rp" autocomplete="off"></div>
+  <label for="rr">عدد الجولات</label><input id="rr" type="number" min="1" max="20" value="5">
+  <label>وقت الجولة</label><div class="seg"><button data-act="tl" data-v="0" class="sel">بدون وقت</button><button data-act="tl" data-v="1">بوقت محدد</button></div>
+  <div id="tmbox" hidden><label for="tm">الوقت بالدقايق</label><input id="tm" type="number" min="0.5" step="0.5" value="2"></div>
+  <label>التصنيفات اللي هتتلعب (<span id="cc">${CATS.length}</span>) <button class="ghost sm" data-act="catall">الكل</button> <button class="ghost sm" data-act="catnone">ولا واحد</button></label>
+  <div class="chips">${CATS.map((c,i)=>`<button class="chip on" data-act="cat" data-i="${i}">${esc(c)}</button>`).join('')}</div>
+  <button class="big" data-act="mk">إنشاء الغرفة</button>`;
+}
+const lobbyV=()=>`<div class="card"><h3>اللاعبين (${Object.keys(S.players).length})</h3>${lb()}</div>
+  <div class="card small">${S.meta.rounds} جولات • ${S.meta.limit?'وقت الجولة '+S.meta.limit/60+' دقيقة':'بدون وقت'} • ${S.meta.cats.length} تصنيف • ${S.meta.ph?'🔒 بباسورد':'عامة'}</div>`+
+  (isAdmin()?`<button class="big" data-act="start">ابدأ اللعبة</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يبدأ اللعبة...</p>`);
+const playV=g=>`<p class="small" style="text-align:center">جولة ${g.round} من ${S.meta.rounds}</p><div class="letter">${esc(g.letter)}</div><div id="ban"></div>`+
   g.cats.map((c,i)=>`<label for="a${i}">${esc(c)}</label><input class="ans" id="a${i}" data-i="${i}" autocomplete="off">`).join('')+
   `<button class="big" data-act="done">أتوبيس كومبليت!</button>`;
-}
-function voteV(g){
-  const A=S.r.answers||{},V=S.r.votes||{},ids=Object.keys(A),L=key(g.letter),rd=S.r.ready||{};
-  const cards=g.cats.map((c,i)=>`<section class="panel"><h3>${esc(c)}</h3>`+ids.map(id=>{
-    const w=A[id].a?.[i]||'',kk=key(w),bad=kk&&kk[0]!==L,vk=`${id}_${i}`;
-    const dis=ids.filter(v=>v!==id&&V[v]?.[vk]).length,mine=V[pid]?.[vk];
-    return `<div class="row"><span class="n">${esc(A[id].n)}</span><span class="a ${!kk?'none':bad?'bad':''}">${kk?esc(w):'—'}${bad?' (مش بالحرف)':''}</span>`+
-      (dis?`<span class="small">${dis}👎</span>`:'')+
-      (id!==pid&&kk?`<button class="dis ${mine?'on':'ghost'}" data-act="vote" data-k="${vk}">${mine?'شلت الاعتراض':'غلط / غريبة'}</button>`:'')+`</div>`;
+function reviewV(g){
+  const R=S.r,A=R.answers||{},V=R.votes||{},O=R.ov||{},ids=Object.keys(A),res=calc(R,g.letter),adm=isAdmin();
+  const why=['','فاضية','مش بالحرف','اعتراض الأغلبية','رفضها الأدمن'];
+  const cards=g.cats.map((c,i)=>`<section class="card"><h3>${esc(c)}</h3>`+ids.map(id=>{
+    const w=A[id].a?.[i]||'',s=res[id],k=`${id}_${i}`,o=O[k]||{},p=s.c[i],fl=s.f[i];
+    return `<div class="row"><span class="n">${esc(A[id].n)}</span><span class="a ${p?'':'bad'}">${w?esc(w):'—'}</span><span class="pts ${p?'':'z'}">${p?'+'+p:why[s.x[i]]}</span>`+(fl?`<span class="small">${fl}👎</span>`:'')+
+      (adm?`${w?`<button class="sm ghost" data-act="ov" data-k="${k}">${p?'رفض':'قبول'}</button>`:''}<input class="pin" type="number" min="0" data-ovp="${k}" value="${o.p??''}" placeholder="${p}" aria-label="تعديل النقاط">${(o.a||o.p!=null)?`<button class="sm ghost" data-act="rs" data-k="${k}" aria-label="رجوع للتلقائي">↺</button>`:''}`
+      :(id!==pid&&w?`<button class="sm ${V[pid]?.[k]?'on':'ghost'}" data-act="flag" data-k="${k}" aria-label="اعتراض">👎</button>`:''))+`</div>`;
   }).join('')+`</section>`).join('');
-  const rc=Object.keys(S.players).filter(p=>rd[p]).length;
-  return `<div id="ban"></div><p class="small" style="text-align:center">اضغط على الإجابة الغلط أو الغريبة. لو أغلبية اللاعبين اعترضوا عليها بتتحسب صفر.</p>${cards}
-    <button class="big" data-act="ready" ${rd[pid]?'disabled':''}>${rd[pid]?'مستنيين الباقي':'خلصت تصويت'} (${rc}/${Object.keys(S.players).length})</button>`;
+  return `<h2>التصحيح</h2><p class="small">التصحيح تلقائي (الحرف + التكرار + اعتراض الأغلبية). ${adm?'تقدر تقبل أو ترفض أي إجابة أو تكتب النقاط بإيدك.':'تقدر تعترض 👎 على الإجابات الغلط، والأدمن هو اللي يعتمد النتيجة.'}</p>`+
+    `<div class="letter">${esc(g.letter)}</div>${cards}`+
+    (adm?`<button class="big" data-act="approve">اعتمد النتيجة</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يعتمد النتيجة...</p>`);
 }
 function resV(g){
-  const sc=g.last?.scores||{},A=S.r.answers||{};
-  const why=['','فاضية','مش بالحرف','الكل اعترض'];
+  const sc=g.last?.scores||{},A=S.r.answers||{},why=['','فاضية','مش بالحرف','اعتراض الأغلبية','رفضها الأدمن'];
   const cards=Object.entries(sc).sort((a,b)=>b[1].t-a[1].t).map(([id,s])=>
-    `<section class="panel"><div class="lb"><h3>${esc(s.n)}</h3><span class="pts">+${s.t}</span></div>`+
-    g.cats.map((c,i)=>`<div class="row"><span class="n small">${esc(c)}</span><span class="a">${esc(A[id]?.a?.[i]||'—')}</span>`+
-      (s.c[i]?`<span class="pts">+${s.c[i]}</span>`:`<span class="pts z">${why[s.x[i]]||'0'}</span>`)+`</div>`).join('')+`</section>`).join('');
-  return `<div class="letter">${esc(g.letter)}</div>${cards}<div class="panel"><h3>الترتيب</h3>${lb()}</div><button class="big" data-act="start">جولة جديدة</button>`;
+    `<section class="card"><div class="rm"><h3>${esc(s.n)}</h3><span class="pts">+${s.t}</span></div>`+
+    g.cats.map((c,i)=>`<div class="row"><span class="n small">${esc(c)}</span><span class="a">${esc(A[id]?.a?.[i]||'—')}</span>${s.c[i]?`<span class="pts">+${s.c[i]}</span>`:`<span class="pts z">${why[s.x[i]]||'0'}</span>`}</div>`).join('')+`</section>`).join('');
+  const last=g.round>=S.meta.rounds;
+  return `<h2>نتيجة الجولة ${g.round}</h2><div class="letter">${esc(g.letter)}</div>${cards}<div class="card"><h3>الترتيب الحالي</h3>${lb()}</div>`+
+    (isAdmin()?`<button class="big" data-act="${last?'fin':'start'}">${last?'عرض النتيجة النهائية':'الجولة الجاية'}</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن...</p>`);
+}
+function finalV(){
+  const ps=Object.entries(S.players).sort((a,b)=>(b[1].score||0)-(a[1].score||0)),medals=['🥇','🥈','🥉'];
+  const rs=[...Array(S.meta.rounds)].map((_,i)=>i+1);
+  return `<h2 style="text-align:center">النتيجة النهائية</h2>`+
+    `<div class="card">${ps.slice(0,3).map(([id,p],i)=>`<div class="lb"><span style="font-size:1.3rem">${medals[i]} ${esc(p.name)}</span><b style="font-size:1.3rem">${p.score||0}</b></div>`).join('')}</div>`+
+    `<div class="card wrap"><table><tr><th>اللاعب</th>${rs.map(r=>`<th>${r}</th>`).join('')}<th>المجموع</th></tr>`+
+    ps.map(([id,p])=>`<tr><td>${esc(p.name)}</td>${rs.map(r=>`<td>${S.hist[r]?.[id]??'-'}</td>`).join('')}<td><b>${p.score||0}</b></td></tr>`).join('')+`</table></div>`+
+    (isAdmin()?`<button class="big" data-act="again">لعبة جديدة في نفس الغرفة</button>`:'')+`<button class="big ghost" data-act="leave">خروج من الغرفة</button>`;
 }
 
 /* ===== تايمر ===== */
 function tick(){
-  const g=S.game;if(!g||!S.me)return;
-  const ban=$('#ban');
+  if(!S.rid||!S.meta)return;
+  const g=S.game,ban=$('#ban');
+  // لو الأدمن اختفى، أقدم لاعب بيستلم
+  if(Object.keys(S.players).length&&S.players[pid]){
+    if(S.players[S.meta.adminId])S.gone=0;
+    else{
+      S.gone=S.gone||Date.now();
+      if(Date.now()-S.gone>15000){
+        const f=Object.entries(S.players).sort((a,b)=>(a[1].t-b[1].t)||(a[0]<b[0]?-1:1))[0];
+        if(f[0]===pid){update(ref(db,base()+'/meta'),{adminId:pid,adminName:S.me});S.gone=0}
+      }
+    }
+  }
+  if(!g)return;
   if(g.phase==='countdown'){
     const rem=g.endAt-now();
     if(ban)ban.textContent=rem>0?`${g.by} داس أتوبيس كومبليت! اكتب بسرعة: ${Math.ceil(rem/1000)}`:'الوقت خلص';
-    if(rem<=0){
-      document.querySelectorAll('.ans').forEach(i=>i.disabled=true);
-      if(S.sent!==g.round){S.sent=g.round;pushAns()}
-      if(rem<-1500-S.jit&&S.mv!=='c'+g.round){S.mv='c'+g.round;toVote()}
-    }
-  }else if(g.phase==='play'&&ban){
-    ban.textContent='اكتب إجابات تبدأ بالحرف ده، وأول واحد يخلص يدوس الزرار';
-  }else if(g.phase==='vote'){
-    const rem=g.endAt-now(),rd=S.r.ready||{},ids=Object.keys(S.players);
-    if(ban)ban.textContent=`وقت التصويت: ${Math.max(0,Math.ceil(rem/1000))}`;
-    if((rem<=0||(ids.length&&ids.every(p=>rd[p])))&&S.mv!=='v'+g.round){S.mv='v'+g.round;tally(g.round)}
+    if(rem<=0)endPlay(g,'countdown',rem);
+  }else if(g.phase==='play'){
+    if(g.endAt){
+      const rem=g.endAt-now(),m=Math.max(0,Math.ceil(rem/1000));
+      if(ban)ban.textContent=rem>0?`الوقت المتبقي ${Math.floor(m/60)}:${String(m%60).padStart(2,'0')}`:'الوقت خلص';
+      if(rem<=0)endPlay(g,'play',rem);
+    }else if(ban)ban.textContent='اكتب إجابات تبدأ بالحرف ده، وأول واحد يخلص يدوس الزرار';
   }
+}
+function endPlay(g,from,rem){
+  document.querySelectorAll('.ans').forEach(i=>i.disabled=true);
+  if(S.sent!==g.round){S.sent=g.round;pushAns()}
+  if(rem<-1500-S.jit&&S.mv!==from+g.round){S.mv=from+g.round;toReview(from)}
 }
 setInterval(tick,250);
 
@@ -224,17 +351,44 @@ app.addEventListener('input',e=>{
   S.mine[+e.target.dataset.i]=e.target.value;
   clearTimeout(t);t=setTimeout(pushAns,300);
 });
-app.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='nm')join(e.target.value)});
+app.addEventListener('change',e=>{
+  const k=e.target.dataset.ovp;if(!k)return;
+  const v=e.target.value;
+  setOv(k,o=>{if(v==='')delete o.p;else o.p=Math.max(0,+v);return o});
+});
+app.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(e.target.id==='nm')login(e.target.value);
+  if(e.target.id==='pw')joinRoom(S.ask,e.target.value);
+});
+const seg=(b,on)=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b))};
+const setAll=v=>{document.querySelectorAll('.chip[data-i]').forEach(c=>c.classList.toggle('on',v));$('#cc').textContent=v?CATS.length:0};
 app.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
-  const a=b.dataset.act;
-  if(a==='join')join($('#nm').value);
+  const a=b.dataset.act,k=b.dataset.k;
+  if(a==='login')login($('#nm').value);
+  else if(a==='ask'){S.ask=b.dataset.r;render()}
+  else if(a==='enter')joinRoom(b.dataset.r,$('#pw')?.value);
+  else if(a==='newroom'){S.creating=true;render()}
+  else if(a==='cancel'){S.creating=false;render()}
+  else if(a==='vis'){S.form.priv=b.dataset.v==='1';seg(b);$('#pwbox').hidden=!S.form.priv}
+  else if(a==='tl'){S.form.timed=b.dataset.v==='1';seg(b);$('#tmbox').hidden=!S.form.timed}
+  else if(a==='cat'){b.classList.toggle('on');$('#cc').textContent=document.querySelectorAll('.chip.on[data-i]').length}
+  else if(a==='catall')setAll(true);
+  else if(a==='catnone')setAll(false);
+  else if(a==='mk')mk();
   else if(a==='start')startRound();
   else if(a==='done')done();
-  else if(a==='vote')vote(b.dataset.k);
-  else if(a==='ready')ready();
+  else if(a==='flag')flag(k);
+  else if(a==='ov'){const [id,i]=k.split('_'),acc=calc(S.r,S.game.letter)[id].c[i]>0;setOv(k,()=>({a:acc?'no':'ok'}))}
+  else if(a==='rs')setOv(k,()=>null);
+  else if(a==='approve')approve();
+  else if(a==='fin')update(ref(db,base()+'/game'),{phase:'final'});
+  else if(a==='again')update(ref(db,base()),{game:{phase:'lobby'},used:null,hist:null,r:null});
+  else if(a==='leave')leave();
 });
 render();
+if(S.me&&sessionStorage.rid)enter(sessionStorage.rid);
 </script>
 </body>
 </html>
