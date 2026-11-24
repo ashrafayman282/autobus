@@ -88,7 +88,7 @@ const S={pl:{},ld:0,em:{},me:localStorage.name||null,rid:null,meta:null,players:
 const base=()=>`rooms/${S.rid}`;
 const now=()=>Date.now()+S.offset;
 const isAdmin=()=>S.meta?.adminId===pid;
-const sub=(k,p,cb)=>{S.unsub[k]&&S.unsub[k]();S.unsub[k]=onValue(ref(db,p),cb)};
+const sub=(k,p,cb)=>{S.unsub[k]&&S.unsub[k]();S.unsub[k]=onValue(ref(db,p),x=>cb(x.val()))};
 const unsubAll=p=>Object.keys(S.unsub).filter(k=>k.startsWith(p)).forEach(k=>{S.unsub[k]();delete S.unsub[k]});
 
 onValue(ref(db,'.info/serverTimeOffset'),s=>S.offset=s.val()||0);
@@ -146,7 +146,7 @@ async function enter(rid){
   sub('x:h',base()+'/hist',v=>{S.hist=v||{};render()});
   sub('x:g',base()+'/game',v=>{
     S.game=v;const r=v?.round||0;
-    if(r!==S.round){S.round=r;S.unsub['x:r']&&S.unsub['x:r']();S.r={};if(r)sub('x:r',`${base()}/r/${r}`,x=>{S.r=x.val()||{};render()})}
+    if(r!==S.round){S.round=r;S.unsub['x:r']&&S.unsub['x:r']();S.r={};if(r)sub('x:r',`${base()}/r/${r}`,x=>{S.r=x||{};render()})}
     render();
   });
   register();render();
@@ -243,7 +243,7 @@ function flag(k){
 /* ===== الشاشات ===== */
 const lb=()=>Object.entries(S.players).sort((a,b)=>(b[1].score||0)-(a[1].score||0)).map(([id,p],i)=>
   `<div class="lb"><span><i class="rk">${i+1}</i>${esc(p.name)}${id===S.meta?.adminId?' 👑':''}</span><b>${p.score||0}</b></div>`).join('');
-const brand=()=>`<h1>🚌 أتوبيس كومبليت</h1><p class="sub">النسخة المطورة • v3</p>`;
+const brand=()=>`<h1>🚌 أتوبيس كومبليت</h1><p class="sub">النسخة المطورة • v4</p>`;
 const hdr=()=>`<header class="top"><div><b>${esc(S.meta.name)}</b> <span class="small">الأدمن: ${esc(S.meta.adminName)}</span></div><button class="ghost sm" data-act="leave">خروج</button></header>`;
 
 function render(){
