@@ -15,7 +15,7 @@ main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 14px 30
 h1,h2,h3{font-family:Lalezar,Cairo,sans-serif;font-weight:400;margin:0}
 h2{font-size:1.7rem;margin:16px 0 6px}h3{font-size:1.2rem}
 .small{font-size:.9rem;color:var(--mute)}
-.deco span{position:fixed;font-size:2rem;opacity:.22;pointer-events:none;z-index:0;animation:fl 9s ease-in-out infinite}
+.deco span{position:fixed;font-size:2rem;opacity:.22;pointer-events:none;z-index:0;animation:fl 16s ease-in-out infinite}
 .top{position:sticky;top:0;z-index:6;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;background:var(--bg);border-bottom:2px solid var(--line);margin-bottom:8px}
 .tools{display:flex;gap:8px;align-items:center}
 .logo{font-family:Lalezar;font-size:1.35rem;background:linear-gradient(90deg,var(--pri),var(--pri2),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -94,19 +94,73 @@ label{display:block;font-weight:800;margin:14px 0 5px}
 #dlg .ov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:grid;place-items:center;z-index:40;padding:16px}
 #dlg .card{width:min(100%,380px)}
 .cf{position:fixed;top:-30px;z-index:60;pointer-events:none;animation:fall 3s ease-in forwards}
+.wheel2{position:fixed;right:-80px;bottom:-80px;width:260px;height:260px;color:var(--pri);opacity:.12;z-index:0;pointer-events:none;animation:spin 120s linear infinite}
+.scene{position:fixed;left:0;right:0;bottom:0;height:130px;pointer-events:none;z-index:0;overflow:hidden;color:var(--teal)}
+.scene .cl{position:absolute;left:0;font-size:3rem;opacity:.14;animation:drift 90s linear infinite}
+.coaster{position:absolute;left:0;bottom:0;width:1200px;height:110px;opacity:.22}
+.coaster svg{position:absolute;inset:0}
+.cart{position:absolute;left:0;top:0;font-size:1.5rem;offset-path:path('M0 90Q120 -10 240 70T480 70T720 40T960 80T1200 30');offset-rotate:0deg;animation:ride 30s linear infinite}
+@keyframes drift{from{transform:translateX(-10vw)}to{transform:translateX(110vw)}}
+@keyframes ride{from{offset-distance:0%}to{offset-distance:100%}}
+button.yel{background:var(--bus);color:var(--busink)}
+.tile .ti.sm{font-size:2.2rem;letter-spacing:2px}
+.t3{background:linear-gradient(135deg,#e63946,#ffb703);animation-delay:.2s}.t4{background:linear-gradient(135deg,#0f766e,#2f6fed);animation-delay:.3s}
+.t5{background:linear-gradient(135deg,#10b79f,#2fb344)}.t6{background:linear-gradient(135deg,#6c4cff,#2f6fed)}.t7{background:linear-gradient(135deg,#ff8a3d,#e63946)}.t8{background:linear-gradient(135deg,#ffb703,#0f9f76)}
+details.rules summary{cursor:pointer;font-weight:800}details.rules ul{margin:8px 0 0;padding-inline-start:20px}details.rules li{margin:4px 0}
+.crd{position:relative;width:62px;height:90px;border-radius:10px;background:#fff;color:#222;box-shadow:0 3px 8px var(--sh);display:inline-grid;place-items:center;font-weight:900;flex:none;user-select:none;border:2px solid #fff;transition:transform .18s,box-shadow .18s,opacity .18s}
+.crd.rd{color:#d62839}
+.crd .q1,.crd .q2{position:absolute;font-size:.72rem;line-height:1.05;text-align:center;font-weight:900}
+.crd .q1{top:4px;left:5px}.crd .q2{bottom:4px;right:5px;transform:rotate(180deg)}
+.crd .cm{font-size:1.9rem;line-height:1}
+.crd.back{background:repeating-linear-gradient(45deg,#3a2fa0 0 6px,#5b4cff 6px 12px)}
+.crd.u{color:#fff}.crd.u.k0{background:#e63946}.crd.u.k1{background:#ffb703;color:#2b2100}.crd.u.k2{background:#2fb344}.crd.u.k3{background:#2f6fed}
+.crd.u.kw{background:conic-gradient(#e63946 0 25%,#ffb703 0 50%,#2fb344 0 75%,#2f6fed 0);text-shadow:0 1px 3px #000}
+.crd.u .cm{font-size:1.45rem;background:rgba(255,255,255,.22);width:72%;height:52%;border-radius:50%;display:grid;place-items:center;transform:rotate(-20deg)}
+.hand{display:flex;justify-content:center;padding:18px 10px 8px;overflow-x:auto;min-height:130px}
+.hand .crd{margin-inline-start:-14px}.hand .crd:first-child{margin-inline-start:0}
+.hand.my .crd.ok{cursor:pointer;box-shadow:0 0 0 3px var(--teal),0 3px 8px var(--sh)}
+.hand.my .crd.ok:hover{transform:translateY(-18px) scale(1.06);z-index:3}
+.hand.my .crd.no{opacity:.5}
+.deal{animation:dealIn .5s cubic-bezier(.2,.8,.3,1) both}
+.flyme{animation:flyMe .45s cubic-bezier(.2,.8,.3,1) both}.flyop{animation:flyOp .45s cubic-bezier(.2,.8,.3,1) both}
+@keyframes dealIn{from{transform:translateY(-240px) rotate(-35deg) scale(.4);opacity:0}}
+@keyframes flyMe{from{transform:translateY(220px) rotate(-30deg) scale(1.25)}}
+@keyframes flyOp{from{transform:translateY(-230px) rotate(30deg) scale(1.2)}}
+.tbl{display:flex;justify-content:center;align-items:center;gap:28px;margin:16px 0;flex-wrap:wrap}
+.pile{position:relative;width:62px;height:90px}.pile .crd{position:absolute;inset:0}
+.pile .crd:nth-child(2){transform:translate(3px,-3px)}.pile .crd:nth-child(3){transform:translate(6px,-6px)}
+.pile.ok{cursor:pointer;animation:bob 1.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.ring{padding:10px;border-radius:18px;box-shadow:0 0 0 5px var(--rc,transparent),0 0 26px var(--rc,transparent);transition:box-shadow .3s}
+.opps{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px}
+.op{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:8px 12px;min-width:92px}
+.op.turn{border-color:var(--pri);animation:glow 1.4s ease-in-out infinite}.op.tg{border-color:var(--teal)}
+.op .fan{display:flex;flex-wrap:wrap;justify-content:center;max-width:260px}
+.op .fan .crd{width:24px;height:34px;border-radius:5px;margin-inline-start:-10px;border-width:1px}
+.op .fan .crd.pk{width:36px;height:52px;border-radius:7px;margin:2px;cursor:pointer}.op .fan .crd.pk:hover{transform:translateY(-8px)}
+@keyframes glow{50%{box-shadow:0 0 0 5px rgba(255,79,129,.3)}}
+.ubn{position:fixed;top:32%;left:50%;font-family:Lalezar;font-size:3.6rem;color:#fff;background:var(--pri);padding:4px 28px;border-radius:24px;z-index:30;pointer-events:none;text-align:center;line-height:1.2;animation:ubn 1.5s both}
+.ubn.sm{font-size:2rem;background:var(--teal)}.ubn small{display:block;font-size:1rem;font-family:Cairo}
+@keyframes ubn{0%{transform:translate(-50%,-50%) scale(.2) rotate(-12deg);opacity:0}22%{transform:translate(-50%,-50%) scale(1.15);opacity:1}80%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-80%) scale(1);opacity:0}}
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.5);display:grid;place-items:center;z-index:25;padding:16px}
+.picker{display:grid;grid-template-columns:1fr 1fr;gap:10px}.picker button{height:70px;font-size:1.2rem}
+.dir{font-size:2rem;display:inline-block;animation:spin 6s linear infinite}
+.turncard{border-color:var(--pri)}
 @keyframes pop{from{opacity:0;transform:scale(.88) translateY(12px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes spin2{from{transform:scale(.3) rotate(-200deg);opacity:0}}
 @keyframes shine{to{background-position:200% 0}}
 @keyframes beat{from{transform:scale(1.7);opacity:.2}}
-@keyframes fl{50%{transform:translateY(-28px) rotate(12deg)}}
+@keyframes fl{50%{transform:translateY(-14px) rotate(5deg)}}
 @keyframes up{from{transform:translateY(40px);opacity:0}}
 @keyframes fall{to{transform:translateY(105vh) rotate(540deg)}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.cf,.deco{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.cf,.deco,.scene,.wheel2{display:none}}
 </style>
 </head>
 <body>
-<div class="deco" aria-hidden="true"><span style="top:12%;left:4%">🎈</span><span style="top:40%;right:3%;animation-delay:-3s">🎠</span><span style="top:70%;left:6%;animation-delay:-5s">🎪</span><span style="top:84%;right:8%;animation-delay:-2s">🎟️</span></div>
+<div class="deco" aria-hidden="true"><span style="top:9%;left:3%;animation-duration:17s">🎈</span><span style="top:30%;right:3%;animation-duration:21s;animation-delay:-4s">🎠</span><span style="top:52%;left:2%;animation-duration:19s;animation-delay:-8s">🎪</span><span style="top:68%;right:4%;animation-duration:23s;animation-delay:-2s">🎟️</span><span style="top:18%;left:46%;animation-duration:25s;animation-delay:-11s">⭐</span><span style="top:80%;left:30%;animation-duration:20s;animation-delay:-6s">🍿</span><span style="top:42%;right:12%;animation-duration:27s;animation-delay:-14s">🎯</span><span style="top:6%;right:28%;animation-duration:22s;animation-delay:-9s">🧸</span></div>
+<svg class="wheel2" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><circle cx="100" cy="100" r="88"/><circle cx="100" cy="100" r="8"/><path d="M100 12V188M12 100H188M38 38L162 162M162 38L38 162"/><g fill="currentColor" stroke="none"><circle cx="100" cy="12" r="7"/><circle cx="162" cy="38" r="7"/><circle cx="188" cy="100" r="7"/><circle cx="162" cy="162" r="7"/><circle cx="100" cy="188" r="7"/><circle cx="38" cy="162" r="7"/><circle cx="12" cy="100" r="7"/><circle cx="38" cy="38" r="7"/></g></svg>
+<div class="scene" aria-hidden="true"><span class="cl" style="bottom:90px;animation-duration:85s">☁️</span><span class="cl" style="bottom:40px;animation-duration:120s;animation-delay:-50s">☁️</span><div class="coaster"><svg viewBox="0 0 1200 110" width="1200" height="110"><path d="M0 90Q120 -10 240 70T480 70T720 40T960 80T1200 30" fill="none" stroke="currentColor" stroke-width="4" stroke-dasharray="2 10"/></svg><span class="cart">🎢</span></div></div>
 <main id="app"></main>
 <footer class="credit"><span class="c1">✨ تم برمجة هذا الموقع بواسطة ✨</span><b class="c2">أشرف أيمن عبد النبي</b><span class="c3">🎡 ملاهي 15 مايو • صُنع بحب 💛</span></footer>
 <div id="chat"></div><div id="dlg" hidden></div><div id="toast" role="alert"></div>
@@ -128,8 +182,23 @@ const CATS=["حاجة بتتاكل","فيلم عربي","حاجة في المط�
 const CLASSIC=["ولد","بنت","جماد","نبات","حيوان","بلاد"];
 const LETTERS=[..."ابتجحخدرزسشصضطعغفقكلمنهوي"];
 const GAMES={
-  dev:{ico:'🚌',name:'أتوبيس كومبليت المطور',desc:'تصنيفات عشوائية ومضحكة في كل جولة',cls:'t1'},
-  classic:{ico:'🚍',name:'أتوبيس كومبليت العادية',desc:'ولد، بنت، جماد، نبات، حيوان، بلاد',cls:'t2'}
+  dev:{ico:'🚌',name:'أتوبيس كومبليت المطور',desc:'تصنيفات عشوائية ومضحكة في كل جولة',cls:'t1',ab:1},
+  classic:{ico:'🚍',name:'أتوبيس كومبليت العادية',desc:'ولد، بنت، جماد، نبات، حيوان، بلاد',cls:'t2',ab:1},
+  uno:{ico:'🟥🟨🟩🟦',name:'أونو',desc:'كروت ملونة، كروت خاصة، وصرخة UNO!',cls:'t3',min:2,max:10},
+  c_old:{ico:'🃏',name:'الشايب',desc:'خلّص كروتك واهرب من ورقة الشايب',cls:'t5',min:2,max:6},
+  c_war:{ico:'⚔️',name:'حرب الكروت',desc:'اقلب أعلى ورقة وخد الورق كله',cls:'t6',min:2,max:4},
+  c_crazy:{ico:'8️⃣',name:'ثمانية المجنونة',desc:'اتخلص من كروتك قبل الكل، والـ8 جوكر',cls:'t7',min:2,max:6},
+  c_21:{ico:'🎰',name:'واحد وعشرين',desc:'قرّب من 21 ولا تعدّي، والموزّع قدامك',cls:'t8',min:1,max:6}
+};
+const CARDK=['c_old','c_war','c_crazy','c_21'];
+const RULES={
+  dev:['كل جولة بيتحدد حرف عشوائي (ومبيتكررش في نفس اللعبة) و5 تصنيفات عشوائية.','اكتب كلمة لكل تصنيف بتبدأ بالحرف.','أول واحد يخلص يدوس "أتوبيس كومبليت" وباقي اللاعبين عندهم 5 ثواني.','الإجابة المميزة 10 نقط، والمتكررة 5، والغلط أو الفاضية 0.','اللاعبين بيعترضوا 👎 على الإجابات الغريبة، والأدمن بيعدّل الدرجات ويعتمد النتيجة.'],
+  classic:['التصنيفات ثابتة: ولد، بنت، جماد، نبات، حيوان، بلاد.','كل جولة حرف عشوائي، اكتب إجابة لكل تصنيف بتبدأ بالحرف.','أول واحد يخلص يدوس "أتوبيس كومبليت" وباقي اللاعبين عندهم 5 ثواني.','الإجابة المميزة 10 نقط، والمتكررة 5، والغلط أو الفاضية 0.','الأدمن بيراجع التصحيح ويعتمد النتيجة.'],
+  uno:['كل لاعب بياخد 7 كروت، ومن 2 لـ10 لاعبين.','العب كارت بنفس لون أو رقم أو رمز الكارت اللي على الطاولة.','⦸ يخطّي دور اللي بعدك • 🔄 يعكس الاتجاه • +2 اللي بعدك يسحب 2 • 🌈 تغيّر اللون • +4 تغيّر اللون واللي بعدك يسحب 4.','مفيش كارت يناسب؟ اسحب كارت، لو ينفع العبه وإلا اضغط تخطّي.','لما يبقى معاك كارتين دوس UNO! قبل ما تلعب الكارت اللي قبل الأخير، ولو نسيت بتسحب 2 عقوبة.','التراكم (لو مفعّل): +2 على +2 و+4 على +4 بيتجمعوا على اللاعب اللي بعده.','أول واحد يخلّص كروته يكسب الجولة ويأخد نقاط كروت الباقيين (الأرقام بقيمتها، الخاصة 20، الجوكر 50).'],
+  c_old:['الكروت كلها (52 + ورقة الشايب 🃏) بتتوزع على اللاعبين.','كل لاعب بيرمي أي ورقتين متشابهتين في الرقم من أول اللعبة (أوتوماتيك).','على دورك، اسحب ورقة مقلوبة من اللاعب اللي بعدك، ولو لقيت لها زوج بيترمي الزوج.','اللي يخلّص ورقه يطلع من اللعبة، واللي يفضل معاه الشايب هو الخسران.','كل اللي نجوا بياخدوا نقطة.'],
+  c_war:['الكروت بتتقسم بالتساوي على اللاعبين (من 2 لـ4).','كل دور الكل بيقلب أول ورقة، وأعلى ورقة (الآس الأعلى) تاخد الورق كله.','لو اتساوت أعلى ورقتين أو أكتر الورق بيتجمع وبيتقلب تاني والفايز ياخد الكل.','بتنتهي لما حد ياخد كل الكروت أو بعد 60 دور، وصاحب أكتر كروت يكسب نقطة.'],
+  c_crazy:['كل لاعب 5 كروت (7 لو اتنين بس).','العب ورقة بنفس النوع ♠♥♦♣ أو نفس الرقم للورقة اللي على الطاولة.','الـ8 جوكر: تلعبه في أي وقت وتختار النوع الجديد.','مفيش ورقة تنفع؟ اسحب واحدة، لو تنفع العبها وإلا اضغط تخطّي.','أول واحد يخلّص كروته يكسب الجولة وياخد نقاط كروت الباقيين (الـ8 = 50، الصور = 10، الآس = 1).'],
+  c_21:['الهدف توصل لـ21 أو أقرب ليها من غير ما تعدّي.','الآس يتحسب 1 أو 11، والصور (J, Q, K) بـ10، والباقي بقيمته.','على دورك: اسحب (Hit) أو وقّف (Stand). لو عدّيت 21 بتخسر.','بعد ما الكل يخلص، الموزّع (الكمبيوتر) بيسحب لحد ما يوصل 17 أو أكتر.','اللي أقرب للـ21 من الموزّع يكسب نقطة، والتعادل مفيهوش نقط. بلاك جاك (21 من أول ورقتين) أقوى من أي 21 عادي.']
 };
 const EMO=[..."😂😍😎🔥👏😭🤔👍🎉🙈😡💔"];
 
@@ -148,10 +217,11 @@ setTheme(localStorage.theme||'light');
 
 const db=getDatabase(initializeApp(firebaseConfig));
 const pid=sessionStorage.pid||(sessionStorage.pid='p'+Math.random().toString(36).slice(2,9));
-const S={pl:{},ld:0,em:{},kind:null,chat:{},seen:0,chatOpen:false,me:localStorage.name||null,rid:null,meta:null,players:{},game:null,used:[],hist:{},r:{},idx:{},offset:0,round:0,view:'',unsub:{},sent:0,mv:'',mine:[],score:0,jit:Math.random()*1000,gone:0,ask:null,pending:null,creating:false,form:{priv:false,timed:false}};
+const S={cg:null,miss:{},pickWild:null,ck:'',prev:{h:[],top:-1,v:-1},sub:null,pl:{},ld:0,em:{},kind:null,chat:{},seen:0,chatOpen:false,me:localStorage.name||null,rid:null,meta:null,players:{},game:null,used:[],hist:{},r:{},idx:{},offset:0,round:0,view:'',unsub:{},sent:0,mv:'',mine:[],score:0,jit:Math.random()*1000,gone:0,ask:null,pending:null,creating:false,form:{priv:false,timed:false}};
 const base=()=>`rooms/${S.rid}`;
 const now=()=>Date.now()+S.offset;
 const isAdmin=()=>S.meta?.adminId===pid;
+const gameActive=()=>{const ph=S.game?.phase;return !!S.rid&&!!ph&&ph!=='lobby'&&ph!=='final'&&!(ph==='cards'&&S.cg?.over)};
 const sub=(k,p,cb)=>{S.unsub[k]&&S.unsub[k]();S.unsub[k]=onValue(ref(db,p),x=>cb(x.val()))};
 const unsubAll=p=>Object.keys(S.unsub).filter(k=>k.startsWith(p)).forEach(k=>{S.unsub[k]();delete S.unsub[k]});
 
@@ -181,6 +251,7 @@ function dlg(open){
   if(open)$('#nn').focus();
 }
 async function saveName(){
+  if(gameActive())return toast('مينفعش تغيّر اسمك واللعب شغال 🎮');
   const n=$('#nn').value.trim().slice(0,16);
   if(!n)return toast('اكتب اسم');
   if(S.rid){
@@ -194,21 +265,27 @@ async function saveName(){
 
 /* ===== الغرف ===== */
 async function joinRoom(rid,pw){
-  const [m,p]=await Promise.all([get(ref(db,`rooms/${rid}/meta`)),get(ref(db,`rooms/${rid}/players`))]);
-  const meta=m.val(),ps=p.val()||{};
+  const [m,p,co,cv]=await Promise.all([get(ref(db,`rooms/${rid}/meta`)),get(ref(db,`rooms/${rid}/players`)),get(ref(db,`rooms/${rid}/cg/order`)),get(ref(db,`rooms/${rid}/cg/over`))]);
+  const meta=m.val(),ps=p.val()||{},ord=co.val()||[];
   if(!meta){S.pending=null;render();return toast('الغرفة مش موجودة')}
+  const G=GAMES[meta.kind||'dev']||GAMES.dev;
   const need=meta.ph&&meta.adminId!==pid;
   if(need&&pw===undefined){S.pending={rid,name:meta.name};return render()}
   if(need&&await hash(pw,rid)!==meta.ph)return toast('الباسورد غلط');
+  if(G.max&&!ps[pid]&&Object.keys(ps).length>=G.max)return toast('الغرفة اتملت 🚫');
+  if(!G.ab&&ord.length&&!cv.val()&&!ord.includes(pid))return toast('اللعب شغال في الغرفة دي، جرّب بعد ما الجولة تخلص ⏳');
   if(Object.entries(ps).some(([id,x])=>id!==pid&&x.name.toLowerCase()===S.me.toLowerCase()))return toast('في لاعب بنفس اسمك في الغرفة دي، غيّر اسمك');
   S.pending=null;enter(rid);
 }
 async function quickJoin(){
   const idx=(await get(ref(db,'idx'))).val()||{},c=[];
-  await Promise.all(Object.entries(idx).filter(([,r])=>!r.priv&&(r.kind||'dev')===S.kind).map(async([rid])=>{
+  await Promise.all(Object.entries(idx).filter(([,r])=>!r.priv&&(r.kind||'dev')===S.kind).map(async([rid,r])=>{
+    const G=GAMES[r.kind||'dev'];
     const [p,ph]=await Promise.all([get(ref(db,`rooms/${rid}/players`)),get(ref(db,`rooms/${rid}/game/phase`))]);
     const ps=p.val()||{};
     if(!Object.keys(ps).length)return;
+    if(G.max&&Object.keys(ps).length>=G.max)return;
+    if(!G.ab&&ph.val()==='cards')return;
     if(Object.values(ps).some(x=>x.name.toLowerCase()===S.me.toLowerCase()))return;
     c.push({rid,lobby:!ph.val()||['lobby','final'].includes(ph.val())});
   }));
@@ -219,13 +296,14 @@ async function quickJoin(){
 async function enter(rid){
   const m=(await get(ref(db,`rooms/${rid}/meta`))).val();
   if(!m){sessionStorage.removeItem('rid');return render()}
-  Object.assign(S,{ask:null,rid,kind:m.kind||'dev',round:0,game:null,meta:m,players:{},used:[],hist:{},r:{},chat:{},seen:0,chatOpen:false,gone:0,view:'',score:+sessionStorage['s_'+rid]||0});
+  Object.assign(S,{cg:null,miss:{},pickWild:null,ask:null,rid,kind:m.kind||'dev',round:0,game:null,meta:m,players:{},used:[],hist:{},r:{},chat:{},seen:0,chatOpen:false,gone:0,view:'',score:+sessionStorage['s_'+rid]||0});
   sessionStorage.rid=rid;
   sub('x:m',base()+'/meta',v=>{if(!v){leave(true);toast('الغرفة اتقفلت')}else{S.meta=v;render()}});
   sub('x:p',base()+'/players',v=>{S.players=v||{};if(S.players[pid]){S.score=S.players[pid].score||0;sessionStorage['s_'+rid]=S.score}render()});
   sub('x:u',base()+'/used',v=>S.used=v||[]);
   sub('x:h',base()+'/hist',v=>{S.hist=v||{};render()});
   sub('x:c',base()+'/chat',v=>{S.chat=v||{};chatMsgs()});
+  sub('x:cg',base()+'/cg',v=>{S.cg=v;render()});
   sub('x:g',base()+'/game',v=>{
     S.game=v;const r=v?.round||0;
     if(r!==S.round){S.round=r;S.unsub['x:r']&&S.unsub['x:r']();S.r={};if(r)sub('x:r',`${base()}/r/${r}`,x=>{S.r=x||{};render()})}
@@ -247,24 +325,266 @@ function leave(silent){
     if(last){set(ref(db,'rooms/'+rid),null);set(ref(db,'idx/'+rid),null);set(ref(db,'pl/'+rid),null)}
   }
   sessionStorage.removeItem('rid');
-  Object.assign(S,{rid:null,meta:null,game:null,players:{},r:{},chat:{},chatOpen:false,view:''});
+  Object.assign(S,{rid:null,meta:null,game:null,cg:null,players:{},r:{},chat:{},chatOpen:false,view:''});
   chatShell();render();
 }
 async function mk(){
-  const name=$('#rn').value.trim().slice(0,24),pw=$('#rp').value,f=S.form,kind=S.kind||'dev';
+  const name=$('#rn').value.trim().slice(0,24),pw=$('#rp').value,f=S.form,kind=S.kind||'dev',ab=kind==='dev'||kind==='classic';
   if(!name)return toast('اكتب اسم الغرفة');
   if(f.priv&&!pw)return toast('اكتب باسورد الغرفة');
-  let cats=CLASSIC;
-  if(kind==='dev'){
-    cats=[...document.querySelectorAll('.chip.on[data-i]')].map(c=>CATS[+c.dataset.i]);
-    if(cats.length<5)return toast('اختار 5 تصنيفات على الأقل');
+  let cats=CLASSIC,rounds=0,limit=0;
+  if(ab){
+    if(kind==='dev'){
+      cats=[...document.querySelectorAll('.chip.on[data-i]')].map(c=>CATS[+c.dataset.i]);
+      if(cats.length<5)return toast('اختار 5 تصنيفات على الأقل');
+    }
+    rounds=Math.min(20,Math.max(1,Math.round(+$('#rr').value||5)));
+    limit=f.timed?Math.round(Math.max(.5,+$('#tm').value||2)*60):0;
   }
-  const rounds=Math.min(20,Math.max(1,Math.round(+$('#rr').value||5)));
-  const limit=f.timed?Math.round(Math.max(.5,+$('#tm').value||2)*60):0;
-  const rid='r'+Math.random().toString(36).slice(2,8);
-  await set(ref(db,`rooms/${rid}/meta`),{name,kind,adminId:pid,adminName:S.me,ph:f.priv?await hash(pw,rid):'',rounds,limit,cats});
+  const rid='r'+Math.random().toString(36).slice(2,8),ph=f.priv?await hash(pw,rid):'';
+  const meta={name,kind,adminId:pid,adminName:S.me,ph,rounds,limit};
+  if(ab)meta.cats=cats;else meta.opts={stack:!!f.stack};
+  await set(ref(db,`rooms/${rid}/meta`),meta);
   await set(ref(db,'idx/'+rid),{name,kind,priv:f.priv,admin:S.me,t:Date.now(),st:'wait'});
   S.creating=false;enter(rid);
+}
+
+/* ===== محركات ألعاب الكروت ===== */
+const A=x=>x||[];
+const clone=o=>JSON.parse(JSON.stringify(o));
+const H=(st,p)=>st.hands[p]||(st.hands[p]=[]);
+function drawN(st,n){
+  const out=[];st.deck=A(st.deck);st.disc=A(st.disc);
+  for(let i=0;i<n;i++){
+    if(!st.deck.length&&st.disc.length>1){const t=st.disc.pop();st.deck=shuf(st.disc);st.disc=[t]}
+    if(!st.deck.length)break;
+    out.push(st.deck.pop());
+  }
+  return out;
+}
+const give=(st,p,n)=>{const h=H(st,p);drawN(st,n).forEach(c=>h.push(c))};
+const nxt=(st,k=1)=>{const n=st.order.length;st.turn=((st.turn+st.dir*k)%n+n)%n;st.drew=-1};
+const UC=['#e63946','#ffb703','#2fb344','#2f6fed'],UCN=['أحمر','أصفر','أخضر','أزرق'];
+const unoC=id=>{if(id>=100)return{c:-1,v:id<104?'W':'F'};const c=id/25|0,k=id%25;return{c,v:k===0?0:k<=9?k:k<=18?k-9:k<=20?'S':k<=22?'R':'D'}};
+const unoPts=id=>{const v=unoC(id).v;return typeof v==='number'?v:v==='W'||v==='F'?50:20};
+const unoOk=(st,id)=>{
+  const c=unoC(id),d=A(st.disc),t=unoC(d[d.length-1]);
+  if(st.pend>0)return !!st.stack&&((st.pt==='D'&&c.v==='D')||(st.pt==='F'&&c.v==='F'));
+  return c.c<0||c.c===st.col||c.v===t.v;
+};
+const UNO={
+  init(ids,o){
+    const st={kind:'uno',v:0,order:ids,turn:0,dir:1,hands:{},deck:shuf([...Array(108).keys()]),disc:[],pend:0,pt:'',drew:-1,uc:{},stack:!!(o&&o.stack)};
+    ids.forEach(p=>st.hands[p]=[]);
+    for(let i=0;i<7;i++)ids.forEach(p=>st.hands[p].push(st.deck.pop()));
+    let c;do{c=st.deck.pop();if(typeof unoC(c).v==='number')break;st.deck.unshift(c)}while(true);
+    st.disc=[c];st.col=unoC(c).c;return st;
+  },
+  act(o,p,a){
+    const st=clone(o),n=st.order.length;
+    if(st.over||!st.order.includes(p))return null;
+    const hand=H(st,p);st.uc=st.uc||{};
+    if(a.t==='uno'){if(hand.length>2||hand.length<1)return null;st.uc[p]=1;st.ev={p,t:'uno'};st.v++;return st}
+    if(p!==st.order[st.turn])return null;
+    if(a.t==='draw'){
+      if(st.drew>=0)return null;
+      if(st.pend>0){give(st,p,st.pend);st.ev={p,t:'pen',n:st.pend};st.pend=0;st.pt='';nxt(st)}
+      else{const c=drawN(st,1)[0];if(c==null)nxt(st);else{hand.push(c);st.ev={p,t:'draw'};if(unoOk(st,c))st.drew=c;else nxt(st)}}
+      st.v++;return st;
+    }
+    if(a.t==='pass'){if(st.drew<0)return null;nxt(st);st.v++;return st}
+    if(a.t!=='play')return null;
+    const id=a.id;
+    if(!hand.includes(id)||(st.drew>=0&&id!==st.drew)||!unoOk(st,id))return null;
+    const c=unoC(id);
+    hand.splice(hand.indexOf(id),1);st.disc=A(st.disc);st.disc.push(id);
+    st.col=c.c<0?(a.col>=0&&a.col<4?a.col:0):c.c;
+    st.last={p,id};st.ev={p,t:'play'};
+    if(!hand.length){st.over=1;st.winner=p;let s=0;st.order.forEach(q=>{if(q!==p)H(st,q).forEach(x=>s+=unoPts(x))});st.pts={[p]:s};st.v++;return st}
+    if(hand.length===1&&!st.uc[p]){give(st,p,2);st.ev={p,t:'pen',n:2}}
+    st.uc[p]=0;
+    const nq=st.order[((st.turn+st.dir)%n+n)%n];
+    if(c.v==='S')nxt(st,2);
+    else if(c.v==='R'){st.dir*=-1;if(n===2)nxt(st,2);else nxt(st)}
+    else if(c.v==='D'){if(st.stack){st.pend+=2;st.pt='D';nxt(st)}else{give(st,nq,2);nxt(st,2)}}
+    else if(c.v==='F'){if(st.stack){st.pend+=4;st.pt='F';nxt(st)}else{give(st,nq,4);nxt(st,2)}}
+    else nxt(st);
+    st.v++;return st;
+  }
+};
+const ceR=id=>id%13,ceS=id=>id/13|0;
+const cePts=id=>{const r=ceR(id);return r===7?50:r===0?1:r>=10?10:r+1};
+const ceOk=(st,id)=>{const d=A(st.disc),t=d[d.length-1];return ceR(id)===7||ceS(id)===st.suit||ceR(id)===ceR(t)};
+const CE={
+  init(ids){
+    const st={kind:'c_crazy',v:0,order:ids,turn:0,dir:1,hands:{},deck:shuf([...Array(52).keys()]),disc:[],drew:-1};
+    ids.forEach(p=>st.hands[p]=[]);
+    const k=ids.length===2?7:5;
+    for(let i=0;i<k;i++)ids.forEach(p=>st.hands[p].push(st.deck.pop()));
+    let c;do{c=st.deck.pop();if(ceR(c)!==7)break;st.deck.unshift(c)}while(true);
+    st.disc=[c];st.suit=ceS(c);return st;
+  },
+  act(o,p,a){
+    const st=clone(o);
+    if(st.over||!st.order.includes(p)||p!==st.order[st.turn])return null;
+    const hand=H(st,p);
+    if(a.t==='draw'){
+      if(st.drew>=0)return null;
+      const c=drawN(st,1)[0];
+      if(c==null)nxt(st);else{hand.push(c);st.ev={p,t:'draw'};if(ceOk(st,c))st.drew=c;else nxt(st)}
+      st.v++;return st;
+    }
+    if(a.t==='pass'){if(st.drew<0)return null;nxt(st);st.v++;return st}
+    if(a.t!=='play')return null;
+    const id=a.id;
+    if(!hand.includes(id)||(st.drew>=0&&id!==st.drew)||!ceOk(st,id))return null;
+    hand.splice(hand.indexOf(id),1);st.disc=A(st.disc);st.disc.push(id);
+    st.suit=ceR(id)===7?(a.col>=0&&a.col<4?a.col:0):ceS(id);
+    st.last={p,id};st.ev={p,t:'play'};
+    if(!hand.length){st.over=1;st.winner=p;let s=0;st.order.forEach(q=>{if(q!==p)H(st,q).forEach(x=>s+=cePts(x))});st.pts={[p]:s};st.v++;return st}
+    nxt(st);st.v++;return st;
+  }
+};
+const pairOff=h=>{const by={};h.forEach(c=>{const r=c===52?'j':c%13;(by[r]=by[r]||[]).push(c)});const out=[];Object.values(by).forEach(g=>{if(g.length%2)out.push(g[0])});return shuf(out)};
+const oldActive=st=>st.order.filter(p=>A(st.hands[p]).length>0);
+const oldTarget=(st,p)=>{const n=st.order.length,i=st.order.indexOf(p);for(let k=1;k<n;k++){const q=st.order[(i+k)%n];if(A(st.hands[q]).length)return q}return null};
+const OLD={
+  init(ids){
+    const st={kind:'c_old',v:0,order:ids,turn:0,hands:{}};
+    ids.forEach(p=>st.hands[p]=[]);
+    shuf([...Array(53).keys()]).forEach((c,i)=>st.hands[ids[i%ids.length]].push(c));
+    ids.forEach(p=>st.hands[p]=pairOff(st.hands[p]));
+    const act=oldActive(st);st.turn=Math.max(0,st.order.indexOf(act[0]));
+    return st;
+  },
+  act(o,p,a){
+    const st=clone(o);
+    if(st.over||a.t!=='pick'||p!==st.order[st.turn])return null;
+    const q=oldTarget(st,p);if(q==null)return null;
+    const th=H(st,q),mh=H(st,p);
+    if(!(a.i>=0&&a.i<th.length))return null;
+    const c=th.splice(a.i,1)[0];
+    let paired=false;
+    if(c!==52){const j=mh.findIndex(x=>x!==52&&x%13===c%13);if(j>=0){mh.splice(j,1);paired=true}}
+    if(!paired)mh.push(c);
+    st.hands[p]=shuf(mh);st.ev={p,q,t:paired?'pair':'take'};
+    const act=oldActive(st);
+    if(act.length<=1){st.over=1;st.loser=act[0]||null;st.pts={};st.order.forEach(x=>{if(x!==st.loser)st.pts[x]=1});st.v++;return st}
+    const n=st.order.length,i=st.order.indexOf(p);
+    for(let k=1;k<=n;k++){const r=st.order[(i+k)%n];if(A(st.hands[r]).length){st.turn=st.order.indexOf(r);break}}
+    st.v++;return st;
+  }
+};
+const warV=id=>{const r=id%13;return r===0?14:r+1};
+const WAR={
+  init(ids){
+    const st={kind:'c_war',v:0,order:ids,turn:0,hands:{},rd:0,pot:[]};
+    ids.forEach(p=>st.hands[p]=[]);
+    shuf([...Array(52).keys()]).forEach((c,i)=>st.hands[ids[i%ids.length]].push(c));
+    return st;
+  },
+  act(o,p,a){
+    const st=clone(o);
+    if(st.over||a.t!=='flip'||!st.order.includes(p))return null;
+    const live=st.order.filter(q=>A(st.hands[q]).length);
+    if(!live.length)return null;
+    const tb={};live.forEach(q=>tb[q]=H(st,q).shift());
+    st.pot=A(st.pot);Object.values(tb).forEach(c=>st.pot.push(c));
+    const mx=Math.max(...live.map(q=>warV(tb[q]))),ws=live.filter(q=>warV(tb[q])===mx);
+    st.rd=(st.rd||0)+1;st.tb=tb;
+    if(ws.length===1){H(st,ws[0]).push(...shuf(st.pot));st.pot=[];st.w=ws[0];st.tie=0}
+    else{st.w=null;st.tie=1}
+    const alive=st.order.filter(q=>A(st.hands[q]).length);
+    if(alive.length<=1||st.rd>=60){
+      let best=-1,bw=[];
+      st.order.forEach(q=>{const k=A(st.hands[q]).length;if(k>best){best=k;bw=[q]}else if(k===best)bw.push(q)});
+      st.over=1;st.winner=bw[0];st.pts={[bw[0]]:1};
+    }
+    st.v++;return st;
+  }
+};
+const bjVal=h=>{let s=0,a=0;h.forEach(c=>{const r=c%13;if(r===0){a++;s+=11}else s+=r>=9?10:r+1});while(s>21&&a){s-=10;a--}return s};
+const BJ={
+  init(ids){
+    const st={kind:'c_21',v:0,order:ids,turn:0,hands:{},dealer:[],deck:shuf([...Array(52).keys()]),stat:{}};
+    for(let i=0;i<2;i++){ids.forEach(p=>H(st,p).push(st.deck.pop()));st.dealer.push(st.deck.pop())}
+    ids.forEach(p=>st.stat[p]=bjVal(st.hands[p])===21?'bj':'play');
+    BJ.adv(st,-1);return st;
+  },
+  adv(st,from){
+    for(let i=from+1;i<st.order.length;i++)if(st.stat[st.order[i]]==='play'){st.turn=i;return}
+    st.turn=-1;
+    if(st.order.some(p=>st.stat[p]==='stand'||st.stat[p]==='bj')){while(bjVal(st.dealer)<17)st.dealer.push(st.deck.pop())}
+    const d=bjVal(st.dealer),dbj=st.dealer.length===2&&d===21;
+    st.res={};st.pts={};
+    st.order.forEach(p=>{
+      const v=bjVal(H(st,p));let r;
+      if(st.stat[p]==='bust')r='lose';else if(st.stat[p]==='bj')r=dbj?'push':'win';else if(dbj)r='lose';else if(d>21||v>d)r='win';else if(v===d)r='push';else r='lose';
+      st.res[p]=r;if(r==='win')st.pts[p]=1;
+    });
+    st.over=1;
+  },
+  act(o,p,a){
+    const st=clone(o);
+    if(st.over||st.order[st.turn]!==p)return null;
+    st.dealer=A(st.dealer);const h=H(st,p);
+    if(a.t==='hit'){h.push(st.deck.pop());const v=bjVal(h);if(v>21)st.stat[p]='bust';else if(v===21)st.stat[p]='stand'}
+    else if(a.t==='stand')st.stat[p]='stand';
+    else return null;
+    if(st.stat[p]!=='play')BJ.adv(st,st.turn);
+    st.v++;return st;
+  }
+};
+const ENG={uno:UNO,c_old:OLD,c_war:WAR,c_crazy:CE,c_21:BJ};
+function dropP(o,p){
+  const st=clone(o),i=st.order.indexOf(p);
+  if(i<0||st.over)return null;
+  const cur=st.order[st.turn],h=A(st.hands[p]);
+  st.order.splice(i,1);delete st.hands[p];
+  if(st.stat)delete st.stat[p];
+  if(st.kind==='c_war')st.pot=[...A(st.pot),...h];else if(st.kind!=='c_21')st.deck=[...h,...A(st.deck)];
+  const min=st.kind==='c_21'?1:2;
+  if(st.order.length<min){st.over=1;st.aborted=1;st.winner=st.order[0]||null;st.pts=st.order[0]?{[st.order[0]]:1}:{};st.v++;return st}
+  const ci=st.order.indexOf(cur);st.turn=ci>=0?ci:i%st.order.length;st.drew=-1;
+  if(st.kind==='c_21'&&cur===p){BJ.adv(st,i-1)}
+  if(st.kind==='c_old'){
+    const act=oldActive(st);
+    if(act.length<=1){st.over=1;st.loser=act[0]||null;st.pts={};st.order.forEach(x=>{if(x!==st.loser)st.pts[x]=1})}
+    else if(!A(st.hands[st.order[st.turn]]).length){const n=st.order.length;for(let k=1;k<=n;k++){const r=st.order[(st.turn+k)%n];if(A(st.hands[r]).length){st.turn=st.order.indexOf(r);break}}}
+  }
+  st.v++;return st;
+}
+function cgStart(){
+  if(!isAdmin())return;
+  const G=GAMES[S.meta.kind];
+  const ids=Object.entries(S.players).sort((a,b)=>(a[1].t-b[1].t)||(a[0]<b[0]?-1:1)).map(e=>e[0]);
+  if(ids.length<G.min)return toast(`محتاجين ${G.min} لاعبين على الأقل`);
+  if(ids.length>G.max)return toast(`الحد الأقصى ${G.max} لاعبين`);
+  const st=ENG[S.meta.kind].init(ids,S.meta.opts);
+  st.gid=Date.now()%1e9+rnd(1000);
+  update(ref(db,base()),{cg:st,game:{phase:'cards',round:(S.game?.round||0)+1}});
+  set(ref(db,`idx/${S.rid}/st`),'play');
+}
+function cgLobby(){
+  if(!isAdmin())return;
+  update(ref(db,base()),{cg:null,game:null});
+  set(ref(db,`idx/${S.rid}/st`),'wait');
+}
+async function cgAct(a){
+  let fin=null;
+  const tx=await runTransaction(ref(db,base()+'/cg'),old=>{
+    if(!old)return undefined;
+    const nv=a.t==='drop'?dropP(old,a.p):ENG[old.kind].act(old,pid,a);
+    if(!nv)return undefined;
+    fin=nv.over&&!old.over?nv:null;
+    return nv;
+  });
+  if(!tx.committed){if(a.t!=='uno'&&a.t!=='drop')toast('الحركة دي مش مسموحة دلوقتي');return}
+  if(fin&&fin.pts){
+    const up={};
+    Object.entries(fin.pts).forEach(([id,v])=>{if(S.players[id])up[`rooms/${S.rid}/players/${id}/score`]=increment(v)});
+    if(Object.keys(up).length)update(ref(db),up);
+  }
 }
 
 /* ===== منطق اللعبة ===== */
@@ -369,25 +689,31 @@ function confetti(){
 /* ===== الشاشات ===== */
 const lb=()=>Object.entries(S.players).sort((a,b)=>(b[1].score||0)-(a[1].score||0)).map(([id,p],i)=>
   `<div class="lb"><span style="display:flex;align-items:center"><i class="rk">${i+1}</i>${av(p.name)}${esc(p.name)}${id===S.meta?.adminId?' 👑':''}</span><b>${p.score||0}</b></div>`).join('');
-const topbar=room=>`<header class="top">${room?`<span class="logo">🎡 ملاهي 15 مايو</span>`:`<button class="logo ghost" data-act="hub">🎡 ملاهي 15 مايو</button>`}<div class="tools"><button class="ghost sm" data-act="rn" aria-label="غيّر اسمك">${av(S.me)}${esc(S.me)} ✏️</button><button class="ghost sm" data-act="theme" aria-label="تبديل الوضع الفاتح والداكن">${isDark()?'☀️':'🌙'}</button></div></header>`;
+const topbar=room=>`<header class="top">${room?`<span class="logo">🎡 ملاهي 15 مايو</span>`:`<button class="logo ghost" data-act="hub">🎡 ملاهي 15 مايو</button>`}<div class="tools"><button class="ghost sm" data-act="rn" aria-label="غيّر اسمك">${av(S.me)}${esc(S.me)} ${gameActive()?'🔒':'✏️'}</button><button class="ghost sm" data-act="theme" aria-label="تبديل الوضع الفاتح والداكن">${isDark()?'☀️':'🌙'}</button></div></header>`;
 const hero=()=>`<div class="hero"><div class="wheel">🎡</div><h1>ملاهي 15 مايو</h1><p>اختار لعبتك وابدأ الفرفشة 🎉</p></div>`;
 const hdr=()=>topbar(true)+`<div class="rinfo"><span><b>${GAMES[S.meta.kind||'dev'].ico} ${esc(S.meta.name)}</b> <span class="small">الأدمن: ${esc(S.meta.adminName)}</span></span><button class="ghost sm" data-act="leave">خروج</button></div>`;
 
 function render(){
   let k;
   if(!S.me)k='login';
-  else if(!S.rid)k=S.creating?'create':S.pending?'join':S.kind?'home':'hub';
+  else if(!S.rid)k=S.creating?'create':S.pending?'join':S.kind?'home':S.sub?'sub':'hub';
   else{
     const g=S.game||{},ph=g.phase||'lobby';
-    k=ph==='play'||ph==='countdown'?'play'+g.round:ph==='review'||ph==='tally'?'review'+g.round:ph==='results'?'res'+g.round:ph==='final'?'final':'lobby';
+    k=ph==='cards'?'cg':ph==='play'||ph==='countdown'?'play'+g.round:ph==='review'||ph==='tally'?'review'+g.round:ph==='results'?'res'+g.round:ph==='final'?'final':'lobby';
+  }
+  if(k==='cg'){
+    const ck=JSON.stringify([S.cg&&S.cg.v,S.cg&&S.cg.over,S.cg&&S.cg.gid,Object.values(S.players).map(p=>p.name+p.score),S.pickWild,S.view]);
+    if(ck===S.ck&&S.view==='cg'){tick();return}
+    S.ck=ck;
   }
   const typing=document.activeElement?.tagName==='INPUT'&&app.contains(document.activeElement);
   if(k===S.view&&(k==='login'||k==='create'||k.startsWith('play')||typing)){tick();return}
   const g=S.game||{};
   if(k.startsWith('play'))S.mine=Array((g.cats||[]).length).fill('');
   if((k.startsWith('res')||k==='final')&&k!==S.view)confetti();
+  if(k==='cg'&&S.cg&&S.cg.over&&S.cgOver!==S.cg.gid+'-'+S.cg.v){S.cgOver=S.cg.gid+'-'+S.cg.v;confetti()}
   S.view=k;
-  app.innerHTML=k==='login'?loginV():k==='hub'?hubV():k==='home'?homeV():k==='create'?createV():k==='join'?joinV():hdr()+(k==='lobby'?lobbyV():k.startsWith('play')?playV(g):k.startsWith('review')?reviewV(g):k.startsWith('res')?resV(g):finalV());
+  app.innerHTML=k==='login'?loginV():k==='hub'?hubV():k==='sub'?subV():k==='home'?homeV():k==='create'?createV():k==='join'?joinV():hdr()+(k==='lobby'?lobbyV():k==='cg'?cardsV():k.startsWith('play')?playV(g):k.startsWith('review')?reviewV(g):k.startsWith('res')?resV(g):finalV());
   if(k==='login'){const i=$('#nm');i.value=S.me||localStorage.name||'';i.focus()}
   if(k==='join')$('#pw').focus();
   if(k.startsWith('play'))$('#a0')?.focus();
@@ -395,16 +721,25 @@ function render(){
 }
 const loginV=()=>`${hero()}<div class="card"><label for="nm">اختار اسمك عشان تدخل</label><input id="nm" maxlength="16" autocomplete="off"><button class="big" data-act="login">يلا ندخل 🎢</button><div style="text-align:center;margin-top:12px"><button class="ghost sm" data-act="theme" aria-label="تبديل الوضع">${isDark()?'☀️':'🌙'}</button></div></div>`;
 function hubV(){
-  const rooms=k=>Object.entries(S.idx).filter(([id,r])=>(r.kind||'dev')===k&&Object.keys(S.pl[id]||{}).length);
-  return topbar()+hero()+`<div class="tiles">`+Object.entries(GAMES).map(([k,g])=>{
-    const rs=rooms(k),pp=rs.reduce((a,[id])=>a+Object.keys(S.pl[id]).length,0);
-    return `<button class="tile ${g.cls}" data-act="game" data-k="${k}"><span class="ti">${g.ico}</span><b>${g.name}</b><small>${g.desc}</small><em>${rs.length} غرفة • ${pp} لاعب</em></button>`;
+  const rs=ks=>Object.entries(S.idx).filter(([id,r])=>ks.includes(r.kind||'dev')&&Object.keys(S.pl[id]||{}).length);
+  const tile=(act,k,ico,name,desc,cls,ks,i)=>{
+    const r=rs(ks),pp=r.reduce((a,[id])=>a+Object.keys(S.pl[id]).length,0);
+    return `<button class="tile ${cls}" data-act="${act}" data-k="${k}" style="animation-delay:${i*80}ms"><span class="ti${[...ico].length>3?' sm':''}">${ico}</span><b>${name}</b><small>${desc}</small><em>${r.length} غرفة • ${pp} لاعب</em></button>`;
+  };
+  return topbar()+hero()+`<div class="tiles">`+['dev','classic','uno'].map((k,i)=>{const g=GAMES[k];return tile('game',k,g.ico,g.name,g.desc,g.cls,[k],i)}).join('')+tile('grp','cards','♠️♥️♦️♣️','الكوتشينة','الشايب • حرب • 8 المجنونة • واحد وعشرين','t4',CARDK,3)+`</div>`;
+}
+function subV(){
+  const rs=k=>Object.entries(S.idx).filter(([id,r])=>(r.kind||'dev')===k&&Object.keys(S.pl[id]||{}).length);
+  return topbar()+`<button class="ghost sm" data-act="hub" style="margin-top:6px">← كل الألعاب</button><h2>🃏 الكوتشينة — اختار نوع اللعبة</h2><div class="tiles">`+CARDK.map((k,i)=>{
+    const g=GAMES[k],r=rs(k),pp=r.reduce((a,[id])=>a+Object.keys(S.pl[id]).length,0);
+    return `<button class="tile ${g.cls}" data-act="game" data-k="${k}" style="animation-delay:${i*80}ms"><span class="ti">${g.ico}</span><b>${g.name}</b><small>${g.desc}</small><em>${r.length} غرفة • ${pp} لاعب</em></button>`;
   }).join('')+`</div>`;
 }
 function homeV(){
   const G=GAMES[S.kind];
   const rooms=Object.entries(S.idx).filter(([,r])=>(r.kind||'dev')===S.kind).map(([id,r])=>[id,r,Object.keys(S.pl[id]||{}).length]).filter(x=>x[2]>0).sort((a,b)=>b[2]-a[2]||b[1].t-a[1].t);
-  return topbar()+`<button class="ghost sm" data-act="hub" style="margin-top:6px">← كل الألعاب</button><h2>${G.ico} ${G.name}</h2>`+
+  const back=CARDK.includes(S.kind)?`<button class="ghost sm" data-act="grp" data-k="cards" style="margin-top:6px">← الكوتشينة</button>`:`<button class="ghost sm" data-act="hub" style="margin-top:6px">← كل الألعاب</button>`;
+  return topbar()+back+`<h2>${G.ico} ${G.name}</h2><details class="card rules"><summary>📜 القواعد وطريقة اللعب</summary><ul>${RULES[S.kind].map(x=>`<li>${x}</li>`).join('')}</ul></details>`+
     (rooms.length?rooms.map(([id,r,n],i)=>`<div class="card" style="animation-delay:${i*60}ms"><div class="rm"><div><h3>${esc(r.name)}</h3><span class="small">الأدمن: ${esc(r.admin)}</span> <span class="tag">${r.priv?'🔒 بباسورد':'عامة'}</span> <span class="tag">${r.st==='play'?'اللعب شغال':'في الانتظار'}</span><div class="pts">🟢 ${n} متواجد دلوقتي</div></div>`+
       (r.priv&&S.ask!==id?`<button data-act="ask" data-r="${id}">دخول</button>`:r.priv?'':`<button data-act="enter" data-r="${id}">دخول</button>`)+`</div>`+
       (r.priv&&S.ask===id?`<div class="rm" style="margin-top:10px"><input id="pw" type="password" placeholder="اكتب الباسورد" autocomplete="off"><button data-act="enter" data-r="${id}">ادخل</button></div>`:'')+`</div>`).join('')
@@ -413,23 +748,29 @@ function homeV(){
 }
 const joinV=()=>`${hero()}<div class="card"><h3>${esc(S.pending.name)}</h3><label for="pw">الغرفة دي بباسورد 🔒</label><input id="pw" type="password" autocomplete="off"><button class="big" data-act="enter">ادخل</button><button class="big ghost" data-act="cancel">رجوع</button></div>`;
 function createV(){
-  S.form={priv:false,timed:false};
-  const dev=S.kind==='dev';
-  return topbar()+`<h2>➕ غرفة جديدة — ${GAMES[S.kind].name}</h2>
+  S.form={priv:false,timed:false,stack:true};
+  const k=S.kind,dev=k==='dev',ab=dev||k==='classic';
+  return topbar()+`<h2>➕ غرفة جديدة — ${GAMES[k].name}</h2>
   <label for="rn">اسم الغرفة</label><input id="rn" maxlength="24" autocomplete="off">
   <label>نوع الغرفة</label><div class="seg"><button data-act="vis" data-v="0" class="sel">عامة (أي حد يدخل)</button><button data-act="vis" data-v="1">🔒 بباسورد</button></div>
-  <div id="pwbox" hidden><label for="rp">باسورد الغرفة</label><input id="rp" autocomplete="off"></div>
-  <label for="rr">عدد الجولات</label><input id="rr" type="number" min="1" max="20" value="5">
+  <div id="pwbox" hidden><label for="rp">باسورد الغرفة</label><input id="rp" autocomplete="off"></div>`+
+  (ab?`<label for="rr">عدد الجولات</label><input id="rr" type="number" min="1" max="20" value="5">
   <label>وقت الجولة</label><div class="seg"><button data-act="tl" data-v="0" class="sel">بدون وقت</button><button data-act="tl" data-v="1">⏱ بوقت محدد</button></div>
   <div id="tmbox" hidden><label for="tm">الوقت بالدقايق</label><input id="tm" type="number" min="0.5" step="0.5" value="2"></div>`+
   (dev?`<label>التصنيفات اللي هتتلعب (<span id="cc">${CATS.length}</span>) <button class="ghost sm" data-act="catall">الكل</button> <button class="ghost sm" data-act="catnone">ولا واحد</button></label>
-  <div class="chips">${CATS.map((c,i)=>`<button class="chip on" data-act="cat" data-i="${i}">${esc(c)}</button>`).join('')}</div>`
-  :`<p class="small">التصنيفات ثابتة: ${CLASSIC.join('، ')}</p>`)+
+  <div class="chips">${CATS.map((c,i)=>`<button class="chip on" data-act="cat" data-i="${i}">${esc(c)}</button>`).join('')}</div>`:`<p class="small">التصنيفات ثابتة: ${CLASSIC.join('، ')}</p>`)
+  :k==='uno'?`<label>تراكم كروت السحب (+2 على +2 و+4 على +4)</label><div class="seg"><button data-act="stk" data-v="1" class="sel">شغال</button><button data-act="stk" data-v="0">مقفول</button></div>`
+  :`<p class="small">الغرفة دي من ${GAMES[k].min} لحد ${GAMES[k].max} لاعبين.</p>`)+
   `<button class="big" data-act="mk">إنشاء الغرفة 🚀</button><button class="big ghost" data-act="cancel">رجوع</button>`;
 }
-const lobbyV=()=>`<h2>غرفة الانتظار ⏳</h2><div class="card"><h3>اللاعبين (${Object.keys(S.players).length})</h3><div class="pgrid" style="margin-top:8px">${Object.entries(S.players).map(([id,p])=>`<span class="pc">${av(p.name)}${esc(p.name)}${id===S.meta.adminId?' 👑':''}</span>`).join('')}</div></div>
-  <div class="card small">${S.meta.rounds} جولات • ${S.meta.limit?'وقت الجولة '+S.meta.limit/60+' دقيقة':'بدون وقت'} • ${S.meta.cats.length} تصنيف • ${S.meta.ph?'🔒 بباسورد':'عامة'}</div>`+
-  `<button class="big ghost" data-act="copy">🔗 انسخ لينك الغرفة</button>`+(isAdmin()?`<button class="big" data-act="start">ابدأ اللعبة 🎮</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يبدأ اللعبة...</p>`);
+const lobbyV=()=>{
+  const k=S.meta.kind||'dev',G=GAMES[k],ab=!!G.ab,cnt=Object.keys(S.players).length;
+  return `<h2>غرفة الانتظار ⏳</h2><div class="card"><h3>اللاعبين (${cnt})</h3><div class="pgrid" style="margin-top:8px">${Object.entries(S.players).map(([id,p])=>`<span class="pc">${av(p.name)}${esc(p.name)}${id===S.meta.adminId?' 👑':''}</span>`).join('')}</div></div>`+
+  (ab?`<div class="card small">${S.meta.rounds} جولات • ${S.meta.limit?'وقت الجولة '+S.meta.limit/60+' دقيقة':'بدون وقت'} • ${S.meta.cats.length} تصنيف • ${S.meta.ph?'🔒 بباسورد':'عامة'}</div>`
+  :`<div class="card small">من ${G.min} لـ ${G.max} لاعبين${k==='uno'?' • التراكم '+(S.meta.opts&&S.meta.opts.stack?'شغال':'مقفول'):''} • ${S.meta.ph?'🔒 بباسورد':'عامة'}</div><details class="card rules"><summary>📜 القواعد</summary><ul>${RULES[k].map(x=>`<li>${x}</li>`).join('')}</ul></details>`)+
+  `<button class="big ghost" data-act="copy">🔗 انسخ لينك الغرفة</button>`+
+  (isAdmin()?`<button class="big" data-act="${ab?'start':'cstart'}" ${!ab&&cnt<G.min?'disabled':''}>ابدأ اللعبة 🎮</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يبدأ اللعبة...</p>`);
+};
 const playV=g=>`<p class="small" style="text-align:center">جولة ${g.round} من ${S.meta.rounds}</p><div class="letter">${esc(g.letter)}</div>${g.endAt?'<div class="bar"><i id="bar"></i></div>':''}<div id="ban"></div>`+
   g.cats.map((c,i)=>`<label for="a${i}">${esc(c)}</label><input class="ans" id="a${i}" data-i="${i}" autocomplete="off">`).join('')+
   `<button class="big" data-act="done">أتوبيس كومبليت! 🚌</button>`;
@@ -465,6 +806,92 @@ function finalV(){
     (isAdmin()?`<button class="big" data-act="again">لعبة جديدة في نفس الغرفة 🔁</button>`:'')+`<button class="big ghost" data-act="leave">خروج من الغرفة</button>`;
 }
 
+/* ===== شاشات الكروت ===== */
+const SU=['♠','♥','♦','♣'],RK=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+const nm=p=>(S.players[p]&&S.players[p].name)||'؟';
+const stdHtml=(id,cls='',attrs='')=>{
+  if(id===52)return `<div class="crd ${cls}" ${attrs}><span class="cm">🃏</span></div>`;
+  const s=id/13|0,r=id%13,t=`${RK[r]}<br>${SU[s]}`;
+  return `<div class="crd ${s===1||s===2?'rd':''} ${cls}" ${attrs}><span class="q1">${t}</span><span class="cm">${SU[s]}</span><span class="q2">${t}</span></div>`;
+};
+const uSym=v=>v==='S'?'⦸':v==='R'?'🔄':v==='D'?'+2':v==='W'?'🌈':v==='F'?'+4':v;
+const unoHtml=(id,cls='',attrs='')=>{const c=unoC(id),y=uSym(c.v);return `<div class="crd u ${c.c<0?'kw':'k'+c.c} ${cls}" ${attrs}><span class="q1">${y}</span><span class="cm">${y}</span><span class="q2">${y}</span></div>`};
+const opp=(p,st,cur)=>{const n=A(st.hands[p]).length;return `<div class="op ${p===cur&&!st.over?'turn':''}">${av(nm(p))}<b>${esc(nm(p))}</b><span class="fan">${Array.from({length:Math.min(n,8)},()=>'<i class="crd back"></i>').join('')}</span><span class="small">${n} كارت</span></div>`};
+const lbBox=()=>`<details class="card rules"><summary>🏅 الترتيب</summary>${lb()}</details>`;
+function banner(st){
+  if(!st.ev||S.seenEv===st.gid+'-'+st.v)return '';
+  S.seenEv=st.gid+'-'+st.v;const e=st.ev;
+  return e.t==='uno'?`<div class="ubn">UNO! 🔔<small>${esc(nm(e.p))}</small></div>`:e.t==='pen'&&e.n>=2?`<div class="ubn sm">😬 ${esc(nm(e.p))} سحب ${e.n}</div>`:e.t==='pair'?`<div class="ubn sm">🎉 زوج!</div>`:'';
+}
+function cardsV(){
+  const st=S.cg;
+  if(!st)return '<p class="small" style="text-align:center">⏳ بيتحمّل...</p>';
+  if(S.prev.g!==st.gid){S.prev={h:[],top:-1,v:-1,g:st.gid};S.seen=[]}
+  const k=st.kind,body=k==='uno'||k==='c_crazy'?shedV(st):k==='c_old'?oldV(st):k==='c_war'?warView(st):bjView(st);
+  return banner(st)+body+lbBox()+(S.pickWild!=null?pickerV(st):'')+(st.over?overV(st):'');
+}
+function shedV(st){
+  const uno=st.kind==='uno',me=pid,cur=st.order[st.turn],inG=st.order.includes(me),mine=[...A(st.hands[me])];
+  const myTurn=inG&&cur===me&&!st.over,disc=A(st.disc),top=disc[disc.length-1];
+  const vv=x=>typeof x==='number'?x:10+'SRDWF'.indexOf(x);
+  mine.sort((a,b)=>uno?(unoC(a).c-unoC(b).c)||(vv(unoC(a).v)-vv(unoC(b).v)):(ceS(a)-ceS(b))||(ceR(a)-ceR(b)));
+  const ok=id=>uno?unoOk(st,id):ceOk(st,id),R=uno?unoHtml:stdHtml;
+  const prev=new Set(S.prev.h);let d=0;
+  const hand=mine.map(id=>{
+    const nw=!prev.has(id),can=myTurn&&ok(id)&&(st.drew<0||id===st.drew);
+    return R(id,(nw?'deal ':'')+(myTurn?(can?'ok':'no'):''),`${nw?`style="animation-delay:${d++*70}ms" `:''}${can?`data-act="uplay" data-id="${id}" role="button" tabindex="0" aria-label="العب الكارت"`:''}`);
+  }).join('');
+  const flyc=st.last&&top!==S.prev.top?(st.last.p===me?'flyme':'flyop'):'';
+  const canDraw=myTurn&&st.drew<0;
+  const msg=st.over?'':myTurn?(st.pend>0?`⚠️ اسحب ${st.pend} كروت أو كمّل التراكم`:st.drew>=0?'العب الكارت اللي سحبته أو تخطّى':'دورك! 🎯'):`دور ${esc(nm(cur))}`;
+  const center=`<div class="tbl"><div class="pile ${canDraw?'ok':''}" ${canDraw?'data-act="udraw" role="button" tabindex="0" aria-label="اسحب كارت"':''}><i class="crd back"></i><i class="crd back"></i><i class="crd back"></i></div><div class="ring" style="--rc:${uno?UC[st.col]:'transparent'}">${R(top,flyc,`style="transform:rotate(${(top*37)%14-7}deg)"`)}</div>${uno?`<span class="dir" style="animation-direction:${st.dir<0?'reverse':'normal'}">🔄</span>`:`<span class="tag" style="font-size:1.5rem">${SU[st.suit]}</span>`}</div>`;
+  const acts=`<div class="rm" style="justify-content:center;gap:10px;flex-wrap:wrap">${myTurn&&st.drew>=0?`<button data-act="upass">تخطّي ⏭</button>`:''}${myTurn&&st.pend>0?`<button data-act="udraw">اسحب ${st.pend}</button>`:''}${uno&&inG&&mine.length<=2&&mine.length>0&&!st.over?`<button class="yel" data-act="uuno">UNO! 🔔</button>`:''}</div>`;
+  S.prev={h:mine,top,v:st.v,g:st.gid};
+  return `<div id="ban">${msg}</div><div class="opps">${st.order.filter(p=>p!==me).map(p=>opp(p,st,cur)).join('')}</div>${center}${acts}<div class="hand my">${hand}</div>`;
+}
+function oldV(st){
+  const me=pid,cur=st.order[st.turn],myTurn=cur===me&&!st.over,tg=st.over?null:oldTarget(st,cur),mine=A(st.hands[me]);
+  const seen=new Set(S.seen||[]),vis=[];
+  const panel=p=>{
+    const h=A(st.hands[p]),click=myTurn&&p===tg;
+    return `<div class="op ${p===cur&&!st.over?'turn':''} ${p===tg&&!st.over?'tg':''}">${av(nm(p))}<b>${esc(nm(p))}</b>`+(h.length?`<span class="fan">${h.map((c,i)=>`<i class="crd back ${click?'pk':''}" ${click?`data-act="opick" data-i="${i}" role="button" tabindex="0" aria-label="اسحب كارت"`:''}></i>`).join('')}</span><span class="small">${h.length} كارت</span>`:`<span class="small">✅ خلّص</span>`)+`</div>`;
+  };
+  const hand=mine.map(c=>{vis.push(c);return stdHtml(c,seen.has(c)?'':'deal')}).join('');
+  S.seen=vis;
+  const msg=st.over?'':myTurn?`اختار كارت من ${esc(nm(tg))} 👆`:`دور ${esc(nm(cur))} يسحب من ${esc(nm(tg))}`;
+  return `<div id="ban">${msg}</div><div class="opps">${st.order.filter(p=>p!==me).map(panel).join('')}</div><div class="tbl"><span class="small">${mine.includes(52)?'😬 معاك الشايب!':mine.length?'':'✅ خلّصت كروتك'}</span></div><div class="hand my">${hand}</div>`;
+}
+function warView(st){
+  const tb=st.tb||{},wn=st.w;
+  const ops=st.order.map(p=>`<div class="op ${wn===p?'turn':''}">${av(nm(p))}<b>${esc(nm(p))}${p===pid?' (أنت)':''}</b><span class="small">${A(st.hands[p]).length} كارت</span></div>`).join('');
+  const flips=Object.entries(tb).map(([p,c])=>`<div style="text-align:center"><div class="${wn===p?'ring':''}" style="--rc:var(--good);display:inline-block">${stdHtml(c,p===pid?'flyme':'flyop')}</div><div class="small">${esc(nm(p))}</div></div>`).join('');
+  const msg=!st.rd?'اضغط اقلب عشان نبدأ':st.tie?`🔥 تعادل! الورق اتجمع (${A(st.pot).length} كارت)`:`🏆 ${esc(nm(wn))} أخد الورق • دور ${st.rd}/60`;
+  return `<div id="ban">${msg}</div><div class="opps">${ops}</div><div class="tbl" style="min-height:140px">${flips||'<span class="small">🃏 الورق جاهز</span>'}</div>${st.over?'':'<button class="big" data-act="wflip">اقلب 🃏</button>'}`;
+}
+function bjView(st){
+  const me=pid,cur=st.order[st.turn],myTurn=cur===me&&!st.over,dl=A(st.dealer);
+  const seen=new Set(S.seen||[]),vis=[],ac=c=>{vis.push(c);return seen.has(c)?'':'deal'};
+  const tag={bust:'💥 عدّى',bj:'🌟 بلاك جاك',stand:'✋ وقف',play:''};
+  const dealer=`<div class="card" style="text-align:center"><h3>🎩 الموزّع ${st.over?`(${bjVal(dl)})`:''}</h3><div class="hand" style="min-height:0;padding-top:10px">${dl.map((c,i)=>!st.over&&i===1?'<i class="crd back"></i>':stdHtml(c,ac(c))).join('')}</div></div>`;
+  const rows=st.order.map(p=>{
+    const h=A(st.hands[p]),res=st.res&&st.res[p];
+    return `<div class="card ${p===cur&&!st.over?'turncard':''}"><div class="rm"><b style="display:flex;align-items:center">${av(nm(p))}${esc(nm(p))}${p===me?' (أنت)':''}</b><span>${bjVal(h)} ${res?{win:'🏆',lose:'❌',push:'🤝'}[res]:tag[(st.stat&&st.stat[p])||'play']}</span></div><div class="hand" style="min-height:0;justify-content:flex-start;padding-top:10px">${h.map(c=>stdHtml(c,ac(c))).join('')}</div></div>`;
+  }).join('');
+  S.seen=vis;
+  return `<div id="ban">${st.over?'':myTurn?'دورك! اسحب ولا وقّف؟':`دور ${esc(nm(cur))}`}</div>${dealer}${rows}`+(myTurn?`<div class="rm" style="gap:10px"><button class="big" data-act="bhit">اسحب 🃏</button><button class="big ghost" data-act="bstand">وقّف ✋</button></div>`:'');
+}
+const pickerV=st=>{
+  const uno=st.kind==='uno';
+  return `<div class="ovl"><div class="card" style="width:min(100%,360px)"><h3 style="text-align:center">${uno?'اختار اللون 🎨':'اختار النوع'}</h3><div class="picker" style="margin-top:12px">${[0,1,2,3].map(i=>uno?`<button data-act="ucol" data-c="${i}" style="background:${UC[i]};color:${i===1?'#2b2100':'#fff'}">${UCN[i]}</button>`:`<button class="ghost" data-act="ucol" data-c="${i}" style="font-size:2rem;color:${i===1||i===2?'#d62839':'inherit'}">${SU[i]}</button>`).join('')}</div><button class="big ghost" data-act="ucancel">إلغاء</button></div></div>`;
+};
+function overV(st){
+  const adm=isAdmin(),k=st.kind;let body='';
+  if(k==='c_old')body=st.loser?`<div style="font-size:3rem">😂</div><h2>${esc(nm(st.loser))} معاه الشايب!</h2><p class="small">باقي اللاعبين خدوا نقطة</p>`:`<h2>انتهت الجولة</h2>`;
+  else if(k==='c_21')body=`<h2>نتيجة الجولة</h2>`+st.order.map(p=>`<div class="lb"><span style="display:flex;align-items:center">${av(nm(p))}${esc(nm(p))}</span><b>${{win:'🏆 كسب',lose:'❌ خسر',push:'🤝 تعادل'}[st.res&&st.res[p]]||''}</b></div>`).join('');
+  else body=`<div style="font-size:3rem">🏆</div><h2>${st.winner?esc(nm(st.winner))+(k==='c_war'?' كسب الحرب!':' كسب الجولة!'):'اتلغت الجولة'}</h2>`+(st.winner&&st.pts&&st.pts[st.winner]?`<p class="pts">+${st.pts[st.winner]} نقطة</p>`:'');
+  return `<div class="ovl"><div class="card" style="text-align:center;width:min(100%,400px)">${body}${adm?`<button class="big" data-act="cnew">جولة جديدة 🔁</button><button class="big ghost" data-act="clobby">رجوع لغرفة الانتظار</button>`:`<p class="small">مستنيين الأدمن...</p>`}<button class="big ghost" data-act="leave">خروج</button></div></div>`;
+}
+
 /* ===== تايمر ===== */
 function tick(){
   sweep();
@@ -479,6 +906,13 @@ function tick(){
         if(f[0]===pid){update(ref(db),{[`rooms/${S.rid}/meta/adminId`]:pid,[`rooms/${S.rid}/meta/adminName`]:S.me,[`idx/${S.rid}/admin`]:S.me});S.gone=0}
       }
     }
+  }
+  if(S.cg&&S.cg.order&&!S.cg.over&&isAdmin()&&S.players[pid]){
+    S.cg.order.forEach(p=>{
+      if(S.players[p]){delete S.miss[p];return}
+      S.miss[p]=S.miss[p]||Date.now();
+      if(Date.now()-S.miss[p]>8000){delete S.miss[p];cgAct({t:'drop',p})}
+    });
   }
   if(!g)return;
   if(g.phase==='countdown'){
@@ -510,6 +944,7 @@ document.addEventListener('input',e=>{
 });
 document.addEventListener('keydown',e=>{
   if(e.key!=='Enter')return;
+  if(e.target.getAttribute&&e.target.getAttribute('role')==='button'){e.target.click();return}
   const id=e.target.id;
   if(id==='nm')login(e.target.value);
   else if(id==='pw'){const r=S.pending?.rid||S.ask;if(r)joinRoom(r,e.target.value)}
@@ -523,10 +958,11 @@ document.addEventListener('click',e=>{
   const a=b.dataset.act,k=b.dataset.k;
   if(a==='login')login($('#nm').value);
   else if(a==='theme')setTheme(isDark()?'light':'dark');
-  else if(a==='rn')dlg(true);
+  else if(a==='rn'){if(gameActive())return toast('مينفعش تغيّر اسمك واللعب شغال 🎮');dlg(true)}
   else if(a==='rncancel')dlg(false);
   else if(a==='rnsave')saveName();
-  else if(a==='hub'){S.kind=null;S.creating=false;S.pending=null;S.view='';render()}
+  else if(a==='hub'){S.kind=null;S.sub=null;S.creating=false;S.pending=null;S.view='';render()}
+  else if(a==='grp'){S.sub=k;S.kind=null;S.view='';render()}
   else if(a==='game'){S.kind=k;S.view='';render()}
   else if(a==='quick')quickJoin();
   else if(a==='ask'){S.ask=b.dataset.r;render()}
@@ -552,6 +988,19 @@ document.addEventListener('click',e=>{
   else if(a==='chat'){S.chatOpen=!S.chatOpen;chatShell()}
   else if(a==='emo'){const i=$('#ci');i.value+=b.dataset.e;i.focus()}
   else if(a==='send')sendChat();
+  else if(a==='stk'){S.form.stack=b.dataset.v==='1';seg(b)}
+  else if(a==='cstart'||a==='cnew')cgStart();
+  else if(a==='clobby')cgLobby();
+  else if(a==='uplay'){const id=+b.dataset.id;if(S.cg.kind==='uno'?unoC(id).c<0:ceR(id)===7){S.pickWild=id;render()}else cgAct({t:'play',id})}
+  else if(a==='ucol'){const id=S.pickWild;S.pickWild=null;cgAct({t:'play',id,col:+b.dataset.c})}
+  else if(a==='ucancel'){S.pickWild=null;render()}
+  else if(a==='udraw')cgAct({t:'draw'});
+  else if(a==='upass')cgAct({t:'pass'});
+  else if(a==='uuno')cgAct({t:'uno'});
+  else if(a==='opick')cgAct({t:'pick',i:+b.dataset.i});
+  else if(a==='wflip')cgAct({t:'flip'});
+  else if(a==='bhit')cgAct({t:'hit'});
+  else if(a==='bstand')cgAct({t:'stand'});
 });
 S.target=new URLSearchParams(location.search).get('r');
 render();
