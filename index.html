@@ -244,6 +244,36 @@ h2{animation:fadeUp .4s both}
 .carousel .bal{animation:ball 3s ease-in-out infinite alternate}.carousel .b2{animation-delay:-1s}.carousel .b3{animation-delay:-2s}
 @keyframes ball{from{transform:translateY(-5px)}to{transform:translateY(6px)}}
 .carousel .star{animation:twk 1.2s ease-in-out infinite alternate}@keyframes twk{from{opacity:.5}to{opacity:1}}
+.t11{background:linear-gradient(135deg,#7a3e12,#d9822b)}.t12{background:linear-gradient(135deg,#0f766e,#84cc16)}
+.dtbl{display:grid;gap:6px;grid-template-columns:64px 1fr 64px;grid-template-areas:". top ." "left mid right";margin:6px 0;align-items:center}
+.dtbl.n2{grid-template-columns:1fr;grid-template-areas:"top" "mid"}
+.dtbl .top{grid-area:top;justify-self:center}.dtbl .left{grid-area:left}.dtbl .right{grid-area:right}.dmid{grid-area:mid;position:relative;padding-bottom:14px}
+.dseat{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:16px;background:rgba(255,255,255,.7);box-shadow:0 3px 0 rgba(0,0,0,.12);min-width:62px;transition:transform .25s,box-shadow .25s}
+.dseat.act{background:#fff7cc;box-shadow:0 0 0 3px #ffc933,0 6px 14px rgba(255,170,0,.4);animation:dbob 1s ease-in-out infinite}
+.dseat.me{flex-direction:row;justify-content:center;gap:8px;margin:0 auto;max-width:260px}
+.dav .av{width:38px;height:38px;font-size:1.4rem}.dnm{font-weight:800;font-size:.72rem;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dcnt{font-size:.72rem;opacity:.8}
+.dbub{position:absolute;top:-22px;inset-inline:50%;transform:translateX(-50%);white-space:nowrap;background:#fff;border:2px solid #333;border-radius:12px;padding:1px 8px;font-size:.7rem;font-weight:800;animation:dpop 2.6s forwards;z-index:3}
+[dir=rtl] .dbub{transform:translateX(50%)}
+@keyframes dpop{0%{opacity:0;margin-top:8px}10%{opacity:1;margin-top:0}80%{opacity:1}100%{opacity:0}}
+@keyframes dbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.dfelt{background:radial-gradient(circle at 50% 40%,#1f9d62,#0b6b3f);border:7px solid #8a5524;border-radius:28px;box-shadow:inset 0 0 22px rgba(0,0,0,.45),0 6px 0 #5e3815;min-height:150px;padding:10px 6px;display:flex;flex-direction:column;justify-content:space-between;align-items:center}
+.dbd{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-items:center;direction:ltr}
+.dyd{color:#e8fff0;font-size:.72rem;margin-top:8px;text-align:center}
+.dlegs{display:flex;justify-content:space-between;padding:0 30px}.dlegs i{width:16px;height:14px;background:#5e3815;border-radius:0 0 6px 6px;display:block}
+.dt{display:inline-flex;background:#fffdf4;border:1.5px solid #222;border-radius:5px;box-shadow:0 2px 0 rgba(0,0,0,.35);align-items:stretch;position:relative}
+.dt.h{flex-direction:row;width:40px;height:20px}.dt.v{flex-direction:column;width:20px;height:40px}
+.dt u{background:#222;display:block}.dt.h u{width:1.5px}.dt.v u{height:1.5px}
+.dh{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:2px}.dh b{display:block;border-radius:50%;margin:auto;width:3px;height:3px}.dh b.p{background:#111}
+.dhand .dt.v{width:34px;height:68px}.dhand .dh{padding:4px}.dhand .dh b{width:6px;height:6px}
+.dhand{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.dhb{background:none;border:0;padding:0;opacity:.55;transition:transform .15s,opacity .2s;cursor:pointer}.dhb.ok{opacity:1;animation:dwig 1.6s ease-in-out infinite}.dhb.sel{transform:translateY(-12px) scale(1.08)}.dhb:disabled{cursor:default}
+@keyframes dwig{0%,100%{transform:rotate(0)}50%{transform:rotate(-3deg) translateY(-2px)}}
+.dt.drop{animation:ddrop .5s cubic-bezier(.2,1.4,.4,1)}.dt.lastp{box-shadow:0 0 0 2px #ffc933,0 2px 0 rgba(0,0,0,.35)}
+@keyframes ddrop{0%{transform:translateY(-70px) rotate(-40deg) scale(1.5);opacity:0}100%{transform:none;opacity:1}}
+.dmsg{text-align:center;font-weight:800;margin:6px 0;min-height:1.3em}.dmsg.my{color:#b45309;animation:dbob 1s infinite}
+.dfive{text-align:center;font-weight:900;color:#d97706;animation:dpop 2.4s forwards}
+@media (max-width:420px){.dtbl{grid-template-columns:58px 1fr 58px}.dseat{min-width:54px}}
+@media (prefers-reduced-motion:reduce){.dseat.act,.dhb.ok,.dmsg.my,.dt.drop{animation:none}}
 
 </style>
 </head>
@@ -278,6 +308,8 @@ const GAMES={
   c_old:{ico:'🃏',name:'الشايب',desc:'خلّص كروتك واهرب من ورقة الشايب',cls:'t5',min:2,max:6},
   c_war:{ico:'⚔️',name:'حرب الكروت',desc:'اقلب أعلى ورقة وخد الورق كله',cls:'t6',min:2,max:4},
   c_crazy:{ico:'8️⃣',name:'ثمانية المجنونة',desc:'اتخلص من كروتك قبل الكل، والـ8 جوكر',cls:'t7',min:2,max:6},
+  dm:{ico:'🁣',name:'دومينو',desc:'الدومينو العادي: خلّص أحجارك الأول',cls:'t11',min:2,max:4},
+  dma:{ico:'🁫',name:'دومينو أمريكاني (فايف)',desc:'خمسات: اجمع نقط لما الأطراف تبقى مضاعف 5',cls:'t12',min:2,max:4},
   qz:{ico:'🔔',name:'سؤال وجواب: الجرس',desc:'اضغط الأول وجاوب: +1 للصح و-1 للغلط',cls:'t9',min:2,max:4},
   qm:{ico:'🧠',name:'سؤال وجواب: اختيار من متعدد',desc:'الكل بيجاوب، واللي يسبق بـ5 نقط يكسب',cls:'t10',min:2,max:4},
   c_21:{ico:'🎰',name:'واحد وعشرين',desc:'قرّب من 21 ولا تعدّي، والموزّع قدامك',cls:'t8',min:1,max:6}
@@ -692,6 +724,129 @@ CO.forEach(([n,c,cap])=>{Q('flag','flag','ده علم أنهي دولة؟',[n],{
 (()=>{const bad=['سورة فيها بسملتين؟','عيشالك'];for(let i=QB.length-1;i>=0;i--){const q=QB[i];if(bad.some(b=>q.q.includes(b)&&(b!=='عيشالك'||(q.a[0]==='تامر حسني'))))QB.splice(i,1)}QB.forEach(q=>{q.a=q.a.map(x=>x==='الالأقصى'?'الأقصى':x)})})();
 
 const VOK=new Set([224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 0, 5, 11, 13, 56, 57, 58, 59, 60, 61, 62, 63, 64, 66, 67, 68, 69, 71, 72, 73, 74, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 97, 98, 109, 110, 111, 112, 113, 114, 115, 116, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 1, 2, 3, 6, 7, 8, 10, 12, 14, 157, 158, 159, 164, 167, 168, 169, 174, 180, 181, 201, 155, 160, 161, 208, 209, 210, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 220, 221, 222, 223, 442, 443, 444, 445, 446, 381]);const PIN={"120": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Adel_Imam_2009.jpg/500px-Adel_Imam_2009.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "121": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Ahmed_Zaki_%281979%29.jpg/500px-Ahmed_Zaki_%281979%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "122": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/Mahmoud_Abdel_Aziz_%D8%A7%D9%84%D8%B3%D8%A7%D8%AD%D8%B1_%D9%85%D8%AD%D9%85%D9%88%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2.jpg/500px-Mahmoud_Abdel_Aziz_%D8%A7%D9%84%D8%B3%D8%A7%D8%AD%D8%B1_%D9%85%D8%AD%D9%85%D9%88%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "123": "https://upload.wikimedia.org/wikipedia/commons/4/4a/%D9%83%D8%B1%D9%8A%D9%85_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "124": "https://upload.wikimedia.org/wikipedia/commons/7/78/Ahmed_Helmy_in_Sawiris_2018.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "125": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Mohamed_Henedy.png/500px-Mohamed_Henedy.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "126": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Ahmed_Elsaqa_in_Dubai_-_ElMaslaha_Premiere.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "127": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Ahmed_Mekky_2017.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "128": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Youssra_%28cropped%29.jpg/500px-Youssra_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "129": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Suad_Husni.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "130": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Faten_Hamama_actress.jpg/500px-Faten_Hamama_actress.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "131": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Omar_Sharif_1963.JPG/500px-Omar_Sharif_1963.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "133": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Mona_Zaki_2015.jpg/500px-Mona_Zaki_2015.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "134": "https://upload.wikimedia.org/wikipedia/commons/3/31/Yehia_Elfakharany.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "135": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Nelly_Karim_%28cropped%29.jpg/500px-Nelly_Karim_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "136": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Amr_Abdul_Baset_Diab.jpg/500px-Amr_Abdul_Baset_Diab.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "137": "https://upload.wikimedia.org/wikipedia/commons/9/96/Umm_Kulthum_as_Fatimah.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "138": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Abdel_Halim_Hafez.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "139": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Mounirim.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "140": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Nancy_Ajram_signing_ceremony.jpg/500px-Nancy_Ajram_signing_ceremony.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "141": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/%D8%B4%D9%8A%D8%B1%D9%8A%D9%86.jpg/500px-%D8%B4%D9%8A%D8%B1%D9%8A%D9%86.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "142": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Fairuz_1971.jpg/500px-Fairuz_1971.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "143": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Kadim_Al_Sahir_-_Photo_Khalid_Al-Busaidi.jpg/500px-Kadim_Al_Sahir_-_Photo_Khalid_Al-Busaidi.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "144": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/Elissa_Slotkin_2026_Official_Portrait.jpg/500px-Elissa_Slotkin_2026_Official_Portrait.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "145": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Tamer_Hosny%27s_NYE_Concert_%282025%29_%28cropped%29.png/500px-Tamer_Hosny%27s_NYE_Concert_%282025%29_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "146": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Mohamed_Salah_Argentina_v_Egypt_7_July_2026-163_%28cropped%29.jpg/500px-Mohamed_Salah_Argentina_v_Egypt_7_July_2026-163_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "147": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/Naguib_Mahfouz_HR.jpg/500px-Naguib_Mahfouz_HR.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "148": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Ahmed_Zewail_HD2009_Othmer_Gold_Medal_portrait.JPG/500px-Ahmed_Zewail_HD2009_Othmer_Gold_Medal_portrait.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "149": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Hassan_Shehata.jpg/500px-Hassan_Shehata.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "150": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Essam_El-Hadary.jpg/500px-Essam_El-Hadary.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "151": "https://upload.wikimedia.org/wikipedia/commons/9/9a/TahaHussein.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "152": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Stevan_Kragujevic%2C_Gamal_Abdel_Naser_u_Beogradu%2C_1962_%28cropped%29.jpg/500px-Stevan_Kragujevic%2C_Gamal_Abdel_Naser_u_Beogradu%2C_1962_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "153": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Hawass.jpg/500px-Hawass.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "154": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/M_Yacoub.JPG/500px-M_Yacoub.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "351": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/San_Stefano_Grand_Plaza.JPG/500px-San_Stefano_Grand_Plaza.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "352": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Panoramic_view_of_Aswan%2C_Egypt.jpg/500px-Panoramic_view_of_Aswan%2C_Egypt.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "353": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/LuxorHotelsIbnWalidSt.jpg/500px-LuxorHotelsIbnWalidSt.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "354": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Hurghada_Hotels_R03.jpg/500px-Hurghada_Hotels_R03.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "355": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Sharm_El_Sheikh_-_panoramio_%2815%29.jpg/500px-Sharm_El_Sheikh_-_panoramio_%2815%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "356": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Port_Said_aerial_%28cropped%29.jpg/500px-Port_Said_aerial_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "357": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Iss016e019375.jpg/500px-Iss016e019375.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "358": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/EG-suez-13-bg-ismailia.jpg/500px-EG-suez-13-bg-ismailia.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "359": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/%D8%B7%D8%B1%D9%8A%D9%82_%D8%A5%D9%84%D9%89_%D9%85%D8%A8%D9%86%D9%89_%D9%85%D8%AD%D8%A7%D9%81%D8%B8%D8%A9_%D8%AF%D9%85%D9%8A%D8%A7%D8%B7.JPG/500px-%D8%B7%D8%B1%D9%8A%D9%82_%D8%A5%D9%84%D9%89_%D9%85%D8%A8%D9%86%D9%89_%D9%85%D8%AD%D8%A7%D9%81%D8%B8%D8%A9_%D8%AF%D9%85%D9%8A%D8%A7%D8%B7.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "360": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Al_Mansourah%2C_Om_Kalthoum_Sq.jpg/500px-Al_Mansourah%2C_Om_Kalthoum_Sq.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "361": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Tanta-1.jpg/500px-Tanta-1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "362": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/MadinatFayyumWaterWheel.jpg/500px-MadinatFayyumWaterWheel.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "363": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/%D9%8A%D9%88%D9%85_%D8%AC%D8%AF%D9%8A%D8%AF.jpg/500px-%D9%8A%D9%88%D9%85_%D8%AC%D8%AF%D9%8A%D8%AF.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "364": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/20191112_165747jpg.jpg/500px-20191112_165747jpg.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "365": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Dahab_-_Egypte_07-2012_%287614814042%29.jpg/500px-Dahab_-_Egypte_07-2012_%287614814042%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "366": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Entrance_Grand_Egyptian_museum.jpg/500px-Entrance_Grand_Egyptian_museum.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "367": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/AsyutSalamTaggatLibrary.jpg/500px-AsyutSalamTaggatLibrary.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "368": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Akhenaten_museum_in_Minya_-_Egypt.jpg/500px-Akhenaten_museum_in_Minya_-_Egypt.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "369": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/SohagNasrCity.jpg/500px-SohagNasrCity.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "370": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/%D9%82%D9%86%D8%A7_2013.jpg/500px-%D9%82%D9%86%D8%A7_2013.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "371": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Rosetta_Stone.JPG/500px-Rosetta_Stone.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "372": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Porto_marina_resort_and_spa.jpg/500px-Porto_marina_resort_and_spa.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "373": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Rocks_and_Water.jpg/500px-Rocks_and_Water.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "374": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Snow_in_St._Katherine%2C_Sinai_Egypt_-_March_1%2C_2009.jpg/500px-Snow_in_St._Katherine%2C_Sinai_Egypt_-_March_1%2C_2009.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "375": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Ramsis%2C_Aswan_Governorate%2C_Egypt_-_panoramio.jpg/500px-Ramsis%2C_Aswan_Governorate%2C_Egypt_-_panoramio.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "376": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Cairo_Tower_%2814795997855%29.jpg/500px-Cairo_Tower_%2814795997855%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "377": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/%D9%82%D9%84%D8%B9%D8%A9_%D9%82%D8%A7%D9%8A%D8%AA%D8%A8%D8%A7%D9%8A_%D9%85%D9%86_%D8%A7%D9%84%D8%AC%D9%88.jpg/500px-%D9%82%D9%84%D8%B9%D8%A9_%D9%82%D8%A7%D9%8A%D8%AA%D8%A8%D8%A7%D9%8A_%D9%85%D9%86_%D8%A7%D9%84%D8%AC%D9%88.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "378": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Alexandria_library_%281%29.jpg/500px-Alexandria_library_%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "379": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Temple_de_Louxor_68.jpg/500px-Temple_de_Louxor_68.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "380": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Luxor%2C_Tal_der_K%C3%B6nige_%281995%2C_860x605%29.jpg/500px-Luxor%2C_Tal_der_K%C3%B6nige_%281995%2C_860x605%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "381": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg/500px-Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "382": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Sphinx_with_the_third_pyramid.jpg/500px-Sphinx_with_the_third_pyramid.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "383": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/BarragemAssu%C3%A3o.jpg/500px-BarragemAssu%C3%A3o.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "384": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/1977_bis_1980_wurde_die_Tempel_auf_der_Insel_Philae_auf_die_h%C3%B6her_gelegene_Insel_Agilka_versetzt._01.jpg/500px-1977_bis_1980_wurde_die_Tempel_auf_der_Insel_Philae_auf_die_h%C3%B6her_gelegene_Insel_Agilka_versetzt._01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "385": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Flickr_-_HuTect_ShOts_-_Citadel_of_Salah_El.Din_and_Masjid_Muhammad_Ali_%D9%82%D9%84%D8%B9%D8%A9_%D8%B5%D9%84%D8%A7%D8%AD_%D8%A7%D9%84%D8%AF%D9%8A%D9%86_%D8%A7%D9%84%D8%A3%D9%8A%D9%88%D8%A8%D9%8A_%D9%88%D9%85%D8%B3%D8%AC%D8%AF_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D9%84%D9%8A_-_Cairo_-_Egypt_-_17_04_2010_%284%29.jpg/500px-thumbnail.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "386": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/%D8%AE%D8%A7%D9%86_%D8%A7%D9%84%D8%AE%D9%84%D9%8A%D9%84%D9%8A_1.jpg/500px-%D8%AE%D8%A7%D9%86_%D8%A7%D9%84%D8%AE%D9%84%D9%8A%D9%84%D9%8A_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "387": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/1897_bis_1902_wurde_das_%C3%84gyptische_Museum_in_Kairo_gebaut._04.jpg/500px-1897_bis_1902_wurde_das_%C3%84gyptische_Museum_in_Kairo_gebaut._04.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "388": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/Colossi_of_Memnon_May_2015_2.JPG/500px-Colossi_of_Memnon_May_2015_2.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "389": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Templo_funerario_de_Hatshepsut%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_13.jpg/500px-Templo_funerario_de_Hatshepsut%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_13.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "390": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Cairo_opera_house.jpg/500px-Cairo_opera_house.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "391": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Mosqu%C3%A9e_Al-Azhar.jpg/500px-Mosqu%C3%A9e_Al-Azhar.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "392": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Iss016e019375.jpg/500px-Iss016e019375.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "393": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Al_Farafrah%2C_New_Valley_Governorate%2C_Egypt_-_panoramio_%2821%29.jpg/500px-Al_Farafrah%2C_New_Valley_Governorate%2C_Egypt_-_panoramio_%2821%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "394": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Beautiful_nature_along_Nile_River_01.jpg/500px-Beautiful_nature_along_Nile_River_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "395": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/TahrirSQ-2020%281%29.jpg/500px-TahrirSQ-2020%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"};Object.keys(PIN).forEach(i=>{if(QB[i]&&QB[i].img)QB[i].img.u=PIN[i]});
+/* ===== دومينو ===== */
+const DK=['dm','dma'],isD=k=>DK.includes(k);
+const dAll=()=>{const r=[];for(let a=0;a<=6;a++)for(let b=a;b<=6;b++)r.push(a+'-'+b);return r};
+const dp=t=>String(t).split('-').map(Number);
+const dSum=t=>{const[a,b]=dp(t);return a+b};
+const dDbl=t=>{const[a,b]=dp(t);return a===b};
+const dEnds=st=>{const bd=A(st.bd);if(!bd.length)return null;return [dp(bd[0])[0],dp(bd[bd.length-1])[1]]};
+function dSides(st,t){
+  const e=dEnds(st);
+  if(!e)return (!st.first||t===st.first)?['R']:[];
+  const[a,b]=dp(t),r=[];
+  if(a===e[0]||b===e[0])r.push('L');
+  if(a===e[1]||b===e[1])r.push('R');
+  return r;
+}
+const dPlayable=(st,p)=>A(st.hands[p]).filter(t=>dSides(st,t).length);
+function dEndVal(st){
+  const bd=A(st.bd);if(!bd.length)return 0;
+  if(bd.length===1)return dSum(bd[0]);
+  const l=dp(bd[0])[0],r=dp(bd[bd.length-1])[1];
+  return (dDbl(bd[0])?l*2:l)+(dDbl(bd[bd.length-1])?r*2:r);
+}
+function dDeal(st){
+  const n=st.order.length,all=shuf(dAll());
+  st.hands={};st.order.forEach((p,i)=>st.hands[p]=all.slice(i*7,i*7+7));
+  st.yd=all.slice(n*7);st.bd=[];st.pass=0;st.last=null;st.ev=null;
+  let best=null,bi=0,bd=-1;
+  st.order.forEach((p,i)=>A(st.hands[p]).forEach(t=>{const d=dDbl(t)?100+dSum(t):dSum(t);if(d>bd){bd=d;best=t;bi=i}}));
+  st.first=best;st.turn=bi;st.ph='play';
+}
+function dRound(st,w,reason){
+  const others=st.order.filter(p=>p!==w);
+  let pts=0;
+  if(st.kind==='dma'){
+    const hs={};st.order.forEach(p=>hs[p]=A(st.hands[p]).reduce((s,t)=>s+dSum(t),0));
+    pts=reason==='out'?others.reduce((s,p)=>s+hs[p],0):others.reduce((s,p)=>s+hs[p],0)-hs[w];
+    pts=Math.max(0,Math.round(pts/5)*5);
+    st.sc[w]=(st.sc[w]||0)+pts;
+  }
+  st.rs={w,reason,pts};st.v++;
+  if(st.kind==='dm'||st.sc[w]>=st.target){
+    const top=Math.max(...st.order.map(p=>st.sc[p]||0));
+    st.over=1;st.winner=st.kind==='dm'?w:(st.order.find(p=>(st.sc[p]||0)===top));st.pts={};st.pts[st.winner]=1;
+  }else st.ph='rd';
+  return st;
+}
+function dSettle(st){
+  const n=st.order.length;
+  for(let g=0;g<n+1;g++){
+    const cur=st.order[st.turn];
+    if(dPlayable(st,cur).length||A(st.yd).length)return st;
+    st.pass=(st.pass||0)+1;st.ev={t:'skip',p:cur};
+    if(st.pass>=n){
+      let w=st.order[0],lo=1e9;
+      st.order.forEach(p=>{const s=A(st.hands[p]).reduce((a,t)=>a+dSum(t),0);if(s<lo){lo=s;w=p}});
+      return dRound(st,w,'block');
+    }
+    st.turn=(st.turn+1)%n;
+  }
+  return st;
+}
+const domEng=kind=>({
+  init(ids,o,ts){
+    const st={kind,v:0,order:ids,sc:{},target:kind==='dma'?50:0};
+    ids.forEach(p=>st.sc[p]=0);dDeal(st);return st;
+  },
+  act(o,p,a){
+    const st=clone(o);if(st.over)return null;
+    st.sc=st.sc||{};
+    const cur=st.order[st.turn];
+    if(a.t==='nh'){if(st.ph!=='rd'||!a.adm)return null;dDeal(st);st.v++;return st}
+    if(st.ph!=='play'||p!==cur)return null;
+    const hand=A(st.hands[p]);
+    if(a.t==='draw'){
+      if(dPlayable(st,p).length||!A(st.yd).length)return null;
+      const yd=A(st.yd),t=yd.pop();st.yd=yd;st.hands[p]=[...hand,t];st.pass=0;st.ev={t:'draw',p};st.last=null;
+      st.v++;return dSettle(st);
+    }
+    if(a.t==='play'){
+      const t=a.tile;if(!hand.includes(t))return null;
+      const sides=dSides(st,t);if(!sides.includes(a.side))return null;
+      const[x,y]=dp(t),bd=A(st.bd),e=dEnds(st);
+      if(!e)bd.push(x+'-'+y);
+      else if(a.side==='L'){bd.unshift(y===e[0]?x+'-'+y:y+'-'+x)}
+      else{bd.push(x===e[1]?x+'-'+y:y+'-'+x)}
+      st.bd=bd;st.first=null;
+      const nh=hand.filter(h=>h!==t);st.hands[p]=nh;st.pass=0;
+      st.last={t,i:a.side==='L'&&e?0:bd.length-1};st.ev={t:'play',p};
+      if(st.kind==='dma'){const v=dEndVal(st);if(v>0&&v%5===0){st.sc[p]=(st.sc[p]||0)+v;st.ev={t:'five',p,n:v};if(st.sc[p]>=st.target){st.v++;return dRound(st,p,'out_score')}}}
+      if(!nh.length){st.v++;return dRound(st,p,'out')}
+      st.turn=(st.turn+1)%st.order.length;st.v++;return dSettle(st);
+    }
+    return null;
+  }
+});
+/* ===== شاشة الدومينو ===== */
+const DPIPS=[[],[4],[0,8],[0,4,8],[0,2,6,8],[0,2,4,6,8],[0,2,3,5,6,8]];
+const dHalf=n=>`<i class="dh">${[0,1,2,3,4,5,6,7,8].map(i=>`<b${DPIPS[n].includes(i)?' class="p"':''}></b>`).join('')}</i>`;
+const dTile=(t,vert,cls='')=>{const[a,b]=dp(t);return `<span class="dt ${vert?'v':'h'} ${cls}">${dHalf(a)}<u></u>${dHalf(b)}</span>`};
+const dSay={play:['على مهلك 😎','خد دي!','ضربة معلم!','ياسلام 👌'],draw:['يا ساتر 😅','مفيش حظ!','هاتلي واحدة'],skip:['عدّيت 😴','مليش حجر!'],five:['خمسات! 🤑','قبضت!','نقطة بنقطة 💰']};
+function domV(st){
+  const me=pid,inG=st.order.includes(me),cur=st.order[st.turn],myTurn=inG&&cur===me&&st.ph==='play'&&!st.over;
+  const n=st.order.length,mi=Math.max(0,st.order.indexOf(me)),rot=Array.from({length:n},(_,i)=>st.order[(mi+i)%n]);
+  const others=rot.slice(1),pos=n===2?['top']:n===3?['left','right']:['left','top','right'];
+  const bd=A(st.bd),anim=S.dAnim!==st.gid+'-'+st.v;S.dAnim=st.gid+'-'+st.v;
+  const bubble=p=>{if(!st.ev||st.ev.p!==p||!anim&&false)return '';const L=dSay[st.ev.t]||[];return L.length?`<span class="dbub" key="${st.v}">${L[st.v%L.length]}</span>`:''};
+  const seat=(p,cls)=>`<div class="dseat ${cls} ${p===cur&&!st.over&&st.ph==='play'?'act':''}">${bubble(p)}<div class="dav">${av(nm(p))}</div><div class="dnm">${esc(nm(p))}${p===me?' (أنت)':''}</div><div class="dcnt">${p===me?'':'🀫 '}${A(st.hands[p]).length}${st.kind==='dma'?` • <b>${st.sc[p]||0}</b>`:''}</div></div>`;
+  const mine=A(st.hands[me]),pl=dPlayable(st,me),canDraw=myTurn&&!pl.length&&A(st.yd).length>0;
+  const ends=dEnds(st);
+  const felt=`<div class="dfelt"><div class="dbd">${bd.length?bd.map((t,i)=>dTile(t,dDbl(t),(st.last&&st.last.i===i&&anim?'drop ':'')+(st.last&&st.last.i===i?'lastp':''))).join(''):'<span class="small" style="opacity:.8">الطاولة فاضية — '+(st.first?`ابدأ بالحجر ${dp(st.first).join('|')}`:'')+'</span>'}</div>`+
+    `<div class="dyd">🀫 الكومة: <b>${A(st.yd).length}</b>${ends?` • الأطراف: <b>${ends[0]}</b> و <b>${ends[1]}</b>`:''}${st.kind==='dma'?` • الهدف ${st.target}`:''}</div></div>`;
+  const leg='<div class="dlegs"><i></i><i></i></div>';
+  let msg=st.over?'':st.ph==='rd'?'':myTurn?(canDraw?'مفيش حجر يتلعب معاك، اسحب من الكومة':'دورك! اختار حجر'):`دور ${esc(nm(cur))}...`;
+  const hand=inG?`<div class="dhand">${mine.map(t=>{const ok=myTurn&&dSides(st,t).length;return `<button class="dhb ${ok?'ok':''} ${S.dsel===t?'sel':''}" data-act="dsel" data-t="${t}" ${myTurn?'':'disabled'} aria-label="${t}">${dTile(t,true)}</button>`}).join('')||'<span class="small">إيدك فاضية</span>'}</div>`:'<p class="small" style="text-align:center">متفرج 👀</p>';
+  let ctl='';
+  if(myTurn&&S.dsel&&mine.includes(S.dsel)){const sd=dSides(st,S.dsel);ctl=`<div class="rm" style="gap:8px;justify-content:center">${sd.includes('L')?'<button class="big" style="margin:0" data-act="dplay" data-s="L">⬅ على الشمال</button>':''}${sd.includes('R')?'<button class="big" style="margin:0" data-act="dplay" data-s="R">على اليمين ➡</button>':''}</div>`}
+  if(canDraw)ctl+=`<button class="big" data-act="ddraw">🀫 اسحب من الكومة (${A(st.yd).length})</button>`;
+  let rd='';
+  if(st.ph==='rd'&&st.rs){rd=`<div class="ovl"><div class="card" style="text-align:center;width:min(100%,380px)"><div style="font-size:2.4rem">🎉</div><h2>${esc(nm(st.rs.w))} ${st.rs.reason==='block'?'كسب الجولة (الطاولة اتقفلت)':'خلّص أحجاره'}</h2><p class="pts">+${st.rs.pts} نقطة</p>${st.order.map(p=>`<div class="lb"><span style="display:flex;align-items:center">${av(nm(p))}${esc(nm(p))}</span><b>${st.sc[p]||0}</b></div>`).join('')}${isAdmin()?'<button class="big" data-act="dnh">الجولة الجاية ▶</button>':'<p class="small">مستنيين الأدمن يبدأ الجولة الجاية...</p>'}</div></div>`}
+  return `<div class="dtbl n${n}">${others.map((p,i)=>seat(p,pos[i])).join('')}<div class="dmid">${felt}${leg}</div></div><div class="dmsg ${myTurn?'my':''}">${msg}</div>${st.ev&&st.ev.t==='five'?`<div class="dfive">+${st.ev.n} لـ ${esc(nm(st.ev.p))}</div>`:''}${ctl}<div class="dme">${inG?seat(me,'me'):''}</div>${hand}${rd}`;
+}
+const DART=`<svg viewBox="0 0 120 90"><ellipse cx="60" cy="76" rx="44" ry="8" fill="rgba(0,0,0,.22)"/><g transform="rotate(-14 40 46)"><rect x="14" y="20" width="52" height="28" rx="6" fill="#fff"/><line x1="40" y1="22" x2="40" y2="46" stroke="#222" stroke-width="2"/><g fill="#222"><circle cx="24" cy="30" r="3"/><circle cx="32" cy="38" r="3"/><circle cx="48" cy="28" r="3"/><circle cx="58" cy="28" r="3"/><circle cx="48" cy="40" r="3"/><circle cx="58" cy="40" r="3"/></g></g><g transform="rotate(12 80 52)"><rect x="56" y="40" width="52" height="28" rx="6" fill="#fff"/><line x1="82" y1="42" x2="82" y2="66" stroke="#222" stroke-width="2"/><g fill="#222"><circle cx="69" cy="54" r="3.4" fill="#d33"/><circle cx="95" cy="48" r="3"/><circle cx="102" cy="60" r="3"/><circle cx="95" cy="60" r="3"/><circle cx="102" cy="48" r="3"/></g></g></svg>`;
+
 /* ===== الصوت ===== */
 const SND=(()=>{
   let ctx,mg,mt=0,step=0,nextT=0,sfxOn=localStorage.sfx!=='0',musOn=localStorage.mus!=='0';
@@ -745,6 +900,8 @@ const ART={
   dev:`<svg viewBox="0 0 120 90"><rect x="6" y="20" width="108" height="46" rx="12" fill="#ffc933"/><rect x="6" y="48" width="108" height="8" fill="#ff8a3d"/><g fill="#dff6ff"><rect x="14" y="28" width="20" height="16" rx="3"/><rect x="40" y="28" width="20" height="16" rx="3"/><rect x="66" y="28" width="20" height="16" rx="3"/><rect x="92" y="28" width="16" height="20" rx="3"/></g><g fill="#2b2100"><circle cx="30" cy="68" r="10"/><circle cx="90" cy="68" r="10"/></g><g fill="#fff"><circle cx="30" cy="68" r="4"/><circle cx="90" cy="68" r="4"/></g><text x="60" y="15" text-anchor="middle" font-size="16" fill="#fff">✨ ? ✨</text></svg>`,
   classic:`<svg viewBox="0 0 120 90"><rect x="6" y="20" width="108" height="46" rx="12" fill="#10b79f"/><rect x="6" y="48" width="108" height="8" fill="#0f766e"/><g fill="#e8fffb"><rect x="14" y="28" width="20" height="16" rx="3"/><rect x="40" y="28" width="20" height="16" rx="3"/><rect x="66" y="28" width="20" height="16" rx="3"/><rect x="92" y="28" width="16" height="20" rx="3"/></g><g fill="#12323a"><circle cx="30" cy="68" r="10"/><circle cx="90" cy="68" r="10"/></g><g fill="#fff"><circle cx="30" cy="68" r="4"/><circle cx="90" cy="68" r="4"/></g><text x="60" y="15" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">أ ب ج</text></svg>`,
   uno:`<svg viewBox="0 0 120 90"><g transform="translate(60 48)"><g transform="rotate(-24) translate(-34 -30)"><rect width="38" height="56" rx="6" fill="#e63946" stroke="#fff" stroke-width="3"/><text x="19" y="36" text-anchor="middle" font-size="24" font-weight="900" fill="#fff">7</text></g><g transform="rotate(-4) translate(-19 -32)"><rect width="38" height="56" rx="6" fill="#ffb703" stroke="#fff" stroke-width="3"/><text x="19" y="36" text-anchor="middle" font-size="20" font-weight="900" fill="#2b2100">+2</text></g><g transform="rotate(18) translate(-2 -30)"><rect width="38" height="56" rx="6" fill="#2f6fed" stroke="#fff" stroke-width="3"/><text x="19" y="36" text-anchor="middle" font-size="22" font-weight="900" fill="#fff">⦸</text></g></g><text x="60" y="86" text-anchor="middle" font-size="14" font-weight="900" fill="#fff">UNO!</text></svg>`,
+  dm:`${DART}`,
+  dma:`${DART}`,
   qz:`<svg viewBox="0 0 120 90"><ellipse cx="60" cy="74" rx="40" ry="9" fill="rgba(0,0,0,.22)"/><circle cx="60" cy="48" r="34" fill="#a61b2b"/><circle cx="60" cy="42" r="32" fill="#e5484d" stroke="#fff" stroke-width="4"/><text x="60" y="55" text-anchor="middle" font-size="38" fill="#fff">🔔</text><text x="100" y="22" font-size="22" fill="#fff" font-weight="900">؟</text><text x="12" y="30" font-size="16" fill="#ffe9a8" font-weight="900">+1</text></svg>`,
   qm:`<svg viewBox="0 0 120 90"><g font-size="13" font-weight="900" fill="#fff"><rect x="8" y="10" width="50" height="30" rx="8" fill="#e63946"/><rect x="62" y="10" width="50" height="30" rx="8" fill="#2f6fed"/><rect x="8" y="46" width="50" height="30" rx="8" fill="#2fb344"/><rect x="62" y="46" width="50" height="30" rx="8" fill="#e08a00"/><text x="33" y="30" text-anchor="middle">أ</text><text x="87" y="30" text-anchor="middle">ب</text><text x="33" y="66" text-anchor="middle">ج</text><text x="87" y="66" text-anchor="middle">د</text></g><circle cx="60" cy="43" r="14" fill="#fff"/><text x="60" y="50" text-anchor="middle" font-size="20" font-weight="900" fill="#7c3aed">؟</text></svg>`,
   cards:`<svg viewBox="0 0 120 90"><g transform="translate(60 48)"><g transform="rotate(-20) translate(-38 -32)"><rect width="40" height="58" rx="6" fill="#fff" stroke="#ccc"/><text x="20" y="36" text-anchor="middle" font-size="28" fill="#222">♠</text></g><g transform="rotate(0) translate(-20 -34)"><rect width="40" height="58" rx="6" fill="#fff" stroke="#ccc"/><text x="20" y="38" text-anchor="middle" font-size="28" fill="#d62839">♥</text></g><g transform="rotate(20) translate(-2 -32)"><rect width="40" height="58" rx="6" fill="#fff" stroke="#ccc"/><text x="20" y="36" text-anchor="middle" font-size="28" fill="#222">♣</text></g></g></svg>`
@@ -978,6 +1135,8 @@ const CAROUSEL=`<div class="carousel" aria-hidden="true"><svg viewBox="0 0 320 2
 <g class="an a4"><g class="bob"><circle cx="0" cy="0" r="16" fill="#f4f4f4"/><ellipse cx="-7" cy="-24" rx="5" ry="13" fill="#f4f4f4"/><ellipse cx="7" cy="-24" rx="5" ry="13" fill="#f4f4f4"/><ellipse cx="-7" cy="-24" rx="2.5" ry="9" fill="#ffb3c7"/><ellipse cx="7" cy="-24" rx="2.5" ry="9" fill="#ffb3c7"/><circle cx="-5" cy="-3" r="2" fill="#222"/><circle cx="5" cy="-3" r="2" fill="#222"/><circle cx="0" cy="4" r="2.4" fill="#ff8fb0"/></g></g>
 <rect x="64" y="150" width="192" height="14" rx="7" fill="#7c3aed"/><rect x="80" y="164" width="160" height="10" rx="5" fill="#5b21b6"/>
 <g fill="#ffc933"><circle cx="86" cy="157" r="3"/><circle cx="116" cy="157" r="3"/><circle cx="146" cy="157" r="3"/><circle cx="176" cy="157" r="3"/><circle cx="206" cy="157" r="3"/><circle cx="236" cy="157" r="3"/></g></svg></div>`;
+RULES.dm=['من 2 لـ4 لاعبين، وكل واحد بياخد 7 أحجار والباقي في الكومة.','اللي معاه أكبر دبل (أو أكبر حجر) يبدأ بيه.','على دورك نزّل حجر رقمه زي أي طرف من الطرفين (شمال أو يمين).','لو معكش حجر يتلعب، اسحب من الكومة لحد ما يطلعلك حجر. ولو الكومة خلصت دورك بيتخطّى.','أول واحد يخلّص أحجاره يكسب. ولو الطاولة اتقفلت يكسب اللي مجموع أحجاره أقل.'];
+RULES.dma=['دومينو أمريكاني (فايف) من 2 لـ4 لاعبين. كل واحد 7 أحجار والباقي كومة.','القواعد نفس الدومينو العادي، بس فيه نقط: لما مجموع رقمي الطرفين (الدبل بيتحسب مرتين) يبقى من مضاعفات الـ5 تاخد المجموع ده نقط.','اللي يخلّص أحجاره (أو الطاولة تتقفل وهو أقل مجموع) ياخد مجموع أحجار الباقيين مقرّب لأقرب 5.','أول واحد يوصل لـ50 نقطة يكسب. الأدمن بيدوس "الجولة الجاية" بين الجولات.'];
 const myAv=()=>localStorage.av||(localStorage.av=AVS[rnd(AVS.length)][0]);
 function cardSound(st){const k=st.gid+'-'+st.v,first=S.csk==null||String(S.csk).split('-')[0]!==String(st.gid);S.csk=k;if(!first)SND.play(st.over?'win':'card')}
 function quizOver(st){
@@ -989,10 +1148,11 @@ const quizForm=k=>`<p class="small">الغرفة دي من ${GAMES[k].min} لح�
   `<label>الأقسام</label><div class="chips">${Object.entries(CT).map(([c,t])=>`<button class="chip on" data-act="qcat" data-ck="${c}">${esc(t)}</button>`).join('')}</div>
   <label for="qn">${k==='qz'?'عدد الأسئلة (طول الجولة)':'أقصى عدد أسئلة'}</label><input id="qn" type="number" min="5" max="60" value="${k==='qz'?10:30}">`+(k==='qm'?`<label for="ql">الفارق اللي يكسب بيه اللاعب (نقط)</label><input id="ql" type="number" min="2" max="20" value="5">`:'');
 
-const ENG={uno:UNO,c_old:OLD,c_war:WAR,c_crazy:CE,c_21:BJ,qz:quizEng('qz'),qm:quizEng('qm')};
+const ENG={uno:UNO,c_old:OLD,c_war:WAR,c_crazy:CE,c_21:BJ,qz:quizEng('qz'),qm:quizEng('qm'),dm:domEng('dm'),dma:domEng('dma')};
 function dropP(o,p){
   const st=clone(o),i=st.order.indexOf(p);
   if(i<0||st.over)return null;
+  if(isD(st.kind)){const hd=A(st.hands[p]);st.yd=[...A(st.yd),...hd];delete st.hands[p];st.order.splice(i,1);if(st.sc)delete st.sc[p];if(st.order.length<2){st.over=1;st.aborted=1;st.winner=null;st.pts={}}else{if(i<st.turn)st.turn--;st.turn%=st.order.length;if(st.ph==='play'){dSettle(st)}}st.v++;return st}
   if(isQ(st.kind)){st.order.splice(i,1);if(st.sc)delete st.sc[p];if(st.order.length<2){qFinish(st);st.aborted=1}else if(st.by===p){st.by=null;st.ph='ask'}st.v++;return st}
   const cur=st.order[st.turn],h=A(st.hands[p]);
   st.order.splice(i,1);delete st.hands[p];
@@ -1157,7 +1317,7 @@ function render(){
     k=ph==='cards'?'cg':ph==='play'||ph==='countdown'?'play'+g.round:ph==='review'||ph==='tally'?'review'+g.round:ph==='results'?'res'+g.round:ph==='final'?'final':'lobby';
   }
   if(k==='cg'){
-    const ck=JSON.stringify([S.cg&&S.cg.v,S.cg&&S.cg.over,S.cg&&S.cg.gid,Object.values(S.players).map(p=>p.name+p.score),S.pickWild,S.peek,S.view]);
+    const ck=JSON.stringify([S.cg&&S.cg.v,S.cg&&S.cg.over,S.cg&&S.cg.gid,Object.values(S.players).map(p=>p.name+p.score),S.pickWild,S.peek,S.dsel,S.view]);
     if(ck===S.ck&&S.view==='cg'){tick();return}
     S.ck=ck;
   }
@@ -1182,7 +1342,7 @@ function hubV(){
     const r=rs(ks),pp=r.reduce((a,[id])=>a+Object.keys(S.pl[id]).length,0);
     return `<button class="tile ${cls}" data-act="${act}" data-k="${k}" style="animation-delay:${i*80}ms">${ART[k]?`<span class="art">${ART[k]}</span>`:`<span class="ti${[...ico].length>3?' sm':''}">${ico}</span>`}<b>${name}</b><small>${desc}</small><em>${r.length} غرفة • ${pp} لاعب</em></button>`;
   };
-  return topbar()+hero()+`<div class="tiles">`+['dev','classic','uno','qz','qm'].map((k,i)=>{const g=GAMES[k];return tile('game',k,g.ico,g.name,g.desc,g.cls,[k],i)}).join('')+tile('grp','cards','♠️♥️♦️♣️','الكوتشينة','الشايب • حرب • 8 المجنونة • واحد وعشرين','t4',CARDK,5)+`</div>`;
+  return topbar()+hero()+`<div class="tiles">`+['dev','classic','uno','qz','qm','dm','dma'].map((k,i)=>{const g=GAMES[k];return tile('game',k,g.ico,g.name,g.desc,g.cls,[k],i)}).join('')+tile('grp','cards','♠️♥️♦️♣️','الكوتشينة','الشايب • حرب • 8 المجنونة • واحد وعشرين','t4',CARDK,5)+`</div>`;
 }
 function subV(){
   const rs=k=>Object.entries(S.idx).filter(([id,r])=>(r.kind||'dev')===k&&Object.keys(S.pl[id]||{}).length);
@@ -1284,7 +1444,7 @@ function cardsV(){
   const st=S.cg;
   if(!st)return '<p class="small" style="text-align:center">⏳ بيتحمّل...</p>';
   if(S.prev.g!==st.gid){S.prev={h:[],top:-1,v:-1,g:st.gid};S.seen=[]}
-  const k=st.kind;(isQ(k)?quizSound(st):cardSound(st));const body=k==='qz'?qzV(st):k==='qm'?qmV(st):k==='uno'||k==='c_crazy'?shedV(st):k==='c_old'?oldV(st):k==='c_war'?warView(st):bjView(st);
+  const k=st.kind;(isQ(k)?quizSound(st):cardSound(st));const body=isD(k)?domV(st):k==='qz'?qzV(st):k==='qm'?qmV(st):k==='uno'||k==='c_crazy'?shedV(st):k==='c_old'?oldV(st):k==='c_war'?warView(st):bjView(st);
   return banner(st)+body+lbBox()+(S.pickWild!=null?pickerV(st):'')+(st.over?overV(st):'');
 }
 function shedV(st){
@@ -1471,6 +1631,10 @@ document.addEventListener('click',e=>{
   else if(a==='fxset')fxDlg(true)
   else if(a==='fxclose')fxDlg(false)
   else if(a==='fxsel'){localStorage.fxk=k;FUN.play(k);fxDlg(true)}
+  else if(a==='dsel'){const t=b.dataset.t,sd=dSides(S.cg,t);if(!sd.length)return toast('الحجر ده مينفعش هنا');if(sd.length===1){S.dsel=null;cgAct({t:'play',tile:t,side:sd[0],ts:now()})}else{S.dsel=t;render()}}
+  else if(a==='dplay'){const t=S.dsel;S.dsel=null;if(t)cgAct({t:'play',tile:t,side:b.dataset.s,ts:now()})}
+  else if(a==='ddraw')cgAct({t:'draw',ts:now()})
+  else if(a==='dnh')cgAct({t:'nh',ts:now()})
   else if(a==='qnext')cgAct({t:'adv',ts:now()});
   else if(a==='qpick')cgAct({t:'pick',i:+b.dataset.i,ts:now()});
   else if(a==='qon'){S.form.on=b.dataset.v==='1';seg(b)}
