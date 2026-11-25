@@ -286,6 +286,8 @@ h2{animation:fadeUp .4s both}
 <div id="chat"></div><div id="dlg" hidden></div><div id="toast" role="alert"></div>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {connectDatabaseEmulator} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,connectAuthEmulator,signInWithCredential} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {getDatabase,ref,onValue,set,update,get,onDisconnect,runTransaction,increment} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
@@ -339,7 +341,7 @@ const isDark=()=>document.documentElement.dataset.theme==='dark';
 const setTheme=t=>{document.documentElement.dataset.theme=t;localStorage.theme=t;document.querySelectorAll('[data-act="theme"]').forEach(b=>b.textContent=isDark()?'☀️':'🌙')};
 setTheme(localStorage.theme||'light');
 
-const db=getDatabase(initializeApp(firebaseConfig));
+const EMU=/[?&]emu=1/.test(location.search)&&(location.protocol==='file:'||location.hostname==='localhost');const APP=initializeApp(EMU?{...firebaseConfig,projectId:'demo-test',databaseURL:'https://demo-test-default-rtdb.firebaseio.com'}:firebaseConfig);const db=getDatabase(APP);if(EMU)connectDatabaseEmulator(db,'127.0.0.1',9000);
 const pid=sessionStorage.pid||(sessionStorage.pid='p'+Math.random().toString(36).slice(2,9));
 const S={cg:null,miss:{},pickWild:null,ck:'',prev:{h:[],top:-1,v:-1},sub:null,pl:{},ld:0,em:{},kind:null,chat:{},seen:0,chatOpen:false,me:localStorage.name||null,rid:null,meta:null,players:{},game:null,used:[],hist:{},r:{},idx:{},offset:0,round:0,view:'',unsub:{},sent:0,mv:'',mine:[],score:0,jit:Math.random()*1000,gone:0,ask:null,pending:null,creating:false,form:{priv:false,timed:false}};
 const base=()=>`rooms/${S.rid}`;
@@ -348,6 +350,48 @@ const isAdmin=()=>S.meta?.adminId===pid;
 const gameActive=()=>{const ph=S.game?.phase;return !!S.rid&&!!ph&&ph!=='lobby'&&ph!=='final'&&!(ph==='cards'&&S.cg?.over)};
 const sub=(k,p,cb)=>{S.unsub[k]&&S.unsub[k]();S.unsub[k]=onValue(ref(db,p),x=>cb(x.val()))};
 const unsubAll=p=>Object.keys(S.unsub).filter(k=>k.startsWith(p)).forEach(k=>{S.unsub[k]();delete S.unsub[k]});
+
+/* ===== حساب جوجل + ليفل + كوينز ===== */
+const AUTH=getAuth(APP);
+if(EMU){connectAuthEmulator(AUTH,'http://127.0.0.1:9099',{disableWarnings:true});window.__acc={signIn:e=>signInWithCredential(AUTH,GoogleAuthProvider.credential(JSON.stringify({sub:e,email:e,email_verified:true}))),get:()=>ACC.p,uid:()=>ACC.u&&ACC.u.uid,db:()=>db}}
+const ACC={u:null,p:null,ready:false,busy:false};
+const lvOf=xp=>Math.min(30,1+Math.floor((+xp||0)/100));
+const lvPct=xp=>{const l=lvOf(xp);return l>=30?100:(xp%100)};
+const accChip=()=>ACC.u?`<button class="ghost sm accb" data-act="acc" aria-label="حسابي"><b>Lv ${lvOf(ACC.p&&ACC.p.xp)}</b> 🪙${(ACC.p&&ACC.p.coins)||0}</button>`:`<button class="ghost sm accb" data-act="gl" aria-label="دخول بحساب جوجل">🔐 دخول</button>`;
+async function accLoad(u){
+  const r=ref(db,'users/'+u.uid);
+  let s=await get(r);
+  if(!s.exists()){await set(r,{name:String(S.me||u.displayName||'لاعب').slice(0,24),xp:0,coins:0});s=await get(r)}
+  let p=s.val();
+  ACC.p=p;
+  const nowS=Date.now()+(S.offset||0);
+  if(!p.lastDaily||nowS-p.lastDaily>=86400000){
+    try{await update(r,{coins:(p.coins||0)+10,lastDaily:{'.sv':'timestamp'}});const s2=await get(r);ACC.p=s2.val();toast('🎁 جايزة اليوم: +10 كوينز',1);try{SND.play('win')}catch(e){}}catch(e){}
+  }
+  ACC.ready=true;render();
+}
+onAuthStateChanged(AUTH,u=>{ACC.u=u;ACC.p=null;ACC.ready=false;if(u)accLoad(u).catch(e=>{console.warn('acc',e)});else render()});
+async function accSignIn(){
+  if(ACC.busy)return;ACC.busy=true;
+  try{await signInWithPopup(AUTH,new GoogleAuthProvider())}
+  catch(e){if(e&&e.code!=='auth/popup-closed-by-user'&&e.code!=='auth/cancelled-popup-request')toast('معرفتش أدخل بجوجل: '+(e.code||'خطأ'))}
+  ACC.busy=false;
+}
+async function accAward(win){
+  if(!ACC.u||!ACC.p)return;
+  const add=win?25:8;
+  try{const r=ref(db,'users/'+ACC.u.uid+'/xp');const nx=Math.min((ACC.p.xp||0)+add,(ACC.p.xp||0)+50);await set(r,nx);const was=lvOf(ACC.p.xp);ACC.p.xp=nx;if(lvOf(nx)>was)toast('🆙 ليفل جديد: '+lvOf(nx),1);render()}catch(e){}
+}
+function accCheck(st){
+  if(!ACC.u||!st||!st.over||st.aborted||S.awarded===st.gid||!st.order||!st.order.includes(pid))return;
+  S.awarded=st.gid;accAward(!!(st.pts&&st.pts[pid]));
+}
+function accDlg(open){
+  let d=document.querySelector('#accd');if(!d){d=document.createElement('div');d.id='accd';document.body.appendChild(d)}
+  if(!open){d.innerHTML='';return}
+  const p=ACC.p||{xp:0,coins:0},l=lvOf(p.xp);
+  d.innerHTML=`<div class="ovl"><div class="card" style="text-align:center;width:min(100%,380px)"><h3>👤 حسابي</h3><p class="small">${esc((ACC.u&&ACC.u.email)||'')}</p><div style="font-size:2rem;font-weight:900">Lv ${l}${l>=30?' (أعلى ليفل)':''}</div><div class="bar" style="margin:8px 0"><i style="width:${lvPct(p.xp||0)}%;animation:none"></i></div><p class="small">${p.xp||0} نقطة خبرة • كل 100 = ليفل جديد (الحد 30)</p><div style="font-size:1.6rem;margin:8px 0">🪙 ${p.coins||0} كوينز</div><p class="small">جايزة يومية 10 كوينز كل 24 ساعة لما تدخل. الكوينز هتتصرف في متجر اللعبة بعدين.</p><button class="big" data-act="accclose">تمام</button><button class="big ghost" data-act="accout">تسجيل خروج</button></div></div>`;
+}
 
 onValue(ref(db,'.info/serverTimeOffset'),s=>S.offset=s.val()||0);
 onValue(ref(db,'.info/connected'),s=>{if(s.val()&&S.me&&S.rid)register()});
@@ -1304,7 +1348,7 @@ function confetti(){
 /* ===== الشاشات ===== */
 const lb=()=>Object.entries(S.players).sort((a,b)=>(b[1].score||0)-(a[1].score||0)).map(([id,p],i)=>
   `<div class="lb"><span style="display:flex;align-items:center"><i class="rk">${i+1}</i>${av(p.name)}${esc(p.name)}${id===S.meta?.adminId?' 👑':''}</span><b>${p.score||0}</b></div>`).join('');
-const topbar=room=>(S.me&&!AVM[S.me]&&(AVM[S.me]=myAv()),'')+`<header class="top">${room?`<span class="logo">🎡 ملاهي 15 مايو</span>`:`<button class="logo ghost" data-act="hub">🎡 ملاهي 15 مايو</button>`}<div class="tools"><button class="ghost sm" data-act="rn" aria-label="غيّر اسمك">${av(S.me)}${esc(S.me)} ${gameActive()?'🔒':'✏️'}</button><button class="ghost sm" data-act="mus" aria-label="موسيقى" style="opacity:${localStorage.mus==='0'?.45:1}">🎵</button><button class="ghost sm" data-act="sfx" aria-label="مؤثرات" style="opacity:${localStorage.sfx==='0'?.45:1}">🔊</button><button class="ghost sm" data-act="theme" aria-label="تبديل الوضع الفاتح والداكن">${isDark()?'☀️':'🌙'}</button></div></header>`;
+const topbar=room=>(S.me&&!AVM[S.me]&&(AVM[S.me]=myAv()),'')+`<header class="top">${room?`<span class="logo">🎡 ملاهي 15 مايو</span>`:`<button class="logo ghost" data-act="hub">🎡 ملاهي 15 مايو</button>`}<div class="tools">${accChip()}<button class="ghost sm" data-act="rn" aria-label="غيّر اسمك">${av(S.me)}${esc(S.me)} ${gameActive()?'🔒':'✏️'}</button><button class="ghost sm" data-act="mus" aria-label="موسيقى" style="opacity:${localStorage.mus==='0'?.45:1}">🎵</button><button class="ghost sm" data-act="sfx" aria-label="مؤثرات" style="opacity:${localStorage.sfx==='0'?.45:1}">🔊</button><button class="ghost sm" data-act="theme" aria-label="تبديل الوضع الفاتح والداكن">${isDark()?'☀️':'🌙'}</button></div></header>`;
 const hero=()=>`<div class="hero">${CAROUSEL}<h1>ملاهي 15 مايو</h1><p>اختار لعبتك وابدأ الفرفشة 🎉</p></div>`;
 const hdr=()=>topbar(true)+`<div class="rinfo"><span><b>${(GAMES[S.meta.kind||'dev']||GAMES.dev).ico} ${esc(S.meta.name)}</b> <span class="small">الأدمن: ${esc(S.meta.adminName)}</span></span><span><button class="ghost sm" data-act="fx" aria-label="صوت مضحك">${FXL[fxk()]}</button><button class="ghost sm" data-act="fxset" aria-label="اختار صوتك">⚙️</button> <button class="ghost sm" data-act="leave">خروج</button></span></div>`;
 
@@ -1444,7 +1488,7 @@ function cardsV(){
   const st=S.cg;
   if(!st)return '<p class="small" style="text-align:center">⏳ بيتحمّل...</p>';
   if(S.prev.g!==st.gid){S.prev={h:[],top:-1,v:-1,g:st.gid};S.seen=[]}
-  const k=st.kind;(isQ(k)?quizSound(st):cardSound(st));const body=isD(k)?domV(st):k==='qz'?qzV(st):k==='qm'?qmV(st):k==='uno'||k==='c_crazy'?shedV(st):k==='c_old'?oldV(st):k==='c_war'?warView(st):bjView(st);
+  accCheck(st);const k=st.kind;(isQ(k)?quizSound(st):cardSound(st));const body=isD(k)?domV(st):k==='qz'?qzV(st):k==='qm'?qmV(st):k==='uno'||k==='c_crazy'?shedV(st):k==='c_old'?oldV(st):k==='c_war'?warView(st):bjView(st);
   return banner(st)+body+lbBox()+(S.pickWild!=null?pickerV(st):'')+(st.over?overV(st):'');
 }
 function shedV(st){
@@ -1635,6 +1679,10 @@ document.addEventListener('click',e=>{
   else if(a==='dplay'){const t=S.dsel;S.dsel=null;if(t)cgAct({t:'play',tile:t,side:b.dataset.s,ts:now()})}
   else if(a==='ddraw')cgAct({t:'draw',ts:now()})
   else if(a==='dnh')cgAct({t:'nh',ts:now()})
+  else if(a==='gl')accSignIn()
+  else if(a==='acc')accDlg(true)
+  else if(a==='accclose')accDlg(false)
+  else if(a==='accout'){accDlg(false);signOut(AUTH)}
   else if(a==='qnext')cgAct({t:'adv',ts:now()});
   else if(a==='qpick')cgAct({t:'pick',i:+b.dataset.i,ts:now()});
   else if(a==='qon'){S.form.on=b.dataset.v==='1';seg(b)}
