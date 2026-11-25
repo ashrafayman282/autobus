@@ -252,12 +252,12 @@ h2{animation:fadeUp .4s both}
 .dseat.act{background:#fff7cc;box-shadow:0 0 0 3px #ffc933,0 6px 14px rgba(255,170,0,.4);animation:dbob 1s ease-in-out infinite}
 .dseat.me{flex-direction:row;justify-content:center;gap:8px;margin:0 auto;max-width:260px}
 .dav .av{width:38px;height:38px;font-size:1.4rem}.dnm{font-weight:800;font-size:.72rem;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dcnt{font-size:.72rem;opacity:.8}
-.dbub{position:absolute;top:-22px;inset-inline:50%;transform:translateX(-50%);white-space:nowrap;background:#fff;border:2px solid #333;border-radius:12px;padding:1px 8px;font-size:.7rem;font-weight:800;animation:dpop 2.6s forwards;z-index:3}
-[dir=rtl] .dbub{transform:translateX(50%)}
+.dbub{position:absolute;top:-22px;left:50%;max-width:150px;overflow:hidden;transform:translateX(-50%);white-space:nowrap;background:#fff;border:2px solid #333;border-radius:12px;padding:1px 8px;font-size:.7rem;font-weight:800;animation:dpop 2.6s forwards;z-index:3}
+
 @keyframes dpop{0%{opacity:0;margin-top:8px}10%{opacity:1;margin-top:0}80%{opacity:1}100%{opacity:0}}
 @keyframes dbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .dfelt{background:radial-gradient(circle at 50% 40%,#1f9d62,#0b6b3f);border:7px solid #8a5524;border-radius:28px;box-shadow:inset 0 0 22px rgba(0,0,0,.45),0 6px 0 #5e3815;min-height:150px;padding:10px 6px;display:flex;flex-direction:column;justify-content:space-between;align-items:center}
-.dbd{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-items:center;direction:ltr}
+.dbd{display:flex;flex-direction:column;gap:0;direction:ltr;width:100%}.dcn{height:12px;line-height:12px;font-size:.8rem;font-weight:900;color:#ffe9a8;text-align:right;padding:0 10px}.dcn.l{text-align:left}.dbr{display:flex;gap:2px;align-items:center;justify-content:flex-start;min-height:42px}.dbr.rv{justify-content:flex-end}
 .dyd{color:#e8fff0;font-size:.72rem;margin-top:8px;text-align:center}
 .dlegs{display:flex;justify-content:space-between;padding:0 30px}.dlegs i{width:16px;height:14px;background:#5e3815;border-radius:0 0 6px 6px;display:block}
 .dt{display:inline-flex;background:#fffdf4;border:1.5px solid #222;border-radius:5px;box-shadow:0 2px 0 rgba(0,0,0,.35);align-items:stretch;position:relative}
@@ -274,6 +274,7 @@ h2{animation:fadeUp .4s both}
 .dfive{text-align:center;font-weight:900;color:#d97706;animation:dpop 2.4s forwards}
 @media (max-width:420px){.dtbl{grid-template-columns:58px 1fr 58px}.dseat{min-width:54px}}
 @media (prefers-reduced-motion:reduce){.dseat.act,.dhb.ok,.dmsg.my,.dt.drop{animation:none}}
+.dseat.left .dbub{left:0;transform:none}.dseat.right .dbub{left:auto;right:auto;inset-inline-end:auto;left:-70px;transform:none}
 
 </style>
 </head>
@@ -866,6 +867,9 @@ const domEng=kind=>({
 /* ===== شاشة الدومينو ===== */
 const DPIPS=[[],[4],[0,8],[0,4,8],[0,2,6,8],[0,2,4,6,8],[0,2,3,5,6,8]];
 const dHalf=n=>`<i class="dh">${[0,1,2,3,4,5,6,7,8].map(i=>`<b${DPIPS[n].includes(i)?' class="p"':''}></b>`).join('')}</i>`;
+const dSnake=(bd,st,anim)=>{const K=(window.innerWidth<420?4:6),rows=[];for(let i=0;i<bd.length;i+=K)rows.push(bd.slice(i,i+K).map((t,j)=>({t,i:i+j})));
+return rows.map((r,ri)=>{const rev=ri%2===1;const it=rev?r.slice().reverse():r;
+return `<div class="dbr ${rev?'rv':''}">${it.map(x=>{let t=x.t;if(rev&&!dDbl(t)){const[a,b]=dp(t);t=b+'-'+a}return dTile(t,dDbl(t),(st.last&&st.last.i===x.i&&anim?'drop ':'')+(st.last&&st.last.i===x.i?'lastp':''))}).join('')}</div>`+(ri<rows.length-1?`<div class="dcn ${rev?'l':'r'}">${rev?'↙':'↘'}</div>`:'')}).join('')};
 const dTile=(t,vert,cls='')=>{const[a,b]=dp(t);return `<span class="dt ${vert?'v':'h'} ${cls}">${dHalf(a)}<u></u>${dHalf(b)}</span>`};
 const dSay={play:['على مهلك 😎','خد دي!','ضربة معلم!','ياسلام 👌'],draw:['يا ساتر 😅','مفيش حظ!','هاتلي واحدة'],skip:['عدّيت 😴','مليش حجر!'],five:['خمسات! 🤑','قبضت!','نقطة بنقطة 💰']};
 function domV(st){
@@ -877,7 +881,7 @@ function domV(st){
   const seat=(p,cls)=>`<div class="dseat ${cls} ${p===cur&&!st.over&&st.ph==='play'?'act':''}">${bubble(p)}<div class="dav">${av(nm(p))}</div><div class="dnm">${esc(nm(p))}${p===me?' (أنت)':''}</div><div class="dcnt">${p===me?'':'🀫 '}${A(st.hands[p]).length}${st.kind==='dma'?` • <b>${st.sc[p]||0}</b>`:''}</div></div>`;
   const mine=A(st.hands[me]),pl=dPlayable(st,me),canDraw=myTurn&&!pl.length&&A(st.yd).length>0;
   const ends=dEnds(st);
-  const felt=`<div class="dfelt"><div class="dbd">${bd.length?bd.map((t,i)=>dTile(t,dDbl(t),(st.last&&st.last.i===i&&anim?'drop ':'')+(st.last&&st.last.i===i?'lastp':''))).join(''):'<span class="small" style="opacity:.8">الطاولة فاضية — '+(st.first?`ابدأ بالحجر ${dp(st.first).join('|')}`:'')+'</span>'}</div>`+
+  const felt=`<div class="dfelt"><div class="dbd">${bd.length?dSnake(bd,st,anim):'<span class="small" style="opacity:.8">الطاولة فاضية — '+(st.first?`ابدأ بالحجر ${dp(st.first).join('|')}`:'')+'</span>'}</div>`+
     `<div class="dyd">🀫 الكومة: <b>${A(st.yd).length}</b>${ends?` • الأطراف: <b>${ends[0]}</b> و <b>${ends[1]}</b>`:''}${st.kind==='dma'?` • الهدف ${st.target}`:''}</div></div>`;
   const leg='<div class="dlegs"><i></i><i></i></div>';
   let msg=st.over?'':st.ph==='rd'?'':myTurn?(canDraw?'مفيش حجر يتلعب معاك، اسحب من الكومة':'دورك! اختار حجر'):`دور ${esc(nm(cur))}...`;
@@ -1154,7 +1158,7 @@ function submitAns(){
 RULES.qz=['من 2 لـ4 لاعبين، والأسئلة كلها عن مصر وعن الأغاني والأفلام والإسلاميات والأعلام والعواصم والمدن.','اللي يدوس الجرس 🔔 الأول هو اللي لازم يجاوب.','الإجابة الصح = +1 نقطة، والغلط = -1 نقطة.','لو جاوب غلط السؤال بيفضل مفتوح للباقي، واللي غلط مينفعش يجاوب نفس السؤال تاني.','لو محدش عارف الأدمن يدوس "تخطي".','أونلاين: بتكتب إجابتك ويتصحح تلقائي (والأدمن يقدر يعدّل الحكم). مع الشلة: بتجاوب بصوتك والأدمن يحكم صح أو غلط.','عدد الأسئلة بيحدده الأدمن وانت بتعمل الغرفة، واللي معاه نقط أكتر في الآخر يكسب.'];
 RULES.qm=['من 2 لـ4 لاعبين، وكل سؤال ليه 4 اختيارات.','الكل بيجاوب في نفس الوقت، وعندكم 10 ثواني.','بعد الـ10 ثواني (أو لما الكل يجاوب) النتيجة بتظهر: الصح بياخد نقطة والغلط ما بياخدش حاجة.','بتكسب لما تسبق اللي ورا بـ5 نقط.','لو محدش سبق بـ5 نقط، اللي معاه نقط أكتر لما الأسئلة تخلص يكسب.'];
 const FXL={dog:'🐶 كلب',cat:'🐱 قطة',duck:'🦆 بطة',donkey:'🐴 حمار',kiss:'😘 بوسة',laugh:'🤣 ضحكة',raz:'💨 بربرة'};
-const fxk=()=>FXL[localStorage.fxk]?localStorage.fxk:'duck';
+const fxk=()=>{try{const x=ACC.p&&ACC.p.fx;if(FXL[x])return x}catch(e){}return FXL[localStorage.fxk]?localStorage.fxk:'duck'};
 const FUN={c:null,play(k){try{const C=this.c||(this.c=new (window.AudioContext||window.webkitAudioContext)());if(C.state==='suspended')C.resume();const T=(ty,f0,f1,t0,d,v=.25)=>{const o=C.createOscillator(),g=C.createGain();o.type=ty;const t=C.currentTime+t0;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(Math.max(20,f1),t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(C.destination);o.start(t);o.stop(t+d+.02)};
 const N=(t0,d,v=.3)=>{const b=C.createBuffer(1,C.sampleRate*d,C.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=(Math.random()*2-1)*(1-i/a.length);const s=C.createBufferSource(),g=C.createGain();g.gain.value=v;s.buffer=b;s.connect(g).connect(C.destination);s.start(C.currentTime+t0)};
 if(k==='dog'){T('sawtooth',620,240,0,.14);T('sawtooth',560,200,.2,.16)}
@@ -1674,7 +1678,7 @@ document.addEventListener('click',e=>{
   else if(a==='fx')sendFx()
   else if(a==='fxset')fxDlg(true)
   else if(a==='fxclose')fxDlg(false)
-  else if(a==='fxsel'){localStorage.fxk=k;FUN.play(k);fxDlg(true)}
+  else if(a==='fxsel'){localStorage.fxk=k;try{if(ACC.u&&ACC.p){ACC.p.fx=k;set(ref(db,'users/'+ACC.u.uid+'/fx'),k)}}catch(e){}FUN.play(k);fxDlg(true)}
   else if(a==='dsel'){const t=b.dataset.t,sd=dSides(S.cg,t);if(!sd.length)return toast('الحجر ده مينفعش هنا');if(sd.length===1){S.dsel=null;cgAct({t:'play',tile:t,side:sd[0],ts:now()})}else{S.dsel=t;render()}}
   else if(a==='dplay'){const t=S.dsel;S.dsel=null;if(t)cgAct({t:'play',tile:t,side:b.dataset.s,ts:now()})}
   else if(a==='ddraw')cgAct({t:'draw',ts:now()})
