@@ -372,11 +372,16 @@ async function accLoad(u){
   ACC.ready=true;render();
 }
 onAuthStateChanged(AUTH,u=>{ACC.u=u;ACC.p=null;ACC.ready=false;if(u)accLoad(u).catch(e=>{console.warn('acc',e)});else render()});
+const GCID='151299306315-dr8lh64hntqmbu29bepkb0rfo0gjueeb.apps.googleusercontent.com';
+function gisLoad(){return new Promise((res,rej)=>{if(window.google&&google.accounts&&google.accounts.id)return res();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.async=true;s.onload=()=>res();s.onerror=()=>rej(new Error('gsi'));document.head.appendChild(s)})}
 async function accSignIn(){
-  if(ACC.busy)return;ACC.busy=true;
-  try{await signInWithPopup(AUTH,new GoogleAuthProvider())}
-  catch(e){if(e&&e.code!=='auth/popup-closed-by-user'&&e.code!=='auth/cancelled-popup-request')toast('معرفتش أدخل بجوجل: '+(e.code||'خطأ'))}
-  ACC.busy=false;
+  let d=document.querySelector('#accd');if(!d){d=document.createElement('div');d.id='accd';document.body.appendChild(d)}
+  d.innerHTML='<div class="ovl"><div class="card" style="text-align:center;width:min(100%,360px)"><h3>🔐 دخول بحساب جوجل</h3><p class="small">دوس الزرار واختار حسابك</p><div id="gbtn" style="display:flex;justify-content:center;min-height:44px"></div><p class="small" id="gerr"></p><button class="ghost sm" data-act="accclose">إغلاق</button></div></div>';
+  try{
+    await gisLoad();
+    google.accounts.id.initialize({client_id:GCID,callback:async r=>{try{await signInWithCredential(AUTH,GoogleAuthProvider.credential(r.credential));d.innerHTML=''}catch(e){const g=document.querySelector('#gerr');if(g)g.textContent='معرفتش أدخل: '+(e.code||'خطأ')}},ux_mode:'popup',auto_select:false,use_fedcm_for_button:true});
+    google.accounts.id.renderButton(document.querySelector('#gbtn'),{theme:'outline',size:'large',type:'standard',text:'signin_with',shape:'pill',locale:'ar'});
+  }catch(e){const g=document.querySelector('#gerr');if(g)g.textContent='معرفتش أحمّل دخول جوجل، جرّب تاني'}
 }
 async function accAward(win){
   if(!ACC.u||!ACC.p)return;
