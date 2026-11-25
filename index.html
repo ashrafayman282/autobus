@@ -234,6 +234,17 @@ h2{animation:fadeUp .4s both}
 @media (max-width:480px){.cp{height:min(60vh,480px)}.top{gap:6px}}
 .fab b[hidden]{display:none!important}
 
+.carousel{width:min(300px,80%);margin:0 auto;filter:drop-shadow(0 6px 8px rgba(124,58,237,.3))}
+.carousel .an{animation:orb 6s ease-in-out infinite;transform-box:fill-box}
+.carousel .an .bob{animation:bobc .6s ease-in-out infinite alternate;transform-box:fill-box}
+.carousel .a1{transform:translate(160px,128px)}.carousel .a2{transform:translate(160px,128px)}.carousel .a3{transform:translate(160px,128px)}.carousel .a4{transform:translate(160px,128px)}
+@keyframes orb{0%{transform:translate(95px,128px) scale(.85)}50%{transform:translate(225px,128px) scale(1.1)}100%{transform:translate(95px,128px) scale(.85)}}
+.carousel .a2{animation-delay:-1.5s}.carousel .a3{animation-delay:-3s}.carousel .a4{animation-delay:-4.5s}
+@keyframes bobc{from{translate:0 -6px}to{translate:0 6px}}
+.carousel .bal{animation:ball 3s ease-in-out infinite alternate}.carousel .b2{animation-delay:-1s}.carousel .b3{animation-delay:-2s}
+@keyframes ball{from{transform:translateY(-5px)}to{transform:translateY(6px)}}
+.carousel .star{animation:twk 1.2s ease-in-out infinite alternate}@keyframes twk{from{opacity:.5}to{opacity:1}}
+
 </style>
 </head>
 <body>
@@ -382,6 +393,7 @@ async function enter(rid){
   sub('x:m',base()+'/meta',v=>{if(!v){leave(true);toast('الغرفة اتقفلت')}else{S.meta=v;render()}});
   sub('x:p',base()+'/players',v=>{S.players=v||{};AVM={};Object.values(S.players).forEach(p=>{if(p.av)AVM[p.name]=p.av});if(S.players[pid]){S.score=S.players[pid].score||0;sessionStorage['s_'+rid]=S.score}render()});
   sub('x:u',base()+'/used',v=>S.used=v||[]);
+  sub('x:fx',base()+'/fx',v=>{if(v&&v.t&&Math.abs(now()-v.t)<4000&&S.fxs!==v.r){S.fxs=v.r;if(localStorage.sfx!=='0')FUN.play(v.k);toast((v.n||'')+': '+(FXL[v.k]||''),1)}});
   sub('x:h',base()+'/hist',v=>{S.hist=v||{};render()});
   sub('x:c',base()+'/chat',v=>{S.chat=v||{};chatMsgs()});
   sub('x:cg',base()+'/cg',v=>{S.cg=v;render()});
@@ -428,7 +440,7 @@ async function mk(){
   else if(isQ(kind)){
     const qc=[...document.querySelectorAll('.chip.on[data-ck]')].map(c=>c.dataset.ck);
     if(!qc.length)return toast('اختار قسم واحد على الأقل');
-    meta.opts={cats:qc,n:Math.min(60,Math.max(5,Math.round(+$('#qn').value||10))),on:kind==='qm'?true:f.on!==false};
+    meta.opts={cats:qc,n:Math.min(60,Math.max(5,Math.round(+$('#qn').value||10))),on:kind==='qm'?true:f.on!==false,lead:kind==='qm'?Math.min(20,Math.max(2,Math.round(+$('#ql').value||5))):0};
   }else meta.opts={stack:!!f.stack};
   await set(ref(db,`rooms/${rid}/meta`),meta);
   await set(ref(db,'idx/'+rid),{name,kind,priv:f.priv,admin:S.me,t:Date.now(),st:'wait'});
@@ -679,6 +691,7 @@ CO.forEach(([n,c,cap])=>{Q('flag','flag','ده علم أنهي دولة؟',[n],{
 /* مراجعة: شيل الأسئلة اللي فيها لبس أو غموض */
 (()=>{const bad=['سورة فيها بسملتين؟','عيشالك'];for(let i=QB.length-1;i>=0;i--){const q=QB[i];if(bad.some(b=>q.q.includes(b)&&(b!=='عيشالك'||(q.a[0]==='تامر حسني'))))QB.splice(i,1)}QB.forEach(q=>{q.a=q.a.map(x=>x==='الالأقصى'?'الأقصى':x)})})();
 
+const VOK=new Set([224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 0, 5, 11, 13, 56, 57, 58, 59, 60, 61, 62, 63, 64, 66, 67, 68, 69, 71, 72, 73, 74, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 97, 98, 109, 110, 111, 112, 113, 114, 115, 116, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 1, 2, 3, 6, 7, 8, 10, 12, 14, 157, 158, 159, 164, 167, 168, 169, 174, 180, 181, 201, 155, 160, 161, 208, 209, 210, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 220, 221, 222, 223, 442, 443, 444, 445, 446, 381]);const PIN={"120": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Adel_Imam_2009.jpg/500px-Adel_Imam_2009.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "121": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Ahmed_Zaki_%281979%29.jpg/500px-Ahmed_Zaki_%281979%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "122": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/Mahmoud_Abdel_Aziz_%D8%A7%D9%84%D8%B3%D8%A7%D8%AD%D8%B1_%D9%85%D8%AD%D9%85%D9%88%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2.jpg/500px-Mahmoud_Abdel_Aziz_%D8%A7%D9%84%D8%B3%D8%A7%D8%AD%D8%B1_%D9%85%D8%AD%D9%85%D9%88%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "123": "https://upload.wikimedia.org/wikipedia/commons/4/4a/%D9%83%D8%B1%D9%8A%D9%85_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "124": "https://upload.wikimedia.org/wikipedia/commons/7/78/Ahmed_Helmy_in_Sawiris_2018.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "125": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Mohamed_Henedy.png/500px-Mohamed_Henedy.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "126": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Ahmed_Elsaqa_in_Dubai_-_ElMaslaha_Premiere.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "127": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Ahmed_Mekky_2017.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "128": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Youssra_%28cropped%29.jpg/500px-Youssra_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "129": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Suad_Husni.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "130": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Faten_Hamama_actress.jpg/500px-Faten_Hamama_actress.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "131": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Omar_Sharif_1963.JPG/500px-Omar_Sharif_1963.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "133": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Mona_Zaki_2015.jpg/500px-Mona_Zaki_2015.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "134": "https://upload.wikimedia.org/wikipedia/commons/3/31/Yehia_Elfakharany.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "135": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Nelly_Karim_%28cropped%29.jpg/500px-Nelly_Karim_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "136": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Amr_Abdul_Baset_Diab.jpg/500px-Amr_Abdul_Baset_Diab.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "137": "https://upload.wikimedia.org/wikipedia/commons/9/96/Umm_Kulthum_as_Fatimah.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "138": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Abdel_Halim_Hafez.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "139": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Mounirim.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "140": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Nancy_Ajram_signing_ceremony.jpg/500px-Nancy_Ajram_signing_ceremony.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "141": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/%D8%B4%D9%8A%D8%B1%D9%8A%D9%86.jpg/500px-%D8%B4%D9%8A%D8%B1%D9%8A%D9%86.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "142": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Fairuz_1971.jpg/500px-Fairuz_1971.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "143": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Kadim_Al_Sahir_-_Photo_Khalid_Al-Busaidi.jpg/500px-Kadim_Al_Sahir_-_Photo_Khalid_Al-Busaidi.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "144": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/Elissa_Slotkin_2026_Official_Portrait.jpg/500px-Elissa_Slotkin_2026_Official_Portrait.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "145": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Tamer_Hosny%27s_NYE_Concert_%282025%29_%28cropped%29.png/500px-Tamer_Hosny%27s_NYE_Concert_%282025%29_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "146": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Mohamed_Salah_Argentina_v_Egypt_7_July_2026-163_%28cropped%29.jpg/500px-Mohamed_Salah_Argentina_v_Egypt_7_July_2026-163_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "147": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/Naguib_Mahfouz_HR.jpg/500px-Naguib_Mahfouz_HR.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "148": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Ahmed_Zewail_HD2009_Othmer_Gold_Medal_portrait.JPG/500px-Ahmed_Zewail_HD2009_Othmer_Gold_Medal_portrait.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "149": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Hassan_Shehata.jpg/500px-Hassan_Shehata.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "150": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Essam_El-Hadary.jpg/500px-Essam_El-Hadary.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "151": "https://upload.wikimedia.org/wikipedia/commons/9/9a/TahaHussein.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled", "152": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Stevan_Kragujevic%2C_Gamal_Abdel_Naser_u_Beogradu%2C_1962_%28cropped%29.jpg/500px-Stevan_Kragujevic%2C_Gamal_Abdel_Naser_u_Beogradu%2C_1962_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "153": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Hawass.jpg/500px-Hawass.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "154": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/M_Yacoub.JPG/500px-M_Yacoub.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "351": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/San_Stefano_Grand_Plaza.JPG/500px-San_Stefano_Grand_Plaza.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "352": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Panoramic_view_of_Aswan%2C_Egypt.jpg/500px-Panoramic_view_of_Aswan%2C_Egypt.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "353": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/LuxorHotelsIbnWalidSt.jpg/500px-LuxorHotelsIbnWalidSt.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "354": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Hurghada_Hotels_R03.jpg/500px-Hurghada_Hotels_R03.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "355": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Sharm_El_Sheikh_-_panoramio_%2815%29.jpg/500px-Sharm_El_Sheikh_-_panoramio_%2815%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "356": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Port_Said_aerial_%28cropped%29.jpg/500px-Port_Said_aerial_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "357": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Iss016e019375.jpg/500px-Iss016e019375.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "358": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/EG-suez-13-bg-ismailia.jpg/500px-EG-suez-13-bg-ismailia.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "359": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/%D8%B7%D8%B1%D9%8A%D9%82_%D8%A5%D9%84%D9%89_%D9%85%D8%A8%D9%86%D9%89_%D9%85%D8%AD%D8%A7%D9%81%D8%B8%D8%A9_%D8%AF%D9%85%D9%8A%D8%A7%D8%B7.JPG/500px-%D8%B7%D8%B1%D9%8A%D9%82_%D8%A5%D9%84%D9%89_%D9%85%D8%A8%D9%86%D9%89_%D9%85%D8%AD%D8%A7%D9%81%D8%B8%D8%A9_%D8%AF%D9%85%D9%8A%D8%A7%D8%B7.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "360": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Al_Mansourah%2C_Om_Kalthoum_Sq.jpg/500px-Al_Mansourah%2C_Om_Kalthoum_Sq.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "361": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Tanta-1.jpg/500px-Tanta-1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "362": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/MadinatFayyumWaterWheel.jpg/500px-MadinatFayyumWaterWheel.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "363": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/%D9%8A%D9%88%D9%85_%D8%AC%D8%AF%D9%8A%D8%AF.jpg/500px-%D9%8A%D9%88%D9%85_%D8%AC%D8%AF%D9%8A%D8%AF.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "364": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/20191112_165747jpg.jpg/500px-20191112_165747jpg.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "365": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Dahab_-_Egypte_07-2012_%287614814042%29.jpg/500px-Dahab_-_Egypte_07-2012_%287614814042%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "366": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Entrance_Grand_Egyptian_museum.jpg/500px-Entrance_Grand_Egyptian_museum.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "367": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/AsyutSalamTaggatLibrary.jpg/500px-AsyutSalamTaggatLibrary.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "368": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Akhenaten_museum_in_Minya_-_Egypt.jpg/500px-Akhenaten_museum_in_Minya_-_Egypt.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "369": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/SohagNasrCity.jpg/500px-SohagNasrCity.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "370": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/%D9%82%D9%86%D8%A7_2013.jpg/500px-%D9%82%D9%86%D8%A7_2013.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "371": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Rosetta_Stone.JPG/500px-Rosetta_Stone.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "372": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Porto_marina_resort_and_spa.jpg/500px-Porto_marina_resort_and_spa.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "373": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Rocks_and_Water.jpg/500px-Rocks_and_Water.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "374": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Snow_in_St._Katherine%2C_Sinai_Egypt_-_March_1%2C_2009.jpg/500px-Snow_in_St._Katherine%2C_Sinai_Egypt_-_March_1%2C_2009.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "375": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Ramsis%2C_Aswan_Governorate%2C_Egypt_-_panoramio.jpg/500px-Ramsis%2C_Aswan_Governorate%2C_Egypt_-_panoramio.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "376": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Cairo_Tower_%2814795997855%29.jpg/500px-Cairo_Tower_%2814795997855%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "377": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/%D9%82%D9%84%D8%B9%D8%A9_%D9%82%D8%A7%D9%8A%D8%AA%D8%A8%D8%A7%D9%8A_%D9%85%D9%86_%D8%A7%D9%84%D8%AC%D9%88.jpg/500px-%D9%82%D9%84%D8%B9%D8%A9_%D9%82%D8%A7%D9%8A%D8%AA%D8%A8%D8%A7%D9%8A_%D9%85%D9%86_%D8%A7%D9%84%D8%AC%D9%88.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "378": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Alexandria_library_%281%29.jpg/500px-Alexandria_library_%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "379": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Temple_de_Louxor_68.jpg/500px-Temple_de_Louxor_68.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "380": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Luxor%2C_Tal_der_K%C3%B6nige_%281995%2C_860x605%29.jpg/500px-Luxor%2C_Tal_der_K%C3%B6nige_%281995%2C_860x605%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "381": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg/500px-Great_Pyramid_of_Giza_-_Pyramid_of_Khufu.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "382": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Sphinx_with_the_third_pyramid.jpg/500px-Sphinx_with_the_third_pyramid.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "383": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/BarragemAssu%C3%A3o.jpg/500px-BarragemAssu%C3%A3o.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "384": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/1977_bis_1980_wurde_die_Tempel_auf_der_Insel_Philae_auf_die_h%C3%B6her_gelegene_Insel_Agilka_versetzt._01.jpg/500px-1977_bis_1980_wurde_die_Tempel_auf_der_Insel_Philae_auf_die_h%C3%B6her_gelegene_Insel_Agilka_versetzt._01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "385": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Flickr_-_HuTect_ShOts_-_Citadel_of_Salah_El.Din_and_Masjid_Muhammad_Ali_%D9%82%D9%84%D8%B9%D8%A9_%D8%B5%D9%84%D8%A7%D8%AD_%D8%A7%D9%84%D8%AF%D9%8A%D9%86_%D8%A7%D9%84%D8%A3%D9%8A%D9%88%D8%A8%D9%8A_%D9%88%D9%85%D8%B3%D8%AC%D8%AF_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D9%84%D9%8A_-_Cairo_-_Egypt_-_17_04_2010_%284%29.jpg/500px-thumbnail.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "386": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/%D8%AE%D8%A7%D9%86_%D8%A7%D9%84%D8%AE%D9%84%D9%8A%D9%84%D9%8A_1.jpg/500px-%D8%AE%D8%A7%D9%86_%D8%A7%D9%84%D8%AE%D9%84%D9%8A%D9%84%D9%8A_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "387": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/1897_bis_1902_wurde_das_%C3%84gyptische_Museum_in_Kairo_gebaut._04.jpg/500px-1897_bis_1902_wurde_das_%C3%84gyptische_Museum_in_Kairo_gebaut._04.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "388": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/Colossi_of_Memnon_May_2015_2.JPG/500px-Colossi_of_Memnon_May_2015_2.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "389": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Templo_funerario_de_Hatshepsut%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_13.jpg/500px-Templo_funerario_de_Hatshepsut%2C_Luxor%2C_Egipto%2C_2022-04-03%2C_DD_13.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "390": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Cairo_opera_house.jpg/500px-Cairo_opera_house.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "391": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Mosqu%C3%A9e_Al-Azhar.jpg/500px-Mosqu%C3%A9e_Al-Azhar.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "392": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Iss016e019375.jpg/500px-Iss016e019375.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "393": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Al_Farafrah%2C_New_Valley_Governorate%2C_Egypt_-_panoramio_%2821%29.jpg/500px-Al_Farafrah%2C_New_Valley_Governorate%2C_Egypt_-_panoramio_%2821%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "394": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Beautiful_nature_along_Nile_River_01.jpg/500px-Beautiful_nature_along_Nile_River_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail", "395": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/TahrirSQ-2020%281%29.jpg/500px-TahrirSQ-2020%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"};Object.keys(PIN).forEach(i=>{if(QB[i]&&QB[i].img)QB[i].img.u=PIN[i]});
 /* ===== الصوت ===== */
 const SND=(()=>{
   let ctx,mg,mt=0,step=0,nextT=0,sfxOn=localStorage.sfx!=='0',musOn=localStorage.mus!=='0';
@@ -744,13 +757,13 @@ function wikiImg(w,l){
   const p=(async()=>{try{const r=await fetch(`https://${l}.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(w)}&gsrlimit=1&prop=pageimages&piprop=thumbnail&pithumbsize=500&format=json&origin=*`);const j=await r.json();const pg=Object.values(j.query?.pages||{})[0];return pg?.thumbnail?.source||''}catch(e){return ''}})();
   IMGC.set(k,p);return p;
 }
-const imgUrl=async im=>!im?'':im.f?`https://flagcdn.com/w320/${im.f}.png`:await wikiImg(im.w,im.l||'en');
+const imgUrl=async im=>!im?'':im.u?im.u:im.f?`https://flagcdn.com/w320/${im.f}.png`:await wikiImg(im.w,im.l||'en');
 function preload(q){if(q&&q.img)imgUrl(q.img).then(u=>{if(u){const i=new Image();i.src=u}})}
 function hydrateImgs(){
   document.querySelectorAll('.qimg:not([data-done])').forEach(el=>{
     el.dataset.done=1;
     const show=u=>{if(!u){el.classList.add('none');return}const im=new Image();im.alt='';im.referrerPolicy='no-referrer';im.onload=()=>{el.innerHTML='';el.appendChild(im);el.classList.add('ok')};im.onerror=()=>el.classList.add('none');im.src=u};
-    imgUrl(el.dataset.f?{f:el.dataset.f}:{w:el.dataset.w,l:el.dataset.l}).then(show);
+    imgUrl(el.dataset.f?{f:el.dataset.f}:el.dataset.u?{u:el.dataset.u}:{w:el.dataset.w,l:el.dataset.l}).then(show);
   });
 }
 
@@ -789,13 +802,13 @@ function quizEng(kind){
     init(ids,o,ts){
       o=o||{};
       const cats=o.cats&&o.cats.length?o.cats:Object.keys(CT),need=Math.max(5,Math.min(60,+o.n||(kind==='qz'?10:30)));
-      let pool=QB.map((q,i)=>i).filter(i=>cats.includes(QB[i].c)&&(kind==='qz'||!QB[i].open));
+      let pool=QB.map((q,i)=>i).filter(i=>VOK.has(i)&&cats.includes(QB[i].c)&&(kind==='qz'||!QB[i].open));
       let seen=[];try{seen=JSON.parse(localStorage.seenq||'[]')}catch(e){}
       const fresh=pool.filter(i=>!seen.includes(i));
       const use=fresh.length>=need?fresh:pool;
-      const qs=shuf(use).slice(0,need);
+      const qs=mixCats(use).slice(0,need);
       try{localStorage.seenq=JSON.stringify([...seen.filter(i=>!qs.includes(i)),...qs].slice(-600))}catch(e){}
-      const st={kind,v:0,order:ids,sc:{},qs,qi:0,on:!!o.on,lead:5};
+      const st={kind,v:0,order:ids,sc:{},qs,qi:0,on:!!o.on,lead:Math.max(2,Math.min(20,+o.lead||5))};
       ids.forEach(p=>st.sc[p]=0);
       qSet(st,ts||Date.now());
       return st;
@@ -813,7 +826,7 @@ function quizEng(kind){
         if(st.qi>=st.qs.length){qFinish(st);st.v++;return st}
         qSet(st,ts);st.v++;return st;
       };
-      if(a.t==='adv'){if(st.ph!=='rev'||(ts<st.until-300&&!a.adm))return null;return next()}
+      if(a.t==='adv'){if(st.ph!=='rev'||!a.adm)return null;return next()}
       if(kind==='qz'){
         const judge=ok=>{
           const b=st.by;if(!b)return null;
@@ -848,8 +861,10 @@ function quizEng(kind){
   };
 }
 
+function mixCats(ids){const by={};shuf(ids).forEach(i=>{(by[QB[i].c]=by[QB[i].c]||[]).push(i)});const out=[];let last=null;while(Object.values(by).some(a=>a.length)){const ks=Object.keys(by).filter(k=>by[k].length);let c=ks.filter(k=>k!==last);if(!c.length)c=ks;const w=c.flatMap(k=>Array(by[k].length).fill(k));const k=w[rnd(w.length)];out.push(by[k].pop());last=k}return out}
+
 /* ===== شاشات لعبتين الأسئلة ===== */
-const qImg=q=>q.img?`<div class="qimg" ${q.img.f?`data-f="${q.img.f}"`:`data-w="${esc(q.img.w)}" data-l="${q.img.l||'en'}"`}></div>`:'';
+const qImg=q=>q.img?`<div class="qimg" ${q.img.f?`data-f="${q.img.f}"`:q.img.u?`data-u="${esc(q.img.u)}"`:`data-w="${esc(q.img.w)}" data-l="${q.img.l||'en'}"`}></div>`:'';
 const qCard=q=>`<div class="card qcard"><span class="tag">${CT[q.c]}</span>${qImg(q)}<h2 class="qt">${esc(q.q)}</h2></div>`;
 function qScores(st,hot){
   return `<div class="scs">`+st.order.map(p=>`<span class="scp ${p===hot?'hot':''}">${av(nm(p))}<span>${esc(nm(p))}${p===pid?' (أنت)':''}</span><b>${(st.sc&&st.sc[p])||0}</b></span>`).join('')+`</div>`;
@@ -869,14 +884,14 @@ function qzV(st){
     const mine=st.by===me;
     mid=`<div class="qmsg">🔔 ${esc(nm(st.by))} هو اللي بيجاوب!</div><div class="bar"><i id="qbar"></i></div>`+
       (st.on?(mine?`<div class="rm"><input class="qin" id="qa" maxlength="60" placeholder="اكتب إجابتك..." autocomplete="off"><button data-act="qsub">إرسال</button></div>`:`<p class="small" style="text-align:center">مستنيين إجابته ⌛</p>`)
-        :`<p class="small" style="text-align:center">🎤 ${mine?'جاوب بصوتك قدام الشلة!':'بيجاوب بصوته، والأدمن هو اللي يحكم'}</p>${adm?jb:''}`)+skip;
+        :`<p class="small" style="text-align:center">🎤 ${mine?'جاوب بصوتك قدام الشلة!':'بيجاوب بصوته، والأدمن هو اللي يحكم'}</p>${adm?(S.peek===st.gid+'-'+st.v?`<div class="ansbox">الإجابة: <b>${esc(qAns(q))}</b></div>`:`<div style="text-align:center"><button class="ghost sm" data-act="qpeek">👁 اعرض الإجابة للحكم</button></div>`)+jb:''}`)+skip;
   }else if(st.ph==='judge'){
     mid=`<div class="qmsg">${esc(nm(st.by))} جاوب: <b>${esc(st.typed)}</b></div>`+
       (adm?`${q.open?'':`<p class="small" style="text-align:center">الإجابة الصح: <b>${esc(q.a[0])}</b> • هتتحسب غلط تلقائي لو مفيش حكم</p>`}${jb}`:`<p class="small" style="text-align:center">الأدمن بيحكم... ⚖️</p>`)+(st.auto?'<div class="bar"><i id="qbar"></i></div>':'')+skip;
   }else{
     const r=st.rv||{};
     mid=(r.skip?`<div class="qmsg">⏭ اتخطينا السؤال</div>`:r.none?`<div class="qmsg bad">محدش جاوب صح 😅</div>`:`<div class="qmsg ok">✅ ${esc(nm(r.p))} جاوب صح! +1</div>`)+
-      `<div class="ansbox">الإجابة: <b>${esc(qAns(q))}</b></div>`+(adm?`<button class="big ghost" data-act="qnext">التالي ➡️</button>`:'');
+      `<div class="ansbox">الإجابة: <b>${esc(qAns(q))}</b></div>`+(adm?`<button class="big ghost" data-act="qnext">التالي ➡️</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يدوس التالي ⌛</p>`);
   }
   return `<div class="qtop"><span class="small">سؤال ${st.qi+1} من ${st.qs.length}</span><span class="small">${st.on?'🌐 أونلاين':'🎤 مع الشلة'}</span></div>`+qScores(st,st.by)+qCard(q)+mid;
 }
@@ -897,7 +912,7 @@ function qmV(st){
     `<div class="qmsg ${ok.includes(me)?'ok':mine==null||mine!==st.ci?'bad':'ok'}">${ok.length?'✅ جاوب صح: '+ok.map(p=>esc(nm(p))).join('، '):'محدش جاوب صح 😅'}</div><div class="ansbox">الإجابة: <b>${esc(q.a[0])}</b></div>`;
   return `<div class="qtop"><span class="small">سؤال ${st.qi+1}</span><span class="small">الفوز لما الفارق ${st.lead} نقط</span></div>`+qScores(st)+
     `<div class="small" style="display:flex;justify-content:space-between"><span>الفارق بين الأول والتاني</span><b>${Math.max(0,gap)} / ${st.lead}</b></div><div class="lead"><i style="width:${Math.min(100,Math.max(0,gap)/st.lead*100)}%"></i></div>`+
-    qCard(q)+head+`<div class="opts">${opts}</div>`+(st.ph==='rev'&&isAdmin()?`<button class="big ghost" data-act="qnext">التالي ➡️</button>`:'');
+    qCard(q)+head+`<div class="opts">${opts}</div>`+(st.ph==='rev'?(isAdmin()?`<button class="big ghost" data-act="qnext">التالي ➡️</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يدوس التالي ⌛</p>`):'');
 }
 function quizTick(){
   const st=S.cg;if(!st||st.over||!isQ(st.kind))return;
@@ -911,11 +926,9 @@ function quizTick(){
   if(st.kind==='qz'){
     if(st.ph==='ans'&&rem<-300)a={t:'timeout'};
     else if(st.ph==='judge'&&st.auto&&rem<-300)a={t:'judge',ok:false,adm:true};
-    else if(st.ph==='rev'&&rem<0)a={t:'adv'};
   }else{
     const all=st.order.every(x=>(st.an||{})[x]!=null);
     if(st.ph==='q'&&(rem<-200||all))a={t:'resolve'};
-    else if(st.ph==='rev'&&rem<0)a={t:'adv'};
   }
   if(a){S.qf={k,at:Date.now()};cgAct({...a,ts:now(),adm:true})}
 }
@@ -939,6 +952,32 @@ function submitAns(){
 
 RULES.qz=['من 2 لـ4 لاعبين، والأسئلة كلها عن مصر وعن الأغاني والأفلام والإسلاميات والأعلام والعواصم والمدن.','اللي يدوس الجرس 🔔 الأول هو اللي لازم يجاوب.','الإجابة الصح = +1 نقطة، والغلط = -1 نقطة.','لو جاوب غلط السؤال بيفضل مفتوح للباقي، واللي غلط مينفعش يجاوب نفس السؤال تاني.','لو محدش عارف الأدمن يدوس "تخطي".','أونلاين: بتكتب إجابتك ويتصحح تلقائي (والأدمن يقدر يعدّل الحكم). مع الشلة: بتجاوب بصوتك والأدمن يحكم صح أو غلط.','عدد الأسئلة بيحدده الأدمن وانت بتعمل الغرفة، واللي معاه نقط أكتر في الآخر يكسب.'];
 RULES.qm=['من 2 لـ4 لاعبين، وكل سؤال ليه 4 اختيارات.','الكل بيجاوب في نفس الوقت، وعندكم 10 ثواني.','بعد الـ10 ثواني (أو لما الكل يجاوب) النتيجة بتظهر: الصح بياخد نقطة والغلط ما بياخدش حاجة.','بتكسب لما تسبق اللي ورا بـ5 نقط.','لو محدش سبق بـ5 نقط، اللي معاه نقط أكتر لما الأسئلة تخلص يكسب.'];
+const FXL={dog:'🐶 كلب',cat:'🐱 قطة',duck:'🦆 بطة',donkey:'🐴 حمار',kiss:'😘 بوسة',laugh:'🤣 ضحكة',raz:'💨 بربرة'};
+const fxk=()=>FXL[localStorage.fxk]?localStorage.fxk:'duck';
+const FUN={c:null,play(k){try{const C=this.c||(this.c=new (window.AudioContext||window.webkitAudioContext)());if(C.state==='suspended')C.resume();const T=(ty,f0,f1,t0,d,v=.25)=>{const o=C.createOscillator(),g=C.createGain();o.type=ty;const t=C.currentTime+t0;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(Math.max(20,f1),t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(C.destination);o.start(t);o.stop(t+d+.02)};
+const N=(t0,d,v=.3)=>{const b=C.createBuffer(1,C.sampleRate*d,C.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=(Math.random()*2-1)*(1-i/a.length);const s=C.createBufferSource(),g=C.createGain();g.gain.value=v;s.buffer=b;s.connect(g).connect(C.destination);s.start(C.currentTime+t0)};
+if(k==='dog'){T('sawtooth',620,240,0,.14);T('sawtooth',560,200,.2,.16)}
+else if(k==='cat'){T('sine',500,950,0,.25);T('sine',950,420,.25,.4)}
+else if(k==='duck'){[0,.17,.34].forEach(t=>{T('sawtooth',520,300,t,.12);T('square',260,150,t,.12,.1)})}
+else if(k==='donkey'){[0,.5].forEach(t=>{T('sawtooth',300,900,t,.22);T('sawtooth',900,280,t+.22,.25)})}
+else if(k==='kiss'){T('sine',1500,350,0,.09,.35);N(0,.06,.25)}
+else if(k==='laugh'){for(let i=0;i<6;i++)T('square',420-i*25,330-i*25,i*.11,.09,.12)}
+else if(k==='raz'){for(let i=0;i<8;i++)T('sawtooth',90+Math.random()*40,60,i*.045,.05,.3);N(0,.3,.12)}}catch(e){}}};
+let _fxt=0;function sendFx(){if(!S.rid)return;const t=Date.now();if(t-_fxt<1200)return;_fxt=t;const k=fxk();FUN.play(k);set(ref(db,base()+'/fx'),{k,p:pid,n:S.me,t:now(),r:Math.random().toString(36).slice(2,8)})}
+function fxDlg(open){let d=$('#fxd');if(!d){d=document.createElement('div');d.id='fxd';document.body.appendChild(d)}d.innerHTML=open?`<div class="ov"><div class="card"><h3>🔊 اختار صوتك المضحك</h3><p class="small">الزرار في الروم بيشغل الصوت ده عند كل اللاعبين.</p><div class="chips">${Object.entries(FXL).map(([k,t])=>`<button class="chip ${fxk()===k?'on':''}" data-act="fxsel" data-k="${k}">${t}</button>`).join('')}</div><button class="big" data-act="fxclose">تمام</button></div></div>`:''}
+function switchGame(k){if(!isAdmin()||!GAMES[k])return;const G=GAMES[k],m=`rooms/${S.rid}/meta/`,up={[m+'kind']:k,[`idx/${S.rid}/kind`]:k};if(G.ab){up[m+'cats']=k==='dev'?shuf(CATS).slice(0,8):CLASSIC;up[m+'rounds']=5;up[m+'limit']=0;up[m+'opts']=null}else up[m+'opts']=isQ(k)?{cats:Object.keys(CT),n:k==='qz'?15:40,on:true,lead:5}:{stack:true};update(ref(db),up).then(()=>toast('اتغيرت اللعبة 🎮',1))}
+function swSel(){if(!isAdmin())return '';const ph=(S.game&&S.game.phase)||'lobby';if(ph!=='lobby')return '';const cur=S.meta.kind||'dev';return `<details class="card rules"><summary>🔄 غيّر اللعبة في نفس الروم</summary><div class="chips" style="margin-top:8px">${Object.entries(GAMES).map(([k,g])=>`<button class="chip ${k===cur?'on':''}" data-act="gsel" data-k="${k}">${g.name}</button>`).join('')}</div>${cur==='qz'?`<button class="ghost sm" data-act="qonroom" style="margin-top:8px">${S.meta.opts&&S.meta.opts.on?'🌐 أونلاين (دوس لتحويلها لمع الشلة)':'🎤 مع الشلة (دوس لتحويلها لأونلاين)'}</button>`:''}</details>`}
+const CAROUSEL=`<div class="carousel" aria-hidden="true"><svg viewBox="0 0 320 200" width="100%"><defs><linearGradient id="cg" x1="0" x2="1"><stop offset="0" stop-color="#ff4f81"/><stop offset="1" stop-color="#ffc933"/></linearGradient></defs>
+<g class="cl cl1"><circle cx="30" cy="30" r="5" fill="#ffc933"/><circle cx="290" cy="40" r="4" fill="#10b79f"/></g>
+<g class="bal b1"><ellipse cx="40" cy="60" rx="12" ry="15" fill="#ff4f81"/><path d="M40 75 L40 110" stroke="#888" /></g><g class="bal b2"><ellipse cx="282" cy="70" rx="12" ry="15" fill="#10b79f"/><path d="M282 85 L282 120" stroke="#888"/></g><g class="bal b3"><ellipse cx="255" cy="40" rx="10" ry="13" fill="#7c3aed"/><path d="M255 53 L255 90" stroke="#888"/></g>
+<path d="M60 70 L160 14 L260 70 Z" fill="url(#cg)"/><path d="M60 70 Q110 82 160 70 Q210 82 260 70" fill="#fff" opacity=".35"/><circle cx="160" cy="12" r="6" fill="#ffc933" class="star"/>
+<rect x="72" y="70" width="176" height="8" rx="4" fill="#7c3aed"/><g stroke="#ffd" stroke-width="5"><line x1="100" y1="78" x2="100" y2="150"/><line x1="160" y1="78" x2="160" y2="150"/><line x1="220" y1="78" x2="220" y2="150"/></g>
+<g class="an a1"><g class="bob"><circle cx="0" cy="0" r="17" fill="#ffb3c7"/><circle cx="-11" cy="-14" r="6" fill="#ff8fb0"/><circle cx="11" cy="-14" r="6" fill="#ff8fb0"/><ellipse cx="0" cy="4" rx="8" ry="6" fill="#ff8fb0"/><circle cx="-3" cy="4" r="1.6" fill="#7a2a45"/><circle cx="3" cy="4" r="1.6" fill="#7a2a45"/><circle cx="-6" cy="-4" r="2" fill="#222"/><circle cx="6" cy="-4" r="2" fill="#222"/></g></g>
+<g class="an a2"><g class="bob"><circle cx="0" cy="0" r="17" fill="#ffe14d"/><path d="M14 2 L28 6 L14 10 Z" fill="#ff8a3d"/><circle cx="4" cy="-5" r="2.4" fill="#222"/><path d="M-6 -17 Q0 -26 6 -17" fill="#ffe14d" stroke="#ffe14d"/></g></g>
+<g class="an a3"><g class="bob"><circle cx="0" cy="0" r="17" fill="#b9825a"/><circle cx="-12" cy="-14" r="7" fill="#b9825a"/><circle cx="12" cy="-14" r="7" fill="#b9825a"/><circle cx="-12" cy="-14" r="3" fill="#7a4e2c"/><circle cx="12" cy="-14" r="3" fill="#7a4e2c"/><ellipse cx="0" cy="5" rx="8" ry="6" fill="#e8c9a8"/><circle cx="0" cy="3" r="2.4" fill="#222"/><circle cx="-6" cy="-4" r="2" fill="#222"/><circle cx="6" cy="-4" r="2" fill="#222"/></g></g>
+<g class="an a4"><g class="bob"><circle cx="0" cy="0" r="16" fill="#f4f4f4"/><ellipse cx="-7" cy="-24" rx="5" ry="13" fill="#f4f4f4"/><ellipse cx="7" cy="-24" rx="5" ry="13" fill="#f4f4f4"/><ellipse cx="-7" cy="-24" rx="2.5" ry="9" fill="#ffb3c7"/><ellipse cx="7" cy="-24" rx="2.5" ry="9" fill="#ffb3c7"/><circle cx="-5" cy="-3" r="2" fill="#222"/><circle cx="5" cy="-3" r="2" fill="#222"/><circle cx="0" cy="4" r="2.4" fill="#ff8fb0"/></g></g>
+<rect x="64" y="150" width="192" height="14" rx="7" fill="#7c3aed"/><rect x="80" y="164" width="160" height="10" rx="5" fill="#5b21b6"/>
+<g fill="#ffc933"><circle cx="86" cy="157" r="3"/><circle cx="116" cy="157" r="3"/><circle cx="146" cy="157" r="3"/><circle cx="176" cy="157" r="3"/><circle cx="206" cy="157" r="3"/><circle cx="236" cy="157" r="3"/></g></svg></div>`;
 const myAv=()=>localStorage.av||(localStorage.av=AVS[rnd(AVS.length)][0]);
 function cardSound(st){const k=st.gid+'-'+st.v,first=S.csk==null||String(S.csk).split('-')[0]!==String(st.gid);S.csk=k;if(!first)SND.play(st.over?'win':'card')}
 function quizOver(st){
@@ -948,7 +987,7 @@ function quizOver(st){
 const quizForm=k=>`<p class="small">الغرفة دي من ${GAMES[k].min} لحد ${GAMES[k].max} لاعبين. كل الأسئلة عن مصر 🇪🇬</p>`+
   (k==='qz'?`<label>طريقة اللعب</label><div class="seg"><button data-act="qon" data-v="1" class="sel">🌐 أونلاين (بتكتب الإجابة)</button><button data-act="qon" data-v="0">🎤 مع الشلة (صوت والأدمن يحكم)</button></div>`:'')+
   `<label>الأقسام</label><div class="chips">${Object.entries(CT).map(([c,t])=>`<button class="chip on" data-act="qcat" data-ck="${c}">${esc(t)}</button>`).join('')}</div>
-  <label for="qn">${k==='qz'?'عدد الأسئلة (طول الجولة)':'أقصى عدد أسئلة'}</label><input id="qn" type="number" min="5" max="60" value="${k==='qz'?10:30}">`;
+  <label for="qn">${k==='qz'?'عدد الأسئلة (طول الجولة)':'أقصى عدد أسئلة'}</label><input id="qn" type="number" min="5" max="60" value="${k==='qz'?10:30}">`+(k==='qm'?`<label for="ql">الفارق اللي يكسب بيه اللاعب (نقط)</label><input id="ql" type="number" min="2" max="20" value="5">`:'');
 
 const ENG={uno:UNO,c_old:OLD,c_war:WAR,c_crazy:CE,c_21:BJ,qz:quizEng('qz'),qm:quizEng('qm')};
 function dropP(o,p){
@@ -1106,8 +1145,8 @@ function confetti(){
 const lb=()=>Object.entries(S.players).sort((a,b)=>(b[1].score||0)-(a[1].score||0)).map(([id,p],i)=>
   `<div class="lb"><span style="display:flex;align-items:center"><i class="rk">${i+1}</i>${av(p.name)}${esc(p.name)}${id===S.meta?.adminId?' 👑':''}</span><b>${p.score||0}</b></div>`).join('');
 const topbar=room=>(S.me&&!AVM[S.me]&&(AVM[S.me]=myAv()),'')+`<header class="top">${room?`<span class="logo">🎡 ملاهي 15 مايو</span>`:`<button class="logo ghost" data-act="hub">🎡 ملاهي 15 مايو</button>`}<div class="tools"><button class="ghost sm" data-act="rn" aria-label="غيّر اسمك">${av(S.me)}${esc(S.me)} ${gameActive()?'🔒':'✏️'}</button><button class="ghost sm" data-act="mus" aria-label="موسيقى" style="opacity:${localStorage.mus==='0'?.45:1}">🎵</button><button class="ghost sm" data-act="sfx" aria-label="مؤثرات" style="opacity:${localStorage.sfx==='0'?.45:1}">🔊</button><button class="ghost sm" data-act="theme" aria-label="تبديل الوضع الفاتح والداكن">${isDark()?'☀️':'🌙'}</button></div></header>`;
-const hero=()=>`<div class="hero"><div class="wheel">🎡</div><h1>ملاهي 15 مايو</h1><p>اختار لعبتك وابدأ الفرفشة 🎉</p></div>`;
-const hdr=()=>topbar(true)+`<div class="rinfo"><span><b>${(GAMES[S.meta.kind||'dev']||GAMES.dev).ico} ${esc(S.meta.name)}</b> <span class="small">الأدمن: ${esc(S.meta.adminName)}</span></span><button class="ghost sm" data-act="leave">خروج</button></div>`;
+const hero=()=>`<div class="hero">${CAROUSEL}<h1>ملاهي 15 مايو</h1><p>اختار لعبتك وابدأ الفرفشة 🎉</p></div>`;
+const hdr=()=>topbar(true)+`<div class="rinfo"><span><b>${(GAMES[S.meta.kind||'dev']||GAMES.dev).ico} ${esc(S.meta.name)}</b> <span class="small">الأدمن: ${esc(S.meta.adminName)}</span></span><span><button class="ghost sm" data-act="fx" aria-label="صوت مضحك">${FXL[fxk()]}</button><button class="ghost sm" data-act="fxset" aria-label="اختار صوتك">⚙️</button> <button class="ghost sm" data-act="leave">خروج</button></span></div>`;
 
 function render(){
   let k;
@@ -1118,7 +1157,7 @@ function render(){
     k=ph==='cards'?'cg':ph==='play'||ph==='countdown'?'play'+g.round:ph==='review'||ph==='tally'?'review'+g.round:ph==='results'?'res'+g.round:ph==='final'?'final':'lobby';
   }
   if(k==='cg'){
-    const ck=JSON.stringify([S.cg&&S.cg.v,S.cg&&S.cg.over,S.cg&&S.cg.gid,Object.values(S.players).map(p=>p.name+p.score),S.pickWild,S.view]);
+    const ck=JSON.stringify([S.cg&&S.cg.v,S.cg&&S.cg.over,S.cg&&S.cg.gid,Object.values(S.players).map(p=>p.name+p.score),S.pickWild,S.peek,S.view]);
     if(ck===S.ck&&S.view==='cg'){tick();return}
     S.ck=ck;
   }
@@ -1185,8 +1224,8 @@ const lobbyV=()=>{
   const k=S.meta.kind||'dev',G=GAMES[k],ab=!!G.ab,cnt=Object.keys(S.players).length;
   return `<h2>غرفة الانتظار ⏳</h2><div class="card"><h3>اللاعبين (${cnt})</h3><div class="pgrid" style="margin-top:8px">${Object.entries(S.players).map(([id,p])=>`<span class="pc">${av(p.name)}${esc(p.name)}${id===S.meta.adminId?' 👑':''}</span>`).join('')}</div></div>`+
   (ab?`<div class="card small">${S.meta.rounds} جولات • ${S.meta.limit?'وقت الجولة '+S.meta.limit/60+' دقيقة':'بدون وقت'} • ${S.meta.cats.length} تصنيف • ${S.meta.ph?'🔒 بباسورد':'عامة'}</div>`
-  :`<div class="card small">من ${G.min} لـ ${G.max} لاعبين${k==='uno'?' • التراكم '+(S.meta.opts&&S.meta.opts.stack?'شغال':'مقفول'):isQ(k)&&S.meta.opts?' • '+(k==='qm'?'اختيار من متعدد':S.meta.opts.on?'أونلاين':'مع الشلة (صوت)')+' • '+S.meta.opts.n+' سؤال • '+S.meta.opts.cats.map(c=>CT[c]).join('، '):''} • ${S.meta.ph?'🔒 بباسورد':'عامة'}</div><details class="card rules"><summary>📜 القواعد</summary><ul>${RULES[k].map(x=>`<li>${x}</li>`).join('')}</ul></details>`)+
-  `<button class="big ghost" data-act="copy">🔗 انسخ لينك الغرفة</button>`+
+  :`<div class="card small">من ${G.min} لـ ${G.max} لاعبين${k==='uno'?' • التراكم '+(S.meta.opts&&S.meta.opts.stack?'شغال':'مقفول'):isQ(k)&&S.meta.opts?' • '+(k==='qm'?'اختيار من متعدد':S.meta.opts.on?'أونلاين':'مع الشلة (صوت)')+' • '+S.meta.opts.n+' سؤال'+(k==='qm'?' • الفوز بفارق '+(S.meta.opts.lead||5)+' نقط':'')+' • '+S.meta.opts.cats.map(c=>CT[c]).join('، '):''} • ${S.meta.ph?'🔒 بباسورد':'عامة'}</div><details class="card rules"><summary>📜 القواعد</summary><ul>${RULES[k].map(x=>`<li>${x}</li>`).join('')}</ul></details>`)+
+  swSel()+`<button class="big ghost" data-act="copy">🔗 انسخ لينك الغرفة</button>`+
   (isAdmin()?`<button class="big" data-act="${ab?'start':'cstart'}" ${!ab&&cnt<G.min?'disabled':''}>ابدأ اللعبة 🎮</button>`:`<p class="small" style="text-align:center">مستنيين الأدمن يبدأ اللعبة...</p>`);
 };
 const playV=g=>`<p class="small" style="text-align:center">جولة ${g.round} من ${S.meta.rounds}</p><div class="letter">${esc(g.letter)}</div>${g.endAt?'<div class="bar"><i id="bar"></i></div>':''}<div id="ban"></div>`+
@@ -1425,6 +1464,13 @@ document.addEventListener('click',e=>{
   else if(a==='qjok')cgAct({t:'judge',ok:true,ts:now()});
   else if(a==='qjno')cgAct({t:'judge',ok:false,ts:now()});
   else if(a==='qskip')cgAct({t:'skip',ts:now()});
+  else if(a==='qpeek'){S.peek=S.cg.gid+'-'+S.cg.v;render()}
+  else if(a==='gsel')switchGame(k)
+  else if(a==='qonroom'){update(ref(db),{[`rooms/${S.rid}/meta/opts/on`]:!(S.meta.opts&&S.meta.opts.on)})}
+  else if(a==='fx')sendFx()
+  else if(a==='fxset')fxDlg(true)
+  else if(a==='fxclose')fxDlg(false)
+  else if(a==='fxsel'){localStorage.fxk=k;FUN.play(k);fxDlg(true)}
   else if(a==='qnext')cgAct({t:'adv',ts:now()});
   else if(a==='qpick')cgAct({t:'pick',i:+b.dataset.i,ts:now()});
   else if(a==='qon'){S.form.on=b.dataset.v==='1';seg(b)}
