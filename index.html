@@ -1117,6 +1117,7 @@ function qScores(st,hot){
 const qAns=q=>q.open&&!q.a.length?'أي إجابة صح':q.a[0];
 function qzV(st){
   const q=QB[st.qs[st.qi]],me=pid,inG=st.order.includes(me),adm=isAdmin(),A_=x=>x||{};
+  if(!q)return '';
   preload(QB[st.qs[st.qi+1]]);
   const jb=`<div class="rm" style="gap:10px;margin-top:8px"><button class="big" style="margin:0" data-act="qjok">صح ✅</button><button class="big ghost" style="margin:0" data-act="qjno">غلط ❌</button></div>`;
   const skip=adm&&st.ph!=='rev'?`<div style="text-align:center;margin-top:8px"><button class="ghost sm" data-act="qskip">⏭ تخطي السؤال (محدش عارف)</button></div>`:'';
@@ -1142,6 +1143,7 @@ function qzV(st){
 }
 function qmV(st){
   const q=QB[st.qs[st.qi]],me=pid,inG=st.order.includes(me),A_=x=>x||[];
+  if(!q)return '';
   preload(QB[st.qs[st.qi+1]]);
   const an=st.an||{},mine=an[me],rv=st.ph==='rev'?(st.rv||{}):null,ok=A_(rv&&rv.ok);
   const r=qRank(st),gap=r.length>1?((st.sc[r[0]]||0)-(st.sc[r[1]]||0)):0;
