@@ -55,26 +55,9 @@ const key=s=>norm(s).replace(/^ال(?=.)/,'');
 const hash=async(p,rid)=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(rid+':'+p)))].map(x=>x.toString(16).padStart(2,'0')).join('');
 const toast=(m,ok)=>{const t=$('#toast');t.textContent=m;t.style.display='block';t.style.background=ok?'var(--good)':'var(--bad)';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',3000)};
 const av=n=>{const e=AVM[n];return e?`<i class="av emo">${AVSVG(e)||e}</i>`:`<i class="av" style="background:hsl(${[...String(n)].reduce((a,c)=>a+c.charCodeAt(0),0)*47%360} 65% 48%)">${esc([...String(n)][0]||'?')}</i>`;};
-const _IC={
-wheel:'<circle cx="12" cy="11" r="8"/><circle cx="12" cy="11" r="2"/><path d="M12 3v16M4 11h16M6.3 5.3l11.4 11.4M17.7 5.3L6.3 16.7M8 21l4-6 4 6"/>',
-music:'<path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
-sound:'<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/>',
-sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
-moon:'<path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/>',
-pen:'<path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/>',
-lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',
-user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
-coin:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 010 3h-3a1.5 1.5 0 000 3h4"/>',
-search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
-all:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>',
-pyr:'<path d="M3 20L12 4l9 16z"/><path d="M7.5 12.5h9M5.3 16.5h13.4"/>',
-dice:'<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9" cy="9" r="1" fill="currentColor"/><circle cx="15" cy="15" r="1" fill="currentColor"/><circle cx="15" cy="9" r="1" fill="currentColor"/><circle cx="9" cy="15" r="1" fill="currentColor"/>',
-bus:'<rect x="3" y="5" width="18" height="12" rx="3"/><path d="M3 11h18M7 17v2M17 17v2"/><circle cx="7.5" cy="14" r=".8" fill="currentColor"/><circle cx="16.5" cy="14" r=".8" fill="currentColor"/>',
-joy:'<circle cx="12" cy="6" r="3"/><path d="M12 9v6"/><rect x="5" y="15" width="14" height="5" rx="2.5"/>',
-star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>'
-};
-const IC=n=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${_IC[n]||''}</svg>`;
+const _IC={"wheel": "<circle cx=\"12\" cy=\"12\" r=\"2\" /> <path d=\"M12 2v4\" /> <path d=\"m6.8 15-3.5 2\" /> <path d=\"m20.7 7-3.5 2\" /> <path d=\"M6.8 9 3.3 7\" /> <path d=\"m20.7 17-3.5-2\" /> <path d=\"m9 22 3-8 3 8\" /> <path d=\"M8 22h8\" /> <path d=\"M18 18.7a9 9 0 1 0-12 0\" />", "book": "<path d=\"M12 7v14\" /> <path d=\"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z\" />", "close": "<path d=\"M18 6 6 18\" /> <path d=\"m6 6 12 12\" />", "coin": "<circle cx=\"8\" cy=\"8\" r=\"6\" /> <path d=\"M18.09 10.37A6 6 0 1 1 10.34 18\" /> <path d=\"M7 6h1v4\" /> <path d=\"m16.71 13.88.7.71-2.82 2.82\" />", "gear": "<path d=\"M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z\" /> <circle cx=\"12\" cy=\"12\" r=\"3\" />", "gift": "<rect x=\"3\" y=\"8\" width=\"18\" height=\"4\" rx=\"1\" /> <path d=\"M12 8v13\" /> <path d=\"M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7\" /> <path d=\"M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5\" />", "grid": "<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\" /> <rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\" /> <rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\" /> <rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\" />", "home": "<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\" /> <path d=\"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\" />", "music": "<circle cx=\"8\" cy=\"18\" r=\"4\" /> <path d=\"M12 18V2l7 4\" />", "pen": "<path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\" /> <path d=\"m15 5 4 4\" />", "play": "<polygon points=\"6 3 20 12 6 21 6 3\" />", "search": "<circle cx=\"11\" cy=\"11\" r=\"8\" /> <path d=\"m21 21-4.3-4.3\" />", "sound": "<path d=\"M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z\" /> <path d=\"M16 9a5 5 0 0 1 0 6\" /> <path d=\"M19.364 18.364a9 9 0 0 0 0-12.728\" />", "star": "<path d=\"M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z\" />", "trophy": "<path d=\"M6 9H4.5a2.5 2.5 0 0 1 0-5H6\" /> <path d=\"M18 9h1.5a2.5 2.5 0 0 0 0-5H18\" /> <path d=\"M4 22h16\" /> <path d=\"M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22\" /> <path d=\"M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22\" /> <path d=\"M18 2H6v7a6 6 0 0 0 12 0V2Z\" />", "user": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\" /> <circle cx=\"12\" cy=\"7\" r=\"4\" />", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\" /> <path d=\"M12 2v2\" /> <path d=\"M12 20v2\" /> <path d=\"m4.93 4.93 1.41 1.41\" /> <path d=\"m17.66 17.66 1.41 1.41\" /> <path d=\"M2 12h2\" /> <path d=\"M20 12h2\" /> <path d=\"m6.34 17.66-1.41 1.41\" /> <path d=\"m19.07 4.93-1.41 1.41\" />", "moon": "<path d=\"M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z\" />", "lock": "<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\" /> <path d=\"M7 11V7a5 5 0 0 1 10 0v4\" />", "all": "<rect width=\"7\" height=\"7\" x=\"3\" y=\"3\" rx=\"1\" /> <rect width=\"7\" height=\"7\" x=\"14\" y=\"3\" rx=\"1\" /> <rect width=\"7\" height=\"7\" x=\"14\" y=\"14\" rx=\"1\" /> <rect width=\"7\" height=\"7\" x=\"3\" y=\"14\" rx=\"1\" />", "dice": "<rect width=\"12\" height=\"12\" x=\"2\" y=\"10\" rx=\"2\" ry=\"2\" /> <path d=\"m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6\" /> <path d=\"M6 18h.01\" /> <path d=\"M10 14h.01\" /> <path d=\"M15 6h.01\" /> <path d=\"M18 9h.01\" />", "bus": "<path d=\"M8 6v6\" /> <path d=\"M15 6v6\" /> <path d=\"M2 12h19.6\" /> <path d=\"M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3\" /> <circle cx=\"7\" cy=\"18\" r=\"2\" /> <path d=\"M9 18h5\" /> <circle cx=\"16\" cy=\"18\" r=\"2\" />", "joy": "<path d=\"M21 17a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2Z\" /> <path d=\"M6 15v-2\" /> <path d=\"M12 15V9\" /> <circle cx=\"12\" cy=\"6\" r=\"3\" />", "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\" /> <circle cx=\"9\" cy=\"7\" r=\"4\" /> <path d=\"M22 21v-2a4 4 0 0 0-3-3.87\" /> <path d=\"M16 3.13a4 4 0 0 1 0 7.75\" />", "zap": "<path d=\"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z\" />", "crown": "<path d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\" /> <path d=\"M5 21h14\" />", "check": "<path d=\"M20 6 9 17l-5-5\" />", "clock": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <polyline points=\"12 6 12 12 16 14\" />", "heart": "<path d=\"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z\" />", "share": "<circle cx=\"18\" cy=\"5\" r=\"3\" /> <circle cx=\"6\" cy=\"12\" r=\"3\" /> <circle cx=\"18\" cy=\"19\" r=\"3\" /> <line x1=\"8.59\" x2=\"15.42\" y1=\"13.51\" y2=\"17.49\" /> <line x1=\"15.41\" x2=\"8.59\" y1=\"6.51\" y2=\"10.49\" />", "copy": "<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\" /> <path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\" />", "plus": "<path d=\"M5 12h14\" /> <path d=\"M12 5v14\" />", "refresh": "<path d=\"M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8\" /> <path d=\"M3 3v5h5\" />", "menu": "<line x1=\"4\" x2=\"20\" y1=\"12\" y2=\"12\" /> <line x1=\"4\" x2=\"20\" y1=\"6\" y2=\"6\" /> <line x1=\"4\" x2=\"20\" y1=\"18\" y2=\"18\" />", "chat": "<path d=\"M7.9 20A9 9 0 1 0 4 16.1L2 22Z\" />", "send": "<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\" /> <path d=\"m21.854 2.147-10.94 10.939\" />", "globe": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\" /> <path d=\"M2 12h20\" />", "shield": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\" />", "target": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <circle cx=\"12\" cy=\"12\" r=\"6\" /> <circle cx=\"12\" cy=\"12\" r=\"2\" />", "palette": "<circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\" /> <circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\" /> <circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" /> <circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\" /> <path d=\"M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z\" />", "layers": "<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\" /> <path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\" /> <path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\" />", "gamepad": "<line x1=\"6\" x2=\"10\" y1=\"11\" y2=\"11\" /> <line x1=\"8\" x2=\"8\" y1=\"9\" y2=\"13\" /> <line x1=\"15\" x2=\"15.01\" y1=\"12\" y2=\"12\" /> <line x1=\"18\" x2=\"18.01\" y1=\"10\" y2=\"10\" /> <path d=\"M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z\" />", "bag": "<path d=\"M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z\" /> <path d=\"M3 6h18\" /> <path d=\"M16 10a4 4 0 0 1-8 0\" />", "ticket": "<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\" /> <path d=\"M13 5v2\" /> <path d=\"M13 17v2\" /> <path d=\"M13 11v2\" />", "gem": "<path d=\"M6 3h12l4 6-10 13L2 9Z\" /> <path d=\"M11 3 8 9l4 13 4-13-3-6\" /> <path d=\"M2 9h20\" />", "help": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\" /> <path d=\"M12 17h.01\" />", "eye": "<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\" /> <circle cx=\"12\" cy=\"12\" r=\"3\" />", "trash": "<path d=\"M3 6h18\" /> <path d=\"M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6\" /> <path d=\"M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2\" /> <line x1=\"10\" x2=\"10\" y1=\"11\" y2=\"17\" /> <line x1=\"14\" x2=\"14\" y1=\"11\" y2=\"17\" />", "download": "<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\" /> <polyline points=\"7 10 12 15 17 10\" /> <line x1=\"12\" x2=\"12\" y1=\"15\" y2=\"3\" />", "upload": "<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\" /> <polyline points=\"17 8 12 3 7 8\" /> <line x1=\"12\" x2=\"12\" y1=\"3\" y2=\"15\" />", "wifi": "<path d=\"M12 20h.01\" /> <path d=\"M2 8.82a15 15 0 0 1 20 0\" /> <path d=\"M5 12.859a10 10 0 0 1 14 0\" /> <path d=\"M8.5 16.429a5 5 0 0 1 7 0\" />", "login": "<path d=\"M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4\" /> <polyline points=\"10 17 15 12 10 7\" /> <line x1=\"15\" x2=\"3\" y1=\"12\" y2=\"12\" />", "logout": "<path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\" /> <polyline points=\"16 17 21 12 16 7\" /> <line x1=\"21\" x2=\"9\" y1=\"12\" y2=\"12\" />", "back": "<path d=\"m12 19-7-7 7-7\" /> <path d=\"M19 12H5\" />", "next": "<path d=\"M5 12h14\" /> <path d=\"m12 5 7 7-7 7\" />", "down": "<path d=\"m6 9 6 6 6-6\" />", "left": "<path d=\"m15 18-6-6 6-6\" />", "right": "<path d=\"m9 18 6-6-6-6\" />", "vibrate": "<path d=\"m2 8 2 2-2 2 2 2-2 2\" /> <path d=\"m22 8-2 2 2 2-2 2 2 2\" /> <rect width=\"8\" height=\"14\" x=\"8\" y=\"5\" rx=\"1\" />", "party": "<path d=\"M5.8 11.3 2 22l10.7-3.79\" /> <path d=\"M4 3h.01\" /> <path d=\"M22 8h.01\" /> <path d=\"M15 2h.01\" /> <path d=\"M22 20h.01\" /> <path d=\"m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10\" /> <path d=\"m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17\" /> <path d=\"m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7\" /> <path d=\"M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z\" />", "sparkle": "<path d=\"M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z\" /> <path d=\"M20 3v4\" /> <path d=\"M22 5h-4\" /> <path d=\"M4 17v2\" /> <path d=\"M5 18H3\" />", "flag": "<path d=\"M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z\" /> <line x1=\"4\" x2=\"4\" y1=\"22\" y2=\"15\" />", "medal": "<path d=\"M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15\" /> <path d=\"M11 12 5.12 2.2\" /> <path d=\"m13 12 5.88-9.8\" /> <path d=\"M8 7h8\" /> <circle cx=\"12\" cy=\"17\" r=\"5\" /> <path d=\"M12 18v-2h-.5\" />", "flame": "<path d=\"M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z\" />", "info": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"M12 16v-4\" /> <path d=\"M12 8h.01\" />", "bell": "<path d=\"M10.268 21a2 2 0 0 0 3.464 0\" /> <path d=\"M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326\" />", "head": "<path d=\"M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3\" />", "image": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\" /> <circle cx=\"9\" cy=\"9\" r=\"2\" /> <path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\" />", "smile": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"M8 14s1.5 2 4 2 4-2 4-2\" /> <line x1=\"9\" x2=\"9.01\" y1=\"9\" y2=\"9\" /> <line x1=\"15\" x2=\"15.01\" y1=\"9\" y2=\"9\" />", "hourglass": "<path d=\"M5 22h14\" /> <path d=\"M5 2h14\" /> <path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\" /> <path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\" />", "sword": "<polyline points=\"14.5 17.5 3 6 3 3 6 3 17.5 14.5\" /> <line x1=\"13\" x2=\"19\" y1=\"19\" y2=\"13\" /> <line x1=\"16\" x2=\"20\" y1=\"16\" y2=\"20\" /> <line x1=\"19\" x2=\"21\" y1=\"21\" y2=\"19\" /> <polyline points=\"14.5 6.5 18 3 21 3 21 6 17.5 9.5\" /> <line x1=\"5\" x2=\"9\" y1=\"14\" y2=\"18\" /> <line x1=\"7\" x2=\"4\" y1=\"17\" y2=\"20\" /> <line x1=\"3\" x2=\"5\" y1=\"19\" y2=\"21\" />", "up": "<path d=\"m5 12 7-7 7 7\" /> <path d=\"M12 19V5\" />", "dnown": "<path d=\"M12 5v14\" /> <path d=\"m19 12-7 7-7-7\" />", "ok": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"m9 12 2 2 4-4\" />", "no": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"m15 9-6 6\" /> <path d=\"m9 9 6 6\" />", "pyr": "<path d=\"M13.73 4a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z\" />"};
 const EGF='<svg class="egf" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="7" fill="#ce1126"/><rect y="7" width="30" height="6" fill="#fff"/><rect y="13" width="30" height="7" fill="#111"/><circle cx="15" cy="10" r="2.2" fill="#c09300"/></svg>';
+const IC=n=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${_IC[n]||''}</svg>`;
 const isDark=()=>document.documentElement.dataset.theme==='dark';
 const setTheme=t=>{document.documentElement.dataset.theme=t;localStorage.theme=t;document.querySelectorAll('[data-act="theme"]').forEach(b=>b.innerHTML=IC(isDark()?'sun':'moon'))};
 setTheme(localStorage.theme||'dark');
@@ -1118,7 +1101,7 @@ function submitAns(){
   i.disabled=true;cgAct({t:'submit',txt:v,ts:now()});
 }
 
-RULES.qz=['من 2 لـ4 لاعبين، والأسئلة كلها عن مصر وعن الأغاني والأفلام والإسلاميات والأعلام والعواصم والمدن.','اللي يدوس الجرس 🔔 الأول هو اللي لازم يجاوب.','الإجابة الصح = +1 نقطة، والغلط = -1 نقطة.','لو جاوب غلط السؤال بيفضل مفتوح للباقي، واللي غلط مينفعش يجاوب نفس السؤال تاني.','لو محدش عارف الأدمن يدوس "تخطي".','أونلاين: بتكتب إجابتك ويتصحح تلقائي (والأدمن يقدر يعدّل الحكم). مع الشلة: بتجاوب بصوتك والأدمن يحكم صح أو غلط.','عدد الأسئلة بيحدده الأدمن وانت بتعمل الغرفة، واللي معاه نقط أكتر في الآخر يكسب.'];
+RULES.qz=['من 2 لـ4 لاعبين، والأسئلة كلها من الأغاني والأفلام والإسلاميات والأعلام والعواصم والمدن.','اللي يدوس الجرس 🔔 الأول هو اللي لازم يجاوب.','الإجابة الصح = +1 نقطة، والغلط = -1 نقطة.','لو جاوب غلط السؤال بيفضل مفتوح للباقي، واللي غلط مينفعش يجاوب نفس السؤال تاني.','لو محدش عارف الأدمن يدوس "تخطي".','أونلاين: بتكتب إجابتك ويتصحح تلقائي (والأدمن يقدر يعدّل الحكم). مع الشلة: بتجاوب بصوتك والأدمن يحكم صح أو غلط.','عدد الأسئلة بيحدده الأدمن وانت بتعمل الغرفة، واللي معاه نقط أكتر في الآخر يكسب.'];
 RULES.qm=['من 2 لـ4 لاعبين، وكل سؤال ليه 4 اختيارات.','الكل بيجاوب في نفس الوقت، وعندكم 10 ثواني.','بعد الـ10 ثواني (أو لما الكل يجاوب) النتيجة بتظهر: الصح بياخد نقطة والغلط ما بياخدش حاجة.','بتكسب لما تسبق اللي ورا بـ5 نقط.','لو محدش سبق بـ5 نقط، اللي معاه نقط أكتر لما الأسئلة تخلص يكسب.'];
 const FXL={dog:'🐶 كلب',cat:'🐱 قطة',duck:'🦆 بطة',donkey:'🐴 حمار',kiss:'😘 بوسة',laugh:'🤣 ضحكة',raz:'💨 بربرة'};
 const fxk=()=>{try{const x=ACC.p&&ACC.p.fx;if(FXL[x])return x}catch(e){}return FXL[localStorage.fxk]?localStorage.fxk:'duck'};
@@ -1154,7 +1137,7 @@ function quizOver(st){
   const r=qRank(st),w=st.winners||[];
   return `<div style="font-size:3rem">🏆</div><h2>${st.aborted?'اللعبة خلصت (لاعبين مشيوا)':w.length>1?'تعادل بين '+w.map(p=>esc(nm(p))).join(' و'):esc(nm(w[0]))+' كسب!'}</h2>`+r.map((p,i)=>`<div class="lb"><span style="display:flex;align-items:center"><i class="rk">${i+1}</i>${av(nm(p))}${esc(nm(p))}</span><b>${(st.sc&&st.sc[p])||0}</b></div>`).join('');
 }
-const quizForm=k=>`<p class="small">الغرفة دي من ${GAMES[k].min} لحد ${GAMES[k].max} لاعبين. كل الأسئلة عن مصر 🇪🇬</p>`+
+const quizForm=k=>`<p class="small">الغرفة دي من ${GAMES[k].min} لحد ${GAMES[k].max} لاعبين. الأسئلة من الأغاني والأفلام والجغرافيا 🇪🇬</p>`+
   (k==='qz'?`<label>طريقة اللعب</label><div class="seg"><button data-act="qon" data-v="1" class="sel">🌐 أونلاين (بتكتب الإجابة)</button><button data-act="qon" data-v="0">🎤 مع الشلة (صوت والأدمن يحكم)</button></div>`:'')+
   `<label>الأقسام</label><div class="chips">${Object.entries(CT).map(([c,t])=>`<button class="chip on" data-act="qcat" data-ck="${c}">${esc(t)}</button>`).join('')}</div>
   <label for="qn">${k==='qz'?'عدد الأسئلة (طول الجولة)':'أقصى عدد أسئلة'}</label><input id="qn" type="number" min="5" max="60" value="${k==='qz'?10:30}">`+(k==='qm'?`<label for="ql">الفارق اللي يكسب بيه اللاعب (نقط)</label><input id="ql" type="number" min="2" max="20" value="5">`:'');
@@ -1616,7 +1599,7 @@ Object.assign(GAMES,{
  whack:{ico:'🔨',name:'اضرب الشخصية',desc:'اضرب اللي يطلع من الحفرة في 30 ثانية',cls:'t1',solo:1}
 });
 ['uno','c_old','c_war','c_crazy','c_21'].forEach(k=>{if(GAMES[k])GAMES[k].hide=1});
-GAMES.qz.name='الجرس: سؤال وجواب عن مصر';GAMES.qm.name='اختيار من متعدد: عن مصر';
+GAMES.qz.name='الجرس: سؤال وجواب';GAMES.qm.name='اختيار من متعدد';
 Object.assign(RULES,{
  xo:['لاعبين اتنين: واحد X والتاني O.','كل واحد بيحط علامته في خانة فاضية بالدور.','اللي يكوّن 3 علامات ورا بعض (أفقي أو رأسي أو قطري) يكسب.','لو اللوح امتلى من غير فايز يبقى تعادل.'],
  c4:['لاعبين اتنين، كل واحد ليه لون.','بالدور تختار عمود، والقرص بينزل لآخر خانة فاضية فيه.','اللي يكوّن 4 أقراص ورا بعض (أفقي أو رأسي أو قطري) يكسب.','لو اللوح امتلى من غير فايز يبقى تعادل.'],
@@ -1625,16 +1608,16 @@ Object.assign(RULES,{
  snl:['من 2 لـ4 لاعبين، كلكم بتبدأوا قبل الخانة 1.','ارمي الزهر وامشي بالعدد اللي طلع.','لو وقفت على بداية سلم 🪜 بتطلع، ولو وقفت على راس تعبان 🐍 بتنزل.','6 بتلعب تاني.','لازم توصل 100 بالظبط. لو الرقم زاد مبتتحركش.'],
  mem:['من 2 لـ4 لاعبين، 16 كارت متقلبين (8 أزواج).','بالدور تقلب كارتين. لو زوج بتاخد نقطة وتلعب تاني.','لو مش زوج بيتقلبوا تاني والدور بيروح للي بعدك.','اللي معاه نقط أكتر لما الكروت تخلص يكسب.']
 });
-const CATS3=[['all','الكل','all'],['quiz','أسئلة عن مصر','pyr'],['board','الطاولة','dice'],['party','أتوبيس كومبليت','bus'],['arc','لوحدك','joy']];
+const CATS3=[['all','الكل','all'],['quiz','أسئلة وألغاز','pyr'],['board','الطاولة','dice'],['party','أتوبيس كومبليت','bus'],['arc','لوحدك','joy']];
 const CAT_OF={dev:'party',classic:'party',qz:'quiz',qm:'quiz',dm:'board',dma:'board',xo:'board',c4:'board',dama:'board',ludo:'board',snl:'board',mem:'board',g2048:'arc',snake:'arc',mines:'arc',whack:'arc'};
 const HUBORDER=['ludo','qz','dm','dev','c4','dama','qm','dma','classic','xo','snl','mem','g2048','snake','mines','whack'];
-const BADGE={ludo:'الأشهر',qz:'عن مصر',dm:'مفضلة',dev:'مضحكة',qm:'عن مصر',snake:'كلاسيك',whack:'سريعة',c4:'تنافسية'};
+const BADGE={ludo:'الأشهر',dm:'مفضلة',dev:'مضحكة',snake:'كلاسيك',whack:'سريعة',c4:'تنافسية'};
 const ARTIMG=k=>`<img src="assets/img/games/${k}.svg" alt="" loading="lazy" decoding="async" width="600" height="400">`;
 const cover=(k,big)=>`<div class="gart ${big?'big':''}">${ARTIMG(k)}</div>`;
 const heroBig=(cta)=>`<div class="hero"><div class="hslides"><div class="hslide"><img src="assets/img/hero.svg" alt=""><div class="hcopy"><span class="kick">${EGF} مصر بس</span><h1>ملاهي 15 مايو</h1><p>١٦ لعبة • العب مع صحابك من أي مكان</p>${cta||''}</div></div></div></div>`;
 const NEWG=['ludo','snl','mem','dama','c4','whack'];
 const HERO_K=['ludo','qz','c4'];
-const HERO_T={ludo:['جديد في الملاهي','لودو بالمصري'],qz:['٤٠٠+ سؤال','الجرس: كل حاجة عن مصر'],c4:['تنافسية','٤ في صف']};
+const HERO_T={ludo:['جديد في الملاهي','لودو بالمصري'],qz:['٤٠٠+ سؤال','الجرس: جاوب الأول'],c4:['تنافسية','٤ في صف']};
 const gm_pl=g=>g.solo?'لوحدك':!g.min?'2-10 لاعبين':g.min===g.max?`${g.min} لاعبين`:`${g.min}-${g.max} لاعبين`;
 function gcard(k,i,extra){
   const g=GAMES[k];if(!g)return '';
@@ -1968,6 +1951,97 @@ homeV=function(){
   `<button class="big" data-act="newroom" data-k="${S.kind}">${IC('play')} إنشاء غرفة</button>
    <button class="big ghost" data-act="quick">دخول سريع (غرفة عامة)</button>`;
 };
+
+/* =========================================================
+   ألعاب مفتوحة المصدر (OSS) — تعمل داخل إطار مع صفحة اللعب
+   ========================================================= */
+const OSSG={
+  hextris:{name:'هيكستريس',desc:'بلوكات سداسية سريعة: لف ورتّب قبل ما يخلص الوقت',ico:'hex',cat:'arcade',src:'oss/hextris/index.html',author:'Hextris team (Garrett Finucane, Logan Engstrom)',lic:'GPL-3.0',url:'https://github.com/Hextris/hextris'},
+  tetris:{name:'تتريس',desc:'الكلاسيكية: نزّل الصفوف قبل ما تتراكم',ico:'tet',cat:'arcade',src:'oss/tetris/index.html',author:'Jake Gordon',lic:'MIT',url:'https://github.com/jakesgordon/javascript-tetris'},
+  clumsy:{name:'العصفور',desc:'طيران بضغطة واحدة: عدّي الأنابيب من غير ما تخبط',ico:'bird',cat:'arcade',src:'oss/clumsy/index.html',author:'Ellison Leão',lic:'MIT',url:'https://github.com/ellisonleao/clumsy-bird'}
+};
+const OSS_LIVE=false; // يتفعّل بعد رفع مجلد oss/
+Object.entries(OSSG).forEach(([k,g])=>{
+  if(!OSS_LIVE)return;
+  GAMES[k]={name:g.name,desc:g.desc,ico:g.ico,solo:1,ext:g.src,cls:'t4'};
+  if(typeof HUBORDER!=='undefined'&&!HUBORDER.includes(k))HUBORDER.push(k);
+  if(typeof CAT_OF!=='undefined')CAT_OF[k]=g.cat;
+  if(typeof NEWG!=='undefined'&&!NEWG.includes(k))NEWG.unshift(k);
+});
+
+function extShell(k){
+  const g=GAMES[k],o=OSSG[k];
+  return `<div class="extwrap">
+    <header class="extbar">
+      <button class="icobtn" data-act="exback" aria-label="رجوع">${IC('back')}</button>
+      <b class="extitle">${esc(g.name)}</b>
+      <button class="icobtn" data-act="exfull" aria-label="ملء الشاشة">${IC('layers')}</button>
+    </header>
+    <div class="extframe" id="extbox">
+      <iframe id="extf" src="${o.src}" title="${esc(g.name)}" allow="fullscreen; autoplay; gamepad" loading="eager"></iframe>
+    </div>
+    <div class="extinfo card">
+      <div class="row" style="display:flex;align-items:center;gap:8px">
+        <span class="tag">${o.lic}</span>
+        <span class="small">${esc(o.author)}</span>
+      </div>
+      <p class="small" style="margin:6px 0 0">لعبة مفتوحة المصدر، منشورة بترخيصها الأصلي. <a href="${o.url}" target="_blank" rel="noopener">المصدر</a></p>
+    </div>
+    <button class="big" data-act="exfull">${IC('layers')} كبّر الشاشة</button>
+    <button class="big ghost" data-act="exback">← رجوع للألعاب</button>
+  </div>`;
+}
+const _render_base=render;
+render=function(){
+  if(S.ext){
+    if(S.view!=='ext'){S.view='ext';app.innerHTML=extShell(S.ext);window.scrollTo(0,0);return}
+    if(!document.getElementById('extf')){app.innerHTML=extShell(S.ext);return}
+    return;
+  }
+  return _render_base();
+};
+
+/* اعتراض ضغطات ألعاب الإطار قبل معالج التطبيق */
+document.addEventListener('click',e=>{
+  const b=e.target.closest&&e.target.closest('[data-act="exback"],[data-act="exfull"],[data-act="solo"],[data-act="game"]');
+  if(!b)return;
+  const a=b.dataset.act;
+  if(a==='exback'){e.stopPropagation();e.preventDefault();S.ext=null;S.view='';render();return}
+  if(a==='exfull'){e.stopPropagation();e.preventDefault();
+    const el=document.getElementById('extbox');
+    if(el){if(document.fullscreenElement){document.exitFullscreen()}else if(el.requestFullscreen){el.requestFullscreen().catch(()=>{})}}
+    return}
+  const k=b.dataset.k;
+  if((a==='solo'||a==='game')&&k&&GAMES[k]&&GAMES[k].ext){e.stopPropagation();e.preventDefault();S.ext=k;S.view='';render();}
+},true);
+
+/* ---------- شل الديسكتوب: سايدبار زي بورتالات الألعاب ---------- */
+function sideHTML(){
+  const cats=(typeof CATS3!=='undefined'?CATS3.slice(1):[]).map(([c,t,ic])=>`<button class="snav" data-act="cat" data-k="${c}">${IC(ic)}<span>${t}</span></button>`).join('');
+  return `<div class="sbrand"><img src="assets/img/logo.svg" alt=""><b>ملاهي 15 مايو</b></div>
+  <button class="snav on" data-act="hub">${IC('home')}<span>الرئيسية</span></button>
+  <button class="snav" data-act="scroll" data-t="gsec">${IC('grid')}<span>كل الألعاب</span></button>
+  <button class="snav" data-act="guide">${IC('book')}<span>دليل اللعب</span></button>
+  <button class="snav" data-act="acc">${IC('user')}<span>حسابي</span></button>
+  <div class="ssep"></div>
+  <div class="stitle">التصنيفات</div>${cats}
+  <div class="ssep"></div>
+  <button class="snav" data-act="settings">${IC('gear')}<span>الإعدادات</span></button>
+  <div class="sfoot">${EGF}<span>مصر بس 🇪🇬</span></div>`;
+}
+function ensureSide(){
+  const wide=window.matchMedia('(min-width:980px)').matches;
+  let el=document.querySelector('.side');
+  const hubish=!S.ext&&!S.rid&&!S.kind&&S.me;
+  if(wide&&hubish){
+    if(!el){el=document.createElement('aside');el.className='side';document.body.appendChild(el)}
+    if(!el.innerHTML||el.dataset.k!==(S.cat||'all')){el.innerHTML=sideHTML();el.dataset.k=S.cat||'all'}
+    el.style.display='flex';
+  }else if(el){el.style.display='none'}
+}
+const _r2=render;
+render=function(){const o=_r2.apply(this,arguments);try{ensureSide()}catch(e){}return o};
+window.addEventListener('resize',()=>{try{ensureSide()}catch(e){}});
 
 const ENG={xo:xoEng,c4:c4Eng,dama:dmEng,ludo:ludoEng,snl:snlEng,mem:memEng,uno:UNO,c_old:OLD,c_war:WAR,c_crazy:CE,c_21:BJ,qz:quizEng('qz'),qm:quizEng('qm'),dm:domEng('dm'),dma:domEng('dma')};
 function dropP(o,p){
