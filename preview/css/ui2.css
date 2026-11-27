@@ -352,3 +352,22 @@ input,textarea,.qin{font-family:inherit}
   .hcopy p{font-size:.95rem;max-width:420px}
   .hdots{inset-inline-end:auto;inset-inline-start:40px;bottom:16px}
 }
+
+/* ---------- desktop hero v2: بانر عريض + كارت اللعبة ---------- */
+@media (min-width:980px){
+  .hero{height:300px !important;background:#120a28}
+  .hslide{height:300px;background:url(../assets/img/hero-wide.svg) center/cover no-repeat}
+  .hslide::after{background:linear-gradient(270deg,rgba(8,4,22,.97) 0%,rgba(8,4,22,.9) 32%,rgba(8,4,22,.45) 62%,rgba(8,4,22,.1) 100%) !important}
+  .hslide>img{position:absolute !important;inset-inline-start:34px;top:50%;transform:translateY(-50%) !important;
+    width:min(40%,380px) !important;height:auto !important;aspect-ratio:3/2;object-fit:cover;
+    border-radius:20px;box-shadow:0 14px 0 rgba(0,0,0,.35), 0 24px 50px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.14)}
+  .hcopy{inset:0 !important;max-width:52%;margin-inline-start:auto;padding:0 40px !important;justify-content:center}
+}
+/* شيل زر "؟" من الكروت */
+.gc .gq{display:none !important}
+
+/* الهيرو: الشارة والأزرار بعرض المحتوى فقط */
+.hcopy{align-items:flex-start}
+.hcopy .kick{align-self:flex-start;display:inline-flex;width:auto !important}
+.hbtns{align-self:flex-start}
+@media (min-width:980px){ .hcopy{display:flex;flex-direction:column;align-items:flex-start} }
