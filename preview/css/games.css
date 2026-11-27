@@ -1,0 +1,117 @@
+/* =========================================================
+   ألواح وقطع الألعاب — تحسين الشكل والحركة
+   ========================================================= */
+#ban{font-family:Lalezar,Cairo;font-weight:400;font-size:1.12rem;text-align:center;margin:8px 0;
+  color:var(--ink);background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:6px 10px}
+#ban:empty{display:none}
+
+/* ---------- إكس أو ---------- */
+.xob{background:linear-gradient(160deg,#2b1c66,#171043);border:2px solid #4a3a9e;border-radius:22px;
+  padding:10px;box-shadow:inset 0 2px 0 rgba(255,255,255,.12),0 10px 26px rgba(0,0,0,.35);gap:8px}
+.xoc{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.03));border-radius:14px;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.35);transition:background .15s,transform .1s}
+.xoc:not(:disabled):hover{background:rgba(255,255,255,.16)}
+.xoc:not(:disabled):active{transform:scale(.95)}
+.xoc svg{filter:drop-shadow(0 3px 8px rgba(255,79,129,.45))}
+.xoc svg path,.xoc svg circle{stroke-dasharray:120;stroke-dashoffset:120;animation:draw .32s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.xoc.wl{background:linear-gradient(180deg,rgba(255,213,74,.35),rgba(255,213,74,.12));outline:2.5px solid var(--gold);
+  box-shadow:0 0 18px rgba(255,213,74,.45) inset}
+.xoc.wl svg{animation:wlpop .6s ease infinite alternate}
+@keyframes wlpop{to{transform:scale(1.1)}}
+
+/* ---------- ٤ في صف ---------- */
+.c4b{background:linear-gradient(180deg,#2a63c4,#12347a);border:3px solid #0b2450;border-radius:20px;
+  padding:9px;box-shadow:inset 0 3px 0 rgba(255,255,255,.16),0 12px 26px rgba(0,0,0,.4);gap:0}
+.c4col{border-radius:10px;transition:background .15s}
+.c4col:not(:disabled):hover{background:rgba(255,255,255,.14)}
+.c4d{background:radial-gradient(circle at 50% 50%,#0a1d45 60%,#08152f 100%);box-shadow:inset 0 3px 7px rgba(0,0,0,.65),inset 0 -1px 0 rgba(255,255,255,.08)}
+.c4d.x{background:radial-gradient(circle at 34% 28%,#ff9aa6,#e63946 52%,#a3122a 100%);box-shadow:inset 0 -3px 6px rgba(0,0,0,.35),0 2px 5px rgba(0,0,0,.35)}
+.c4d.o{background:radial-gradient(circle at 34% 28%,#fff6b8,#ffc933 52%,#b98f00 100%);box-shadow:inset 0 -3px 6px rgba(0,0,0,.28),0 2px 5px rgba(0,0,0,.35)}
+.c4d.drop{animation:cdrop .55s cubic-bezier(.4,0,.6,1.5)}
+@keyframes cdrop{0%{transform:translateY(-330%)}70%{transform:translateY(0) scaleY(.9)}100%{transform:none}}
+.c4d.wl{outline:3px solid #fff;box-shadow:0 0 16px 4px rgba(255,255,255,.8);animation:wlp .7s infinite alternate}
+@keyframes wlp{to{filter:brightness(1.35) saturate(1.2)}}
+
+/* ---------- داما ---------- */
+.dmb{border-radius:14px;border:6px solid #4a2a10;
+  box-shadow:0 14px 30px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,213,116,.25);background:#5a3414}
+.dmc.lt{background:linear-gradient(160deg,#f7e3b6,#e6c88c)}
+.dmc.dk{background:linear-gradient(160deg,#8a5527,#5e3517)}
+.dmc.sel{outline:3px solid var(--gold);outline-offset:-3px;background:linear-gradient(160deg,#c98a3f,#8a5527)}
+.dmc.dest::after{background:radial-gradient(circle,#7dffb0,rgba(125,255,176,.15));box-shadow:0 0 14px rgba(125,255,176,.8)}
+.dmp{display:block;width:74%;height:74%;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.55),transparent 45%),radial-gradient(circle at 50% 55%,#ff6b6b,#b71c2c 75%);
+  box-shadow:0 3px 6px rgba(0,0,0,.5),inset 0 -3px 6px rgba(0,0,0,.35);border:1.5px solid rgba(0,0,0,.35)}
+.dmp.pb{background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.35),transparent 45%),radial-gradient(circle at 50% 55%,#4a4a58,#15151c 75%)}
+.dmp.k{border-color:var(--gold);box-shadow:0 0 12px rgba(255,213,74,.75),0 3px 6px rgba(0,0,0,.5)}
+.dmp.k svg{position:absolute;inset:12%;width:76%;height:76%;animation:crownb 1.6s ease-in-out infinite}
+@keyframes crownb{50%{transform:translateY(-1px) scale(1.08)}}
+.dmp.sm{width:16px;height:16px;display:inline-block}
+.dmc.lst{box-shadow:inset 0 0 0 3px rgba(255,213,74,.85),inset 0 0 18px rgba(255,213,74,.35)}
+
+/* ---------- لودو ---------- */
+.lb{filter:drop-shadow(0 12px 26px rgba(0,0,0,.45));border-radius:14px}
+.ltk{filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));transition:transform .15s}
+.ltk.can{cursor:pointer;animation:tkb 1s ease-in-out infinite}
+.ltk.can circle:first-child{stroke:#fff;stroke-width:1.2}
+@keyframes tkb{50%{transform:translateY(-2px) scale(1.06)}}
+.ltk.lastm circle:nth-child(2){stroke:#ffd54a;stroke-width:1.6}
+.dice{width:58px;height:58px;border-radius:14px;background:linear-gradient(160deg,#fffdf6,#e6dcc6);
+  box-shadow:0 6px 0 #b9ad93,0 10px 20px rgba(0,0,0,.4);display:grid;place-items:center;margin:0 auto;border:0}
+.dice.rolled{animation:roll .5s cubic-bezier(.3,1.4,.5,1)}
+@keyframes roll{0%{transform:rotate(-160deg) scale(.6)}100%{transform:none}}
+.dpg{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:38px;height:38px}
+.dpg b{width:8px;height:8px;border-radius:50%;background:transparent;justify-self:center;align-self:center}
+.dpg b.p{background:#221a12;box-shadow:inset 0 -1px 0 rgba(255,255,255,.4)}
+.dice.idle{background:none;box-shadow:none;font-size:2.2rem}
+
+/* ---------- سلم وتعبان ---------- */
+.snb{border-radius:14px;border:5px solid #7a5a2b;box-shadow:0 12px 26px rgba(0,0,0,.45);background:#fff7da}
+.sntk{filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.55))}
+
+/* ---------- الذاكرة ---------- */
+.mgrid{grid-template-columns:repeat(4,1fr);gap:7px}
+.mcard{aspect-ratio:3/4;padding:0;background:none;box-shadow:none;perspective:600px;transform:none!important}
+.mcard .mf{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .42s cubic-bezier(.2,.9,.25,1)}
+.mcard.up .mf{transform:rotateY(180deg)}
+.mcard .mb,.mcard .mfr{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:grid;place-items:center;overflow:hidden}
+.mcard .mb{background:
+  repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 6px,transparent 6px 12px),
+  linear-gradient(160deg,#7c3aed,#3b1f7a);border:1.5px solid rgba(255,255,255,.22);
+  box-shadow:0 4px 10px rgba(0,0,0,.35)}
+.mcard .mb::after{content:"";width:44%;height:44%;border-radius:50%;border:2px dashed rgba(255,213,74,.6)}
+.mcard .mfr{background:linear-gradient(160deg,#fffaf0,#ffe9c4);transform:rotateY(180deg);border:1.5px solid #d9c9a0}
+.mcard .mfr svg,.mcard .mfr .av{width:78%;height:78%}
+.mcard.done .mfr{box-shadow:0 0 0 2.5px var(--mint),0 0 16px rgba(46,230,200,.5)}
+.mcard:not(:disabled):active .mf{transform:scale(.95)}
+
+/* ---------- 2048 ---------- */
+.g48{background:linear-gradient(160deg,#bbada0,#9e8f82);box-shadow:inset 0 3px 0 rgba(255,255,255,.3),0 10px 24px rgba(0,0,0,.35);border-radius:18px;gap:8px;padding:9px}
+.g48 i{border-radius:10px;background:rgba(238,228,218,.35);font-size:1.4rem;color:#5a4a3a;transition:background .15s,transform .12s}
+.g48 i:not(:empty){animation:tilein .16s ease}
+@keyframes tilein{from{transform:scale(.7)}to{transform:none}}
+
+/* ---------- كاسحة الألغام ---------- */
+.mnc{border-radius:8px;background:linear-gradient(180deg,#7c6cf0,#5a48d0);box-shadow:inset 0 -3px 0 rgba(0,0,0,.28),inset 0 2px 0 rgba(255,255,255,.25)}
+.mnc.o{background:linear-gradient(180deg,#f6f2ff,#ded6f5);box-shadow:inset 0 2px 5px rgba(0,0,0,.12);animation:reveal .18s ease}
+@keyframes reveal{from{transform:scale(.86);opacity:.5}to{transform:none;opacity:1}}
+.mnc.bm{background:linear-gradient(180deg,#ff8f8f,#e5484d);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
+/* ---------- اضرب الشخصية ---------- */
+.hole .hh{background:radial-gradient(ellipse at 50% 40%,#120804,#2a1507);box-shadow:inset 0 6px 10px rgba(0,0,0,.8)}
+.hole.up .hc{animation:popup .12s ease}
+@keyframes popup{from{transform:translateY(20%)}to{transform:none}}
+.hole:active .hf{filter:brightness(1.2)}
+
+/* ---------- أسئلة ---------- */
+.qmsg{border-radius:14px;padding:7px 12px;font-weight:900;text-align:center;background:var(--panel);border:1.5px solid var(--line);margin:6px 0;font-size:.9rem}
+.qmsg.ok{background:rgba(46,230,200,.14);border-color:rgba(46,230,200,.5);color:#9ff5e0}
+.qmsg.bad{background:rgba(229,72,77,.14);border-color:rgba(229,72,77,.5);color:#ffb3b5}
+.ansbox{background:linear-gradient(160deg,rgba(255,213,74,.16),rgba(255,213,74,.05));border:1.5px solid rgba(255,213,74,.4);
+  border-radius:14px;padding:8px 12px;font-weight:800}
+.ansbox b{color:var(--gold)}
+.bar{background:var(--panel2);border-radius:8px;overflow:hidden}
+.bar i{background:var(--grad-mint);box-shadow:0 0 12px rgba(46,230,200,.6)}
+.card.rules summary{cursor:pointer;font-weight:900}

@@ -1,0 +1,105 @@
+/* ===== تحسينات الشكل والحركة ===== */
+main{max-width:min(980px,100%)}
+.top{flex-wrap:wrap}
+.tools{flex-wrap:wrap;justify-content:flex-end}
+.hero h1{font-size:clamp(2.2rem,9vw,3.4rem)}
+.hero .wheel{filter:drop-shadow(0 6px 10px rgba(255,79,129,.35))}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.tile{position:relative;overflow:hidden;min-height:230px}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);transform:translateX(-120%);transition:transform .7s}
+.tile:hover::after{transform:translateX(120%)}
+.tile .art{display:block;width:100%;height:96px;margin-bottom:2px}
+.tile .art svg{width:100%;height:100%;overflow:visible;animation:artbob 3.6s ease-in-out infinite;filter:drop-shadow(0 5px 0 rgba(0,0,0,.18))}
+.tile:hover .art svg{animation-duration:1.2s}
+@keyframes artbob{50%{transform:translateY(-6px) rotate(-1.5deg)}}
+.t9{background:linear-gradient(135deg,#7c3aed,#ec4899)}.t10{background:linear-gradient(135deg,#0ea5e9,#22c55e)}
+.tile em{align-self:flex-start}
+.card{transition:transform .2s,box-shadow .2s}
+h2{animation:fadeUp .4s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}}
+/* أزرار الصوت */
+.tools .ghost.sm{padding:4px 9px}
+/* الأفاتار */
+.av.em{background:var(--panel2)!important;font-size:1.25rem;line-height:1;box-shadow:inset 0 0 0 2px var(--line)}
+.avgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px;margin-top:6px}
+.avb{display:flex;flex-direction:column;align-items:center;gap:0;padding:6px 2px;border-radius:14px;background:var(--panel2);color:var(--ink);border:2px solid var(--line);box-shadow:none;line-height:1.15}
+.avb span{font-size:2rem}.avb small{font-size:.7rem;font-weight:700;color:var(--mute)}
+.avb.sel{border-color:var(--pri);background:var(--panel);transform:scale(1.06);box-shadow:0 0 0 3px rgba(255,79,129,.25)}
+.avb:hover{transform:translateY(-3px) rotate(-2deg)}
+.avb.sel:hover{transform:scale(1.06)}
+/* الشات هادي */
+.fab{left:12px;bottom:12px;width:44px;height:44px;font-size:1.15rem;opacity:.85;box-shadow:0 3px 0 var(--sh)}
+.fab:hover{opacity:1}
+.fab b{animation:none!important;min-width:18px;height:18px;border-radius:9px;font-size:.7rem;top:-4px;right:-4px;padding:0 3px}
+/* الأسئلة */
+.scs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}
+.scp{display:flex;align-items:center;gap:6px;background:var(--panel);border:2px solid var(--line);border-radius:30px;padding:3px 12px 3px 4px;font-weight:800;transition:transform .2s,border-color .2s}
+.scp.hot{border-color:var(--pri);transform:scale(1.07);animation:glow 1.4s ease-in-out infinite}
+.scp b{font-family:Lalezar;font-size:1.3rem;min-width:1.2em;text-align:center}
+.qcard{text-align:center;animation:flipIn .5s both}
+@keyframes flipIn{from{opacity:0;transform:perspective(600px) rotateX(-40deg) translateY(16px)}}
+.qt{font-size:clamp(1.25rem,5vw,1.8rem);line-height:1.5;margin:8px 0 2px}
+.qimg{margin:8px auto;width:min(100%,320px);height:170px;border-radius:16px;background:var(--panel2);display:grid;place-items:center;overflow:hidden;border:2px solid var(--line)}
+.qimg img{width:100%;height:100%;object-fit:contain;background:#fff}
+.qimg:not(.ok):not(.none)::before{content:"⏳";font-size:2rem;animation:spin 2s linear infinite}
+.qimg.none::before{content:"🖼️ الصورة مش متاحة";font-weight:800;color:var(--mute);font-size:.95rem}
+.qmsg{text-align:center;font-weight:900;font-size:1.15rem;margin:10px 0;padding:8px 12px;border-radius:14px;background:var(--panel2);animation:pop .3s both}
+.qmsg.ok{background:rgba(15,159,118,.18);color:var(--good)}.qmsg.bad{background:rgba(229,72,77,.15);color:var(--bad);animation:shake .45s both}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.ansbox{text-align:center;font-size:1.1rem;margin:6px 0}
+.buzz{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:14px auto;width:min(86vw,230px);height:min(86vw,230px);border-radius:50%;font-family:Lalezar,Cairo;font-weight:400;font-size:1.6rem;background:radial-gradient(circle at 35% 30%,#ff8a9d,#e5484d 55%,#a61b2b);box-shadow:0 10px 0 #7d1220,0 18px 30px rgba(229,72,77,.4);animation:pulse 1.4s ease-in-out infinite;border:6px solid #fff}
+.buzz span{font-size:4rem;line-height:1}
+.buzz:hover{transform:scale(1.03);box-shadow:0 10px 0 #7d1220,0 18px 36px rgba(229,72,77,.55)}
+.buzz:active{transform:translateY(8px);box-shadow:0 2px 0 #7d1220}
+.buzz.dis,.buzz:disabled{filter:grayscale(.9);animation:none;opacity:.6}
+@keyframes pulse{50%{transform:scale(1.045)}}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+@media (max-width:420px){.opts{grid-template-columns:1fr}}
+.opt{min-height:66px;font-size:1.1rem;line-height:1.35;word-break:break-word;color:#fff;position:relative;animation:pop .35s both}
+.opt.o0{background:#e63946}.opt.o1{background:#2f6fed}.opt.o2{background:#2fb344}.opt.o3{background:#e08a00}
+.opt.me{outline:4px solid var(--ink);outline-offset:2px}
+.opt.right{background:var(--good)!important;animation:beat2 .6s both}
+.opt.wrong{filter:grayscale(.8);opacity:.55}
+.opt:disabled{opacity:1}
+.opt.wrong.me{background:var(--bad)!important;filter:none;opacity:1;animation:shake .45s both}
+@keyframes beat2{40%{transform:scale(1.07)}}
+.lead{height:12px;border-radius:8px;background:var(--panel2);overflow:hidden;margin:4px 0}
+.lead i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--bus),var(--pri));transition:width .5s}
+.qin{flex:1}
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.qnum{font-family:Lalezar;font-size:2.2rem;line-height:1;color:var(--pri)}
+/* الكروت */
+.crd{transition:transform .18s,box-shadow .18s,opacity .18s}
+.hand.my .crd.ok:active{transform:translateY(-30px) scale(1.1)}
+@media (max-width:480px){.crd{width:54px;height:78px}.pile{width:54px;height:78px}.hand .crd{margin-inline-start:-18px}.letter{width:96px;height:96px;font-size:4rem}.cd{font-size:4rem}.tbl{gap:16px}}
+@media (min-width:900px){.crd{width:72px;height:104px}.pile{width:72px;height:104px}.hand .crd{margin-inline-start:-10px}.crd .cm{font-size:2.2rem}}
+.fab{z-index:19}
+@media (max-width:480px){.cp{height:min(60vh,480px)}.top{gap:6px}}
+.fab b[hidden]{display:none!important}
+
+.carousel{width:min(300px,80%);margin:0 auto;filter:drop-shadow(0 6px 8px rgba(124,58,237,.3))}
+.carousel .an{animation:orb 6s ease-in-out infinite;transform-box:fill-box}
+.carousel .an .bob{animation:bobc .6s ease-in-out infinite alternate;transform-box:fill-box}
+.carousel .a1{transform:translate(160px,128px)}.carousel .a2{transform:translate(160px,128px)}.carousel .a3{transform:translate(160px,128px)}.carousel .a4{transform:translate(160px,128px)}
+@keyframes orb{0%{transform:translate(95px,128px) scale(.85)}50%{transform:translate(225px,128px) scale(1.1)}100%{transform:translate(95px,128px) scale(.85)}}
+.carousel .a2{animation-delay:-1.5s}.carousel .a3{animation-delay:-3s}.carousel .a4{animation-delay:-4.5s}
+@keyframes bobc{from{translate:0 -6px}to{translate:0 6px}}
+.carousel .bal{animation:ball 3s ease-in-out infinite alternate}.carousel .b2{animation-delay:-1s}.carousel .b3{animation-delay:-2s}
+@keyframes ball{from{transform:translateY(-5px)}to{transform:translateY(6px)}}
+.carousel .star{animation:twk 1.2s ease-in-out infinite alternate}@keyframes twk{from{opacity:.5}to{opacity:1}}
+
+html,body{overflow-x:clip}
+.av.emo{padding:0;overflow:hidden;background:transparent!important;box-shadow:none}.av.emo svg{display:block;width:100%;height:100%}.avb .avs{display:block;width:40px;height:40px;margin:0 auto}.avb .avs svg{display:block}
+.credit{z-index:0}
+@media(max-width:700px){.top{position:static}}
+@media(max-width:700px){.qimg{height:130px}}
+@media(max-width:700px){
+.opts{grid-template-columns:1fr 1fr!important;gap:8px;margin:8px 0}
+.opt{min-height:52px;font-size:.98rem;padding:6px 8px}
+.scs{gap:4px}.scp{padding:3px 8px;font-size:.85rem;gap:5px}.scp .av,.scp i.av{width:26px;height:26px}
+.top{padding:4px 0;margin-bottom:2px}.top button,.tools button{padding:4px 9px;font-size:.85rem;min-height:0}
+.qcard{padding:8px 10px}.qcard h2,.qcard .qq{font-size:1.05rem;margin:4px 0}
+.qimg{margin:4px auto;height:110px}
+.qtop{margin:2px 0}.lead{height:6px;margin:2px 0}
+}
+.qimg{position:relative}.qimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
