@@ -1960,7 +1960,7 @@ const OSSG={
   tetris:{name:'تتريس',desc:'الكلاسيكية: نزّل الصفوف قبل ما تتراكم',ico:'tet',cat:'arcade',src:'oss/tetris/index.html',author:'Jake Gordon',lic:'MIT',url:'https://github.com/jakesgordon/javascript-tetris'},
   clumsy:{name:'العصفور',desc:'طيران بضغطة واحدة: عدّي الأنابيب من غير ما تخبط',ico:'bird',cat:'arcade',src:'oss/clumsy/index.html',author:'Ellison Leão',lic:'MIT',url:'https://github.com/ellisonleao/clumsy-bird'}
 };
-const OSS_LIVE=false; // يتفعّل بعد رفع مجلد oss/
+const OSS_LIVE=true; // يتفعّل بعد رفع مجلد oss/
 Object.entries(OSSG).forEach(([k,g])=>{
   if(!OSS_LIVE)return;
   GAMES[k]={name:g.name,desc:g.desc,ico:g.ico,solo:1,ext:g.src,cls:'t4'};
